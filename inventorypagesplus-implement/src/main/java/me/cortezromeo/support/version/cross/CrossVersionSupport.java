@@ -4,7 +4,7 @@ import com.cryptomorin.xseries.SkullUtils;
 import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.XSound;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
-import me.cortezromeo.inventorypages.server.VersionSupport;
+import me.cortezromeo.inventorypagesplus.server.VersionSupport;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
