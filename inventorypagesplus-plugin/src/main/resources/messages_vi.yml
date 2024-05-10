@@ -1,0 +1,50 @@
+#
+#  _                                                      _
+# (_)_ ____   __    _ __   __ _  __ _  ___  ___     _ __ | |_   _ ___
+# | | '_ \ \ / /   | '_ \ / _` |/ _` |/ _ \/ __|   | '_ \| | | | / __|
+# | | | | \ V /    | |_) | (_| | (_| |  __/\__ \   | |_) | | |_| \__ \
+# |_|_| |_|\_(_)   | .__/ \__,_|\__, |\___||___/   | .__/|_|\__,_|___/
+#                  |_|          |___/              |_|
+# A project made by Cortez_Romeo
+#
+# Contact me:
+# discord account: Cortez_Romeo
+# discord server: https://discord.gg/NWbTVddmBM
+#
+#  Lưu ý:
+#  * Bạn có thể chỉnh thành '' nếu muốn tắt dòng message đó
+#    đối với list thì chỉ cần một dòng (- '') là được
+#  * Có hỗ trợ hex color
+#  * Nhớ thêm dấu cách vào '' thành ' ' nếu bạn cho dòng đó
+#    không có gì nhưng ý của bạn là xuống dòng
+
+messages:
+  prefix: '&#FBFB14[InventoryPagesPlus]&r '
+  no-permission: '%prefix%&cBạn không có quyền để xài lệnh này.'
+  clear: '%prefix%&fXóa túi đồ trang hiện tại thành công &7(Sử dụng /clear all nếu muốn xóa ở tất cả trang).'
+  clear-all: '%prefix%&fXóa túi đồ ở tất cả trang thành công!'
+  items-dropped: '%prefix%&cQuá nhiều item! Một số item đã bị rớt ra trong quá trình chuyển đổi.'
+  invalid-number: '%prefix%&cSố không hợp lệ.'
+  invalid-name: '%prefix%&cNgười chơi &e%player%&c không tồn tại.'
+  no-page-message: ''
+  commands:
+    inventorypagesplus:
+      messages:
+        - ' '
+        - '&#FBFB14InventoryPagesPlus'
+        - '&7Version %version%'
+        - ' '
+        - '&#FBFB14/inventorypagesplus reload &7- &fTải lại config, inventory, message'
+        - '&#FBFB14/inventorypagesplus backup &7- &fBackup lại tất cả dữ liệu vào folder backup'
+        - '&#FBFB14/inventorypagesplus setmaxpage &6<player> <amount> &7- &fSet trang tối đa'
+        - '&#FBFB14/inventorypagesplus addmaxpage &6<player> <amount> &7- &fThêm trang tối đa'
+        - '&#FBFB14/inventorypagesplus removemaxpage &6<player> <amount> &7- &fTrừ trang tối đa'
+        - ' '
+        - ' &6<>&7: Bắt buộc phải nhập &7| &e()&7: Tùy chỉnh'
+      reload: '%prefix%&fTải lại InventoryPagesPlus thành công.'
+      backup:
+        start: '%prefix%&fBắt đầu quá trình backup dữ liệu...'
+        complete: '%prefix%&fBackup thành công từ %databaseType%! File backup sẽ nằm trong thư mục &bbackup&f và có tên &b%fileName%&f.'
+      set-max-page: '%prefix%&fĐã set số trang tối đa của &e%player% &fthành &e%number%&f.'
+      add-max-page: '%prefix%&fĐã thêm &e%number% trang tối đa cho &e%player%&f.'
+      remove-max-page: '%prefix%&fĐã trừ &e%number% trang tối đa của &e%player%&f.'

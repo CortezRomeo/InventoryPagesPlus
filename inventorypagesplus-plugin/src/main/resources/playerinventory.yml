@@ -1,0 +1,55 @@
+#
+#  _                                                      _
+# (_)_ ____   __    _ __   __ _  __ _  ___  ___     _ __ | |_   _ ___
+# | | '_ \ \ / /   | '_ \ / _` |/ _` |/ _ \/ __|   | '_ \| | | | / __|
+# | | | | \ V /    | |_) | (_| | (_| |  __/\__ \   | |_) | | |_| \__ \
+# |_|_| |_|\_(_)   | .__/ \__,_|\__, |\___||___/   | .__/|_|\__,_|___/
+#                  |_|          |___/              |_|
+# A project made by Cortez_Romeo
+#
+# Contact me:
+# discord account: Cortez_Romeo
+# discord server: https://discord.gg/NWbTVddmBM
+#
+#  Some useful information:
+#  * Support hex color
+#  * There are 3 main types:
+#    + material:
+#      > For spigot version below 1.13, you must put number for the sections 'value:' and 'data: '
+#          For example: (value: 95 | data: 1) [https://minecraft-ids.grahamedgecombe.com/]
+#      > For spigot version 1.13 or above, you must put the MATERIAL name for section 'value:' (Section 'data:' will not be used)
+#          For example: (value: BOOK) [https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html]
+#    + playerhead: Get the player's head
+#    + customhead:
+#      + How to use custom head:
+#          Step 1: Get into the website https://minecraft-heads.com/custom-heads/ and get whatever head you want
+#          Step 2: Scroll down to the 'For Developers:' part, copy the 'Value' section and then paste it into 'value:'
+#  * Placeholders:
+#    + {CURRENT}: Get the current page number
+#    + {MAX}: Get the max page number
+
+# If you want to edit the position, do it in config.yml
+items:
+  prev:
+    type: customhead
+    value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmQ2OWUwNmU1ZGFkZmQ4NGU1ZjNkMWMyMTA2M2YyNTUzYjJmYTk0NWVlMWQ0ZDcxNTJmZGM1NDI1YmMxMmE5In19fQ==
+    data: 0
+    name: '&aPrevious page'
+    #slot: Change this in config.yml (datatabase.prev-item-position-default)
+    lore:
+      - '&7Page {CURRENT}/{MAX}'
+  next:
+    type: customhead
+    value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTliZjMyOTJlMTI2YTEwNWI1NGViYTcxM2FhMWIxNTJkNTQxYTFkODkzODgyOWM1NjM2NGQxNzhlZDIyYmYifX19
+    data: 0
+    name: '&aNext page'
+    #slot: Change this in config.yml (datatabase.prev-item-position-default)
+    lore:
+      - '&7Page {CURRENT}/{MAX}'
+  noPage:
+    type: customhead
+    value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWRiNDUwZDg3MGU0YmY5Yjk3MjZlYWYzYTUwNjU1YmMyMjQ3NDk0MjgyYTZjMjdkMTE5OWNmMTQ4NmFmNTMwOCJ9fX0=
+    data: 0
+    name: '&cNo pages'
+    lore:
+      - '&7Page {CURRENT}/{MAX}'

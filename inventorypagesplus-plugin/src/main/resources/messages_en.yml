@@ -1,0 +1,48 @@
+#
+#  _                                                      _
+# (_)_ ____   __    _ __   __ _  __ _  ___  ___     _ __ | |_   _ ___
+# | | '_ \ \ / /   | '_ \ / _` |/ _` |/ _ \/ __|   | '_ \| | | | / __|
+# | | | | \ V /    | |_) | (_| | (_| |  __/\__ \   | |_) | | |_| \__ \
+# |_|_| |_|\_(_)   | .__/ \__,_|\__, |\___||___/   | .__/|_|\__,_|___/
+#                  |_|          |___/              |_|
+# A project made by Cortez_Romeo
+#
+# Contact me:
+# discord account: Cortez_Romeo
+# discord server: https://discord.gg/NWbTVddmBM
+#
+#  Some useful information:
+#  * You can set it to '' if you don't want to use the message.
+#    For list strings, just put (- '').
+#  * Support hex color.
+
+messages:
+  prefix: '&#FBFB14[InventoryPagesPlus]&r '
+  no-permission: '%prefix%&cYou do not have the permission to use this command.'
+  clear: '%prefix%&fCleared the items in the current page successfully &7(You can also use /clear all if you want to clear all items in all pages).'
+  clear-all: '%prefix%&fCleared the items in all pages successfully!'
+  items-dropped: '%prefix%&cToo many items! Some items have been dropped.'
+  invalid-number: '%prefix%&cInvalid number!'
+  invalid-name: '%prefix%&cPlayer &e%player%&c is not online!'
+  no-page-message: ''
+  commands:
+    inventorypagesplus:
+      messages:
+        - ' '
+        - '&#FBFB14InventoryPagesPlus'
+        - '&7Version %version%'
+        - ' '
+        - '&#FBFB14/inventorypagesplus reload &7- &fReload config, inventory, message'
+        - '&#FBFB14/inventorypagesplus backup &7- &fBackup all current database to backup folder'
+        - '&#FBFB14/inventorypagesplus setmaxpage &6<player> <amount> &7- &fSet max page number for...'
+        - '&#FBFB14/inventorypagesplus addmaxpage &6<player> <amount> &7- &fAdd max page number for...'
+        - '&#FBFB14/inventorypagesplus removemaxpage &6<player> <amount> &7- &fRemove max page number of...'
+        - ' '
+        - ' &6<>&7: Cannot leave blanked &7| &e()&7: Can leave blanked'
+      reload: '%prefix%&fReloaded InventoryPagesPlus successfully.'
+      backup:
+        start: '%prefix%&fBackup database...'
+        complete: '%prefix%&fSuccessfully backed up database from %databaseType%! The backup database is in the folder &bbackup&f and named &b%fileName%'
+      set-max-page: '%prefix%&e%player%''s max page&f is set to &e%number%&f.'
+      add-max-page: '%prefix%&fAdded &e%number% max page number&f to &e%player%&f.'
+      remove-max-page: '%prefix%&fRemoved &e%number% max page number&f from &e%player%&f.'

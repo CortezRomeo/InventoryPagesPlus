@@ -1,0 +1,24 @@
+name: InventoryPagesPlus
+version: '${project.version}'
+main: me.coretzromeo.inventorypages.InventoryPages
+api-version: '1.13'
+softdepend:
+  - PlaceholderAPI
+authors:
+  - Cortez_Romeo
+description: Add pages to inventories for expansive storage!
+commands:
+  inventorypagesplus:
+    description: Main command
+    aliases:
+      - inventorypages
+      - inventorypages+
+      - inventoryp
+      - tuidopage
+      - tudopage
+      - tuidopages
+  clear:
+    description: Clear inventory
+    aliases:
+      - clearinventory
+      - ci

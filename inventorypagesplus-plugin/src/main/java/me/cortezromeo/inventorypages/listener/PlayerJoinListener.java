@@ -1,0 +1,25 @@
+package me.cortezromeo.inventorypages.listener;
+
+import me.cortezromeo.inventorypages.InventoryPages;
+import me.cortezromeo.inventorypages.manager.DebugManager;
+import me.cortezromeo.inventorypages.manager.DatabaseManager;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+
+import java.io.IOException;
+
+public class PlayerJoinListener implements Listener {
+    public PlayerJoinListener() {
+        Bukkit.getPluginManager().registerEvents(this, InventoryPages.plugin);
+        DebugManager.debug("LOADING EVENT", "Loaded PlayerJoinEvent.");
+    }
+
+    @EventHandler
+    public void playerJoin(PlayerJoinEvent event) throws InterruptedException, IOException {
+        Player player = event.getPlayer();
+        DatabaseManager.loadPlayerInventory(player);
+    }
+}

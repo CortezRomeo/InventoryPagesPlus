@@ -1,0 +1,81 @@
+#
+#  _                                                      _
+# (_)_ ____   __    _ __   __ _  __ _  ___  ___     _ __ | |_   _ ___
+# | | '_ \ \ / /   | '_ \ / _` |/ _` |/ _ \/ __|   | '_ \| | | | / __|
+# | | | | \ V /    | |_) | (_| | (_| |  __/\__ \   | |_) | | |_| \__ \
+# |_|_| |_|\_(_)   | .__/ \__,_|\__, |\___||___/   | .__/|_|\__,_|___/
+#                  |_|          |___/              |_|
+# A project made by Cortez_Romeo
+#
+# Contact me:
+# discord account: Cortez_Romeo
+# discord server: https://discord.gg/NWbTVddmBM
+
+# What database type should be used for managing and storing.
+database:
+  # MYSQL, YAML
+  type: YAML
+  # Please provide the accurate login information and name that will be used for managing database.
+  mysql:
+    database:
+      host: localhost
+      port: 3306
+      name: inventorypagesplus
+      table: inventorydata
+      user: root
+      password: ''
+
+# Set the locale for all messages.
+# To set language to English, set locale to en, to use the file "messages_en.yml" in folder "languages".
+# Language available: en, vi
+locale: en
+
+# Using for detecting bugs.
+debug:
+  enabled: false
+  prefix: '&e[INV.PAGES+ DEBUG] '
+
+auto-saving:
+  enabled: true
+  # Auto save database each...
+  interval: 900 # seconds
+
+backup-settings:
+  # This will use SimpleDateFormat in Java to format the date.
+  # For more information:
+  # https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html
+  date-format: 'HH-mm-ss MM-dd-yyyy'
+
+inventory-settings:
+  # Set to 0 if you don't want the players to have any additional pages.
+  # Number lower than 0 is not acceptable.
+  # ATTENTION: This will also set to players' database if they don't have database before.
+  max-page-default: 1
+  # The default position of "PrevItem"
+  # ATTENTION: This will also set to players' database if they don't have database before.
+  prev-item-position-default: 18
+  # The default position of "NextItem"
+  # ATTENTION: This will also set to players' database if they don't have database before.
+  next-item-position-default: 26
+  # If "focus-using-default-item-position" is true, then the position of the items "PrevItem" and "NextItem" of all players will be set as the default setting.
+  # Additionally, they cannot customize their own items "PrevItem" and "NextItem" position.
+  focus-using-default-item-position: false
+  # If "use-saved-current-page" is true, then when player join the server, it will show the page that they were in before.
+  # For example, at the time they leave the server they're in page 5, so when they rejoin, it will automatically show page 5.
+  # If it false, then it always shows the first page when player join.
+  use-saved-current-page: true
+  # If "keep-inventory" is true then whenever player die, their items will not drop.
+  # If it is false, then the players will neeed these permissions below to keep their items when they die.
+  # inventorypagesplus.keep.unopened - When the player dies, keep unopened pages, and drop items in the current opening page.
+  # inventorypagesplus.keep.hotbar - When the player dies, Keep all items in the hotbar.
+  # inventorypagesplus.keep.all - Keep all items when player die.
+  keep-inventory: true
+  # If this is on, then will show creative inventory database whenever player's mode changes to creative.
+  # Otherwise, will only use survival inventory database for all modes.
+  # Don't use reload command, please restart server after changing this option.
+  use-creative-inventory: true
+
+# Using for collecting the number of players in the server.
+# This option does not affect the server performance.
+bStats:
+  enabled: true
