@@ -38,9 +38,9 @@ public class PlayerInventoryData {
         this.noPageItem = noPageItem;
 
         // create pages
-        for (int i = 0; i < maxPage + 1; i++) {
-            if (!pageExists(i)) {
-                createPage(i);
+        for (int page = 0; page < maxPage + 1; page++) {
+            if (!pageExists(page)) {
+                createPage(page);
             }
         }
 

@@ -53,23 +53,20 @@ public final class InventoryPages extends JavaPlugin {
         AutoSaveManager.startAutoSave(getConfig().getInt("auto-saving.interval"));
 
         MessageUtil.log("&f--------------------------------");
-        MessageUtil.log("&2 _                                          ");
-        MessageUtil.log("&2(_)_ ____   __  _ __   __ _  __ _  ___  ___ ");
-        MessageUtil.log("&2| | '_ \\ \\ / / | '_ \\ / _` |/ _` |/ _ \\/ __|");
-        MessageUtil.log("&2| | | | \\ V /  | |_) | (_| | (_| |  __/\\__ \\");
-        MessageUtil.log("&2|_|_| |_|\\_(_) | .__/ \\__,_|\\__, |\\___||___/");
-        MessageUtil.log("&2               |_|          |___/           ");
-        MessageUtil.log("&2                        _          _        ");
-        MessageUtil.log("&2 _ __ ___  ___ ___   __| | ___  __| |       ");
-        MessageUtil.log("&2| '__/ _ \\/ __/ _ \\ / _` |/ _ \\/ _` |       ");
-        MessageUtil.log("&2| | |  __/ (_| (_) | (_| |  __/ (_| |       ");
-        MessageUtil.log("&2|_|  \\___|\\___\\___/ \\__,_|\\___|\\__,_|       ");
+        MessageUtil.log("&2  _                                                      _");
+        MessageUtil.log("&2 (_)_ ____   __    _ __   __ _  __ _  ___  ___     _ __ | |_   _ ___");
+        MessageUtil.log("&2 | | '_ \\ \\ / /   | '_ \\ / _` |/ _` |/ _ \\/ __|   | '_ \\| | | | / __|");
+        MessageUtil.log("&2 | | | | \\ V /    | |_) | (_| | (_| |  __/\\__ \\   | |_) | | |_| \\__ \\");
+        MessageUtil.log("&2 |_|_| |_|\\_(_)   | .__/ \\__,_|\\__, |\\___||___/   | .__/|_|\\__,_|___/");
+        MessageUtil.log("&2                  |_|          |___/              |_|");
         MessageUtil.log("");
         MessageUtil.log("&fVersion: &b" + getDescription().getVersion());
-        MessageUtil.log("&fAuthor: &bKevinNovak, Cortez_Romeo");
+        MessageUtil.log("&fAuthor: Cortez_Romeo");
         MessageUtil.log("");
         MessageUtil.log("&fSupport:");
         MessageUtil.log((papiSupport ? "&2[YES] &aPlaceholderAPI" : "&4[NO] &cPlaceholderAPI"));
+        MessageUtil.log("");
+        MessageUtil.log("&ePlugin is enabled successfully.");
         MessageUtil.log("");
         MessageUtil.log("&f--------------------------------");
 
@@ -211,20 +208,17 @@ public final class InventoryPages extends JavaPlugin {
             }
         }
         MessageUtil.log("&f--------------------------------");
-        MessageUtil.log("&4 _                                          ");
-        MessageUtil.log("&4(_)_ ____   __  _ __   __ _  __ _  ___  ___ ");
-        MessageUtil.log("&4| | '_ \\ \\ / / | '_ \\ / _` |/ _` |/ _ \\/ __|");
-        MessageUtil.log("&4| | | | \\ V /  | |_) | (_| | (_| |  __/\\__ \\");
-        MessageUtil.log("&4|_|_| |_|\\_(_) | .__/ \\__,_|\\__, |\\___||___/");
-        MessageUtil.log("&4               |_|          |___/           ");
-        MessageUtil.log("&4                        _          _        ");
-        MessageUtil.log("&4 _ __ ___  ___ ___   __| | ___  __| |       ");
-        MessageUtil.log("&4| '__/ _ \\/ __/ _ \\ / _` |/ _ \\/ _` |       ");
-        MessageUtil.log("&4| | |  __/ (_| (_) | (_| |  __/ (_| |       ");
-        MessageUtil.log("&4|_|  \\___|\\___\\___/ \\__,_|\\___|\\__,_|       ");
+        MessageUtil.log("&4  _                                                      _");
+        MessageUtil.log("&4 (_)_ ____   __    _ __   __ _  __ _  ___  ___     _ __ | |_   _ ___");
+        MessageUtil.log("&4 | | '_ \\ \\ / /   | '_ \\ / _` |/ _` |/ _ \\/ __|   | '_ \\| | | | / __|");
+        MessageUtil.log("&4 | | | | \\ V /    | |_) | (_| | (_| |  __/\\__ \\   | |_) | | |_| \\__ \\");
+        MessageUtil.log("&4 |_|_| |_|\\_(_)   | .__/ \\__,_|\\__, |\\___||___/   | .__/|_|\\__,_|___/");
+        MessageUtil.log("&4                  |_|          |___/              |_|");
         MessageUtil.log("");
         MessageUtil.log("&fVersion: &b" + getDescription().getVersion());
-        MessageUtil.log("&fAuthor: &bKevinNovak, Cortez_Romeo");
+        MessageUtil.log("&fAuthor: Cortez_Romeo");
+        MessageUtil.log("");
+        MessageUtil.log("&ePlugin is disabled successfully.");
         MessageUtil.log("");
         MessageUtil.log("&f--------------------------------");    }
 }
