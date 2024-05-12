@@ -174,8 +174,8 @@ public class PlayerInventoryData {
             }
             this.items.put(this.page, pageItems);
         } else {
-            for (int i = 0; i < 27; i++) {
-                creativeItems.set(i, this.player.getInventory().getItem(i + 9));
+            for (int slotNumber = 0; slotNumber < 27; slotNumber++) {
+                creativeItems.set(slotNumber, this.player.getInventory().getItem(slotNumber + 9));
                 //DebugManager.debug("SAVING CURRENT PAGE", "Saved current page (creative items) of " + playerName);
             }
         }

@@ -7,7 +7,7 @@
     <parent>
         <groupId>me.cortezromeo</groupId>
         <artifactId>InventoryPagesPlus</artifactId>
-        <version>1.3</version>
+        <version>1.0</version>
     </parent>
     <artifactId>inventorypagesplus-implement</artifactId>
     <version>${project.parent.version}</version>

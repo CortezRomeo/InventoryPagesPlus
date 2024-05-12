@@ -3,6 +3,7 @@
 import com.tchristofferson.configupdater.ConfigUpdater;
 import me.cortezromeo.inventorypagesplus.command.ClearCommand;
 import me.cortezromeo.inventorypagesplus.command.InventoryPagesCommand;
+import me.cortezromeo.inventorypagesplus.command.SetPageSlotCommand;
 import me.cortezromeo.inventorypagesplus.inventory.PlayerPageInventory;
 import me.cortezromeo.inventorypagesplus.language.English;
 import me.cortezromeo.inventorypagesplus.language.Messages;
@@ -171,6 +172,7 @@ public final class InventoryPagesPlus extends JavaPlugin {
 
     public void initCommands() {
         new InventoryPagesCommand();
+        new SetPageSlotCommand();
         new ClearCommand();
     }
 

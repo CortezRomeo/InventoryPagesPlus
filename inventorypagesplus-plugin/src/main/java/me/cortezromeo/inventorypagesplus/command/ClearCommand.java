@@ -29,7 +29,7 @@ public class ClearCommand implements CommandExecutor, TabExecutor {
             Player player = (Player) sender;
 
             if (!player.hasPermission("inventorypagesplus.clear")) {
-                MessageUtil.sendMessage(player, Messages.CLEAR);
+                MessageUtil.sendMessage(player, Messages.NO_PERMISSION);
                 return false;
             }
 
@@ -38,6 +38,12 @@ public class ClearCommand implements CommandExecutor, TabExecutor {
 
             if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("all")) {
+
+                    if (!player.hasPermission("inventorypagesplus.clear.all")) {
+                        MessageUtil.sendMessage(player, Messages.NO_PERMISSION);
+                        return false;
+                    }
+
                     DatabaseManager.playerInvs.get(playerUUID).clearAllPages(gm);
                     MessageUtil.sendMessage(player, Messages.CLEAR_ALL);
                 }
@@ -64,7 +70,7 @@ public class ClearCommand implements CommandExecutor, TabExecutor {
         List<String> commands = new ArrayList<>();
 
         if (args.length == 1) {
-            if (sender.hasPermission("inventorypagesplus.clear")) {
+            if (sender.hasPermission("inventorypagesplus.clear") && sender.hasPermission("inventorypagesplus.clear.all")) {
                 commands.add("all");
             }
             StringUtil.copyPartialMatches(args[0], commands, completions);

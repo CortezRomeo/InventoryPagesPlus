@@ -46,3 +46,15 @@ messages:
       set-max-page: '%prefix%&e%player%''s max page&f is set to &e%number%&f.'
       add-max-page: '%prefix%&fAdded &e%number% max page number&f to &e%player%&f.'
       remove-max-page: '%prefix%&fRemoved &e%number% max page number&f from &e%player%&f.'
+    setpageslot:
+      messages:
+        - ' '
+        - '&#FBFB14InventoryPagesPlus'
+        - '&7Version %version%'
+        - ' '
+        - '&#FBFB14/setpageslot gui &7- &fOpen GUI for setting pages'' item slot'
+        - '&#FBFB14/setpageslot nextpage &6<slot> &7- &fSet the slot of next page item'
+        - '&#FBFB14/setpageslot prevpage &6<slot> &7- &fSet the slot of previous page item'
+        - '&#FBFB14/setpageslot reset &7- &fReset the slots to the server''s setting default'
+        - ' '
+        - ' &6<>&7: Cannot leave blanked &7| &e()&7: Can leave blanked'

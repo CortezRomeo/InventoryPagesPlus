@@ -22,3 +22,5 @@ commands:
     aliases:
       - clearinventory
       - ci
+  setpageslot:
+    description: Set pages' item slot
