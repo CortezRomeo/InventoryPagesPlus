@@ -85,7 +85,7 @@ public class InventoryPagesCommand implements CommandExecutor, TabExecutor {
                 }
 
                 if (args[0].equalsIgnoreCase("setmaxpage")) {
-                    DatabaseManager.playerInvs.get(target.getUniqueId().toString()).setMaxPage(maxPage);
+                    DatabaseManager.playerInventoryDatabase.get(target.getUniqueId().toString()).setMaxPage(maxPage);
                     MessageUtil.sendMessage(sender, Messages.COMMAND_INVENTORYPAGESPLUS_SET_MAX_PAGE
                             .replace("%player%", args[1])
                             .replace("%number%", args[2]));
@@ -93,7 +93,7 @@ public class InventoryPagesCommand implements CommandExecutor, TabExecutor {
                 }
 
                 if (args[0].equalsIgnoreCase("addmaxpage")) {
-                    DatabaseManager.playerInvs.get(target.getUniqueId().toString()).addMaxPage(maxPage);
+                    DatabaseManager.playerInventoryDatabase.get(target.getUniqueId().toString()).addMaxPage(maxPage);
                     MessageUtil.sendMessage(sender, Messages.COMMAND_INVENTORYPAGESPLUS_ADD_MAX_PAGE
                             .replace("%player%", args[1])
                             .replace("%number%", args[2]));
@@ -101,7 +101,7 @@ public class InventoryPagesCommand implements CommandExecutor, TabExecutor {
                 }
 
                 if (args[0].equalsIgnoreCase("removemaxpage")) {
-                    DatabaseManager.playerInvs.get(target.getUniqueId().toString()).removeMaxPage(maxPage);
+                    DatabaseManager.playerInventoryDatabase.get(target.getUniqueId().toString()).removeMaxPage(maxPage);
                     MessageUtil.sendMessage(sender, Messages.COMMAND_INVENTORYPAGESPLUS_REMOVE_MAX_PAGE
                             .replace("%player%", args[1])
                             .replace("%number%", args[2]));

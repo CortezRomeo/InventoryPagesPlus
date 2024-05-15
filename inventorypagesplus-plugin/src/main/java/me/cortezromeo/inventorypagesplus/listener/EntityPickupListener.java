@@ -1,6 +1,7 @@
 package me.cortezromeo.inventorypagesplus.listener;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
+import me.cortezromeo.inventorypagesplus.inventory.PlayerPageInventory;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -21,7 +22,7 @@ public class EntityPickupListener implements Listener {
         Entity entity = event.getEntity();
         if (entity instanceof Player) {
             ItemStack item = event.getItem().getItemStack();
-            if (InventoryPagesPlus.nms.getCustomData(item).equals("inventorypagesplus")) {
+            if (InventoryPagesPlus.nms.getCustomData(item).equals(PlayerPageInventory.itemCustomData)) {
                 event.setCancelled(true);
                 event.getItem().remove();
             }

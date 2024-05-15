@@ -37,7 +37,7 @@ public class InventoryClickListener implements Listener {
             return;
 
         InventoryHolder holder = clickedInv.getHolder();
-        if (!(holder instanceof  Player))
+        if (!(holder instanceof Player))
             return;
 
         Player player = (Player) event.getWhoClicked();
@@ -45,14 +45,14 @@ public class InventoryClickListener implements Listener {
             boolean isPlayerInCreative = player.getGameMode() == GameMode.CREATIVE;
             ItemStack item = event.getCurrentItem();
             int customInvSlot = event.getSlot() - 9;
-            if (/*isSwitcherItem(item, PlayerPageInventory.prevItem) || */customInvSlot == DatabaseManager.playerInvs.get(player.getUniqueId().toString()).getPrevItemPos()) {
+            if (/*isSwitcherItem(item, PlayerPageInventory.prevItem) || */customInvSlot == DatabaseManager.playerInventoryDatabase.get(player.getUniqueId().toString()).getPrevItemPos()) {
                 event.setCancelled(true);
-                DatabaseManager.playerInvs.get(player.getUniqueId().toString()).prevPage();
+                DatabaseManager.playerInventoryDatabase.get(player.getUniqueId().toString()).prevPage();
                 /*if (isPlayerInCreative)
                     player.setGameMode(GameMode.CREATIVE);*/
-            } else if (/*isSwitcherItem(item, PlayerPageInventory.nextItem) || */customInvSlot == DatabaseManager.playerInvs.get(player.getUniqueId().toString()).getNextItemPos()) {
+            } else if (/*isSwitcherItem(item, PlayerPageInventory.nextItem) || */customInvSlot == DatabaseManager.playerInventoryDatabase.get(player.getUniqueId().toString()).getNextItemPos()) {
                 event.setCancelled(true);
-                DatabaseManager.playerInvs.get(player.getUniqueId().toString()).nextPage();
+                DatabaseManager.playerInventoryDatabase.get(player.getUniqueId().toString()).nextPage();
                 /*if (isPlayerInCreative)
                     player.setGameMode(GameMode.CREATIVE);*/
             } else if (isSwitcherItem(item, PlayerPageInventory.noPageItem)) {
@@ -64,7 +64,7 @@ public class InventoryClickListener implements Listener {
     }
 
     @EventHandler
-    public void testEvent(InventoryCreativeEvent event) {
+    public void inventoryCreativeEvent(InventoryCreativeEvent event) {
         if (InventoryPagesPlus.nms.getCustomData(event.getCursor()).equals(PlayerPageInventory.itemCustomData)) {
             event.setCancelled(true);
             event.setCursor(null);
@@ -93,7 +93,7 @@ public class InventoryClickListener implements Listener {
 
     public Boolean hasSwitcherItems(Player player) {
         String playerUUID = player.getUniqueId().toString();
-        if (DatabaseManager.playerInvs.containsKey(playerUUID)) {
+        if (DatabaseManager.playerInventoryDatabase.containsKey(playerUUID)) {
             if (!InventoryPagesPlus.useCreativeInventory) {
                 return true;
             }

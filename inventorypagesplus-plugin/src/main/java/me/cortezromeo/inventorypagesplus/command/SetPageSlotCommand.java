@@ -1,12 +1,12 @@
 package me.cortezromeo.inventorypagesplus.command;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
+import me.cortezromeo.inventorypagesplus.inventory.PlayerPageInventory;
 import me.cortezromeo.inventorypagesplus.language.Messages;
 import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryData;
 import me.cortezromeo.inventorypagesplus.util.MessageUtil;
-import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -37,7 +37,7 @@ public class SetPageSlotCommand implements CommandExecutor, TabExecutor {
                 return false;
             }
 
-            PlayerInventoryData playerInventoryData = DatabaseManager.playerInvs.get(player.getUniqueId().toString());
+            PlayerInventoryData playerInventoryData = DatabaseManager.playerInventoryDatabase.get(player.getUniqueId().toString());
 
             if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("reset")) {
@@ -51,12 +51,16 @@ public class SetPageSlotCommand implements CommandExecutor, TabExecutor {
                         return false;
                     }
                     if (getItem(player, 9 + defaultNextItemSlot) != null) {
-                        player.sendMessage("please leave the slot " + defaultNextItemSlot + " blank");
-                        return false;
+                        if (!InventoryPagesPlus.nms.getCustomData(getItem(player, 9 + defaultNextItemSlot)).equals(PlayerPageInventory.itemCustomData)) {
+                            player.sendMessage("please leave the slot " + defaultNextItemSlot + " blank");
+                            return false;
+                        }
                     }
                     if (getItem(player, 9 + defaultPrevItemSlot) != null) {
-                        player.sendMessage("please leave the slot " + defaultPrevItemSlot + " blank");
-                        return false;
+                        if (!InventoryPagesPlus.nms.getCustomData(getItem(player, 9 + defaultPrevItemSlot)).equals(PlayerPageInventory.itemCustomData)) {
+                            player.sendMessage("please leave the slot " + defaultPrevItemSlot + " blank");
+                            return false;
+                        }
                     }
 
                     playerInventoryData.setPrevItemPos(defaultPrevItemSlot);
@@ -77,15 +81,11 @@ public class SetPageSlotCommand implements CommandExecutor, TabExecutor {
                         player.sendMessage(Messages.INVALID_NUMBER);
                         return false;
                     }
-                    if (slot < 0 || slot > 26) {
-                        player.sendMessage("slot cannot be below 0 and above 26");
-                        return false;
-                    }
-                    if (getItem(player, 9 + slot) != null) {
-                        player.sendMessage("please leave the " + slot + " blank!");
-                        return false;
-                    }
                     if (args[0].equalsIgnoreCase("nextpage")) {
+                        if (slot == playerInventoryData.getNextItemPos()) {
+                            player.sendMessage("nothing change, reject reseting.");
+                            return false;
+                        }
                         if (slot == playerInventoryData.getPrevItemPos()) {
                             player.sendMessage("the number can not equal prev page slot");
                             return false;
@@ -94,12 +94,24 @@ public class SetPageSlotCommand implements CommandExecutor, TabExecutor {
                         player.sendMessage("successfully set next page slot to " + slot);
                     }
                     if (args[0].equalsIgnoreCase("prevpage")) {
+                        if (slot == playerInventoryData.getPrevItemPos()) {
+                            player.sendMessage("nothing change, reject reseting.");
+                            return false;
+                        }
                         if (slot == playerInventoryData.getNextItemPos()) {
                             player.sendMessage("the number can not equal next page slot");
                             return false;
                         }
                         playerInventoryData.setPrevItemPos(slot);
                         player.sendMessage("successfully set prev page slot to " + slot);
+                    }
+                    if (slot < 0 || slot > 26) {
+                        player.sendMessage("slot cannot be below 0 and above 26");
+                        return false;
+                    }
+                    if (getItem(player, 9 + slot) != null) {
+                        player.sendMessage("please leave the " + slot + " blank!");
+                        return false;
                     }
                     DatabaseManager.updateInvToHashMap(player);
                     playerInventoryData.showPage(player.getGameMode());

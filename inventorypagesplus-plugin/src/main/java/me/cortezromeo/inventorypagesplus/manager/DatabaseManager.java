@@ -1,12 +1,14 @@
 package me.cortezromeo.inventorypagesplus.manager;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
+import me.cortezromeo.inventorypagesplus.storage.InvseeDatabase;
 import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryData;
 import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryDataStorage;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +16,8 @@ import java.util.HashMap;
 
 public class DatabaseManager {
 
-    public static HashMap<String, PlayerInventoryData> playerInvs = new HashMap<>();
+    public static HashMap<String, PlayerInventoryData> playerInventoryDatabase = new HashMap<>();
+    public static HashMap<Inventory, InvseeDatabase> playerInvseeDatabase = new HashMap<>();
     public static File crashedFile = new File(InventoryPagesPlus.plugin.getDataFolder() + "/database/crashed.yml");
     public static FileConfiguration crashedData = YamlConfiguration.loadConfiguration(crashedFile);
 
@@ -23,12 +26,12 @@ public class DatabaseManager {
 
         String playerUUID = player.getUniqueId().toString();
 
-        if (playerInvs.containsKey(playerUUID))
+        if (playerInventoryDatabase.containsKey(playerUUID))
             return;
 
-        playerInvs.put(playerUUID, PlayerInventoryDataStorage.getPlayerInventoryData(player));
+        playerInventoryDatabase.put(playerUUID, PlayerInventoryDataStorage.getPlayerInventoryData(player));
         addCrashedPlayer(player);
-        playerInvs.get(playerUUID).showPage(player.getGameMode());
+        playerInventoryDatabase.get(playerUUID).showPage(player.getGameMode());
         DebugManager.debug("LOADING DATABASE PLAYER (" + player.getName() + ")", "Completed with no issues.");
     }
 
@@ -36,7 +39,7 @@ public class DatabaseManager {
         if (!Bukkit.getServer().getOnlinePlayers().isEmpty()) {
             for (Player player : Bukkit.getServer().getOnlinePlayers()) {
                 String playerUUID = player.getUniqueId().toString();
-                if (playerInvs.containsKey(playerUUID)) {
+                if (playerInventoryDatabase.containsKey(playerUUID)) {
                     updateInvToHashMap(player);
                     savePlayerInventory(player);
                 }
@@ -58,40 +61,35 @@ public class DatabaseManager {
         }
     }
 
-    // ======================================
-    // Save Inventory From HashMap To Database
-    // ======================================
     public static void savePlayerInventory(Player player) {
-        PlayerInventoryDataStorage.savePlayerInventoryData(playerInvs.get(player.getUniqueId().toString()));
+        PlayerInventoryDataStorage.savePlayerInventoryData(playerInventoryDatabase.get(player.getUniqueId().toString()));
         DebugManager.debug("SAVING DATABASE PLAYER (" + player.getName() + ")", "Completed with no issues.");
     }
 
-    // ======================================
-    // Update Inventory To HashMap
-    // ======================================
     public static void updateInvToHashMap(Player player) {
         String playerUUID = player.getUniqueId().toString();
-        if (DatabaseManager.playerInvs.containsKey(playerUUID)) {
-            DatabaseManager.playerInvs.get(playerUUID).saveCurrentPage();
+        if (DatabaseManager.playerInventoryDatabase.containsKey(playerUUID)) {
+            DatabaseManager.playerInventoryDatabase.get(playerUUID).saveCurrentPage();
             DebugManager.debug("UPDATING INV. TO HASHMAP PLAYER (" + player.getName() + ")", "Completed with no issues.");
         }
     }
 
-    // ======================================
-    // Remove Inventory From HashMap
-    // ======================================
+    public static void updateInvToHashMap(String UUID) {
+        if (DatabaseManager.playerInventoryDatabase.containsKey(UUID)) {
+            DatabaseManager.playerInventoryDatabase.get(UUID).saveCurrentPage();
+            DebugManager.debug("UPDATING INV. TO HASHMAP UUID (" +UUID + ")", "Completed with no issues.");
+        }
+    }
+
     public static void removeInvFromHashMap(Player player) {
         String playerUUID = player.getUniqueId().toString();
-        if (DatabaseManager.playerInvs.containsKey(playerUUID)) {
-            DatabaseManager.playerInvs.remove(playerUUID);
+        if (DatabaseManager.playerInventoryDatabase.containsKey(playerUUID)) {
+            DatabaseManager.playerInventoryDatabase.remove(playerUUID);
             clearAndRemoveCrashedPlayer(player);
             DebugManager.debug("REMOVING INV. FROM HASHMAP PLAYER (" + player.getName() + ")", "Completed with no issues.");
         }
     }
 
-    // ======================================
-    // Save Crashed File
-    // ======================================
     public static void saveCrashedFile() {
         try {
             crashedData.save(crashedFile);
@@ -102,9 +100,6 @@ public class DatabaseManager {
         }
     }
 
-    // ======================================
-    // Crashed Players Exist
-    // ======================================
     public static Boolean crashedPlayersExist() {
         if (crashedData.contains("crashed")) {
             if (!crashedData.getConfigurationSection("crashed").getKeys(false).isEmpty()) {
@@ -114,16 +109,10 @@ public class DatabaseManager {
         return false;
     }
 
-    // ======================================
-    // Has Crashed
-    // ======================================
-    public static Boolean hasCrashed(Player player) {
+    public static Boolean  hasCrashed(Player player) {
         return crashedData.contains("crashed." + player.getUniqueId().toString());
     }
 
-    // ======================================
-    // Add Crashed Player
-    // ======================================
     public static void addCrashedPlayer(Player player) {
         crashedData.set("crashed." + player.getUniqueId().toString(), true);
         saveCrashedFile();

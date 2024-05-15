@@ -28,10 +28,10 @@ public class PAPISupport extends PlaceholderExpansion {
             return null;
 
         if (s.equals("page"))
-            DatabaseManager.playerInvs.get(player.getUniqueId().toString()).getPage();
+            DatabaseManager.playerInventoryDatabase.get(player.getUniqueId().toString()).getPage();
 
         if (s.equals("maxpage"))
-            DatabaseManager.playerInvs.get(player.getUniqueId().toString()).getMaxPage();
+            DatabaseManager.playerInventoryDatabase.get(player.getUniqueId().toString()).getMaxPage();
 
         return null;
     }

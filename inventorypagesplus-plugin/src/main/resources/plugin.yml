@@ -24,3 +24,5 @@ commands:
       - ci
   setpageslot:
     description: Set pages' item slot
+  invsee:
+    description: See inventory of other players

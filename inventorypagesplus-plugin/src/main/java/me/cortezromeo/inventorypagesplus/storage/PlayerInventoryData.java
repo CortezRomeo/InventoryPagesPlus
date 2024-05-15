@@ -223,12 +223,12 @@ public class PlayerInventoryData {
 
     void dropPage(int page, GameMode gm) {
         if (gm != GameMode.CREATIVE) {
-            for (int i = 0; i < 25; i++) {
-                ItemStack item = this.getItems(page).get(i);
-                if (item != null) {
+            for (int slot = 0; slot < 25; slot++) {
+                ItemStack item = this.getItems(page).get(slot);
+                if (item != null && !InventoryPagesPlus.nms.getCustomData(item).equalsIgnoreCase(PlayerPageInventory.itemCustomData)) {
                     this.player.getWorld().dropItemNaturally(this.player.getLocation(), item);
-                    this.getItems(page).set(i, null);
-                    player.getInventory().setItem(i + 9, null);
+                    this.getItems(page).set(slot, null);
+                    player.getInventory().setItem(slot + 9, null);
                 }
             }
         } else {
@@ -238,7 +238,7 @@ public class PlayerInventoryData {
             }
             for (int i = 0; i < 27; i++) {
                 ItemStack item = this.creativeItems.get(i);
-                if (item != null) {
+                if (item != null && InventoryPagesPlus.nms.getCustomData(item).equalsIgnoreCase(PlayerPageInventory.itemCustomData)) {
                     this.player.getWorld().dropItemNaturally(this.player.getLocation(), item);
                     this.creativeItems.set(i, null);
                     player.getInventory().setItem(i + 9, null);
@@ -372,11 +372,11 @@ public class PlayerInventoryData {
         this.items.put(page, pageItems);
     }
 
-    HashMap<Integer, ArrayList<ItemStack>> getItems() {
+    public HashMap<Integer, ArrayList<ItemStack>> getItems() {
         return this.items;
     }
 
-    ArrayList<ItemStack> getItems(int page) {
+    public ArrayList<ItemStack> getItems(int page) {
 
         if (!pageExists(page)) {
             createPage(page);

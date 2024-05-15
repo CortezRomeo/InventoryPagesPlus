@@ -114,7 +114,7 @@ public class PlayerInventoryDataYAMLStorage implements PlayerInventoryStorage {
     public void saveData(PlayerInventoryData data) {
         File playerFile = getFile(data.getPlayerUUID());
         FileConfiguration playerDataCfg = YamlConfiguration.loadConfiguration(playerFile);
-        PlayerInventoryData playerInventoryData = DatabaseManager.playerInvs.get(data.getPlayerUUID());
+        PlayerInventoryData playerInventoryData = DatabaseManager.playerInventoryDatabase.get(data.getPlayerUUID());
 
         playerDataCfg.set("name", playerInventoryData.getPlayerName());
         playerDataCfg.set("uuid", playerInventoryData.getPlayerUUID());
@@ -136,9 +136,9 @@ public class PlayerInventoryDataYAMLStorage implements PlayerInventoryStorage {
         }
 
         // save creative items
-        if (DatabaseManager.playerInvs.get(data.getPlayerUUID()).hasUsedCreative()) {
+        if (DatabaseManager.playerInventoryDatabase.get(data.getPlayerUUID()).hasUsedCreative()) {
             for (int slotNumber = 0; slotNumber < 27; slotNumber++) {
-                if (DatabaseManager.playerInvs.get(data.getPlayerUUID()).getCreativeItems().get(slotNumber) != null) {
+                if (DatabaseManager.playerInventoryDatabase.get(data.getPlayerUUID()).getCreativeItems().get(slotNumber) != null) {
                     playerDataCfg.set("items.creative.0." + slotNumber, StringUtil.toBase64(playerInventoryData.getCreativeItems().get(slotNumber)));
                 } else {
                     playerDataCfg.set("items.creative.0." + slotNumber, null);

@@ -3,7 +3,9 @@
 import com.tchristofferson.configupdater.ConfigUpdater;
 import me.cortezromeo.inventorypagesplus.command.ClearCommand;
 import me.cortezromeo.inventorypagesplus.command.InventoryPagesCommand;
+import me.cortezromeo.inventorypagesplus.command.InvseeCommand;
 import me.cortezromeo.inventorypagesplus.command.SetPageSlotCommand;
+import me.cortezromeo.inventorypagesplus.inventory.InvseeInventory;
 import me.cortezromeo.inventorypagesplus.inventory.PlayerPageInventory;
 import me.cortezromeo.inventorypagesplus.language.English;
 import me.cortezromeo.inventorypagesplus.language.Messages;
@@ -115,7 +117,7 @@ public final class InventoryPagesPlus extends JavaPlugin {
         saveDefaultConfig();
         File configFile = new File(getDataFolder(), "config.yml");
         try {
-            ConfigUpdater.update(this, "config.yml", configFile, "bang-hoi-war.cong-diem.mobs");
+            ConfigUpdater.update(this, "config.yml", configFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -174,6 +176,7 @@ public final class InventoryPagesPlus extends JavaPlugin {
         new InventoryPagesCommand();
         new SetPageSlotCommand();
         new ClearCommand();
+        new InvseeCommand();
     }
 
     public void initListeners() {
@@ -183,7 +186,7 @@ public final class InventoryPagesPlus extends JavaPlugin {
         new PlayerJoinListener();
         new PlayerQuitListener();
         new EntityPickupListener();
-        //new PlayerRespawnListener();
+        Bukkit.getPluginManager().registerEvents(new InvseeInventory(), InventoryPagesPlus.plugin);
     }
 
     public void initSupports() {
@@ -202,7 +205,7 @@ public final class InventoryPagesPlus extends JavaPlugin {
     public void onDisable() {
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
             String playerUUID = player.getUniqueId().toString();
-            if (DatabaseManager.playerInvs.containsKey(playerUUID)) {
+            if (DatabaseManager.playerInventoryDatabase.containsKey(playerUUID)) {
                 // update inventories to hashmap and save to file
                 DatabaseManager.updateInvToHashMap(player);
                 DatabaseManager.savePlayerInventory(player);

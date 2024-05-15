@@ -19,7 +19,7 @@ public class PlayerQuitListener implements Listener {
     public void playerQuit(PlayerQuitEvent event) throws InterruptedException {
         Player player = event.getPlayer();
         String playerUUID = player.getUniqueId().toString();
-        if (DatabaseManager.playerInvs.containsKey(playerUUID)) {
+        if (DatabaseManager.playerInventoryDatabase.containsKey(playerUUID)) {
             DatabaseManager.updateInvToHashMap(player);
             DatabaseManager.savePlayerInventory(player);
             DatabaseManager.removeInvFromHashMap(player);

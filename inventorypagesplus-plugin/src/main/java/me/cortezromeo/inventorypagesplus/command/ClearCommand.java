@@ -44,15 +44,15 @@ public class ClearCommand implements CommandExecutor, TabExecutor {
                         return false;
                     }
 
-                    DatabaseManager.playerInvs.get(playerUUID).clearAllPages(gm);
+                    DatabaseManager.playerInventoryDatabase.get(playerUUID).clearAllPages(gm);
                     MessageUtil.sendMessage(player, Messages.CLEAR_ALL);
                 }
             } else {
-                DatabaseManager.playerInvs.get(playerUUID).clearPage(gm);
+                DatabaseManager.playerInventoryDatabase.get(playerUUID).clearPage(gm);
                 MessageUtil.sendMessage(player, Messages.CLEAR);
             }
             clearHotbar(player);
-            DatabaseManager.playerInvs.get(playerUUID).showPage(gm);
+            DatabaseManager.playerInventoryDatabase.get(playerUUID).showPage(gm);
         }
 
         return false;
