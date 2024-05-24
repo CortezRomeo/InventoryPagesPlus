@@ -20,9 +20,9 @@ public class PlayerQuitListener implements Listener {
         Player player = event.getPlayer();
         String playerUUID = player.getUniqueId().toString();
         if (DatabaseManager.playerInventoryDatabase.containsKey(playerUUID)) {
-            DatabaseManager.updateInvToHashMap(player);
-            DatabaseManager.savePlayerInventory(player);
-            DatabaseManager.removeInvFromHashMap(player);
+            DatabaseManager.updateInvToHashMap(player.getName());
+            DatabaseManager.savePlayerInventory(player.getName());
+            DatabaseManager.removeInvFromHashMap(player.getName());
 
             for (int i = 9; i < 36; i++)
                 player.getInventory().setItem(i, null);

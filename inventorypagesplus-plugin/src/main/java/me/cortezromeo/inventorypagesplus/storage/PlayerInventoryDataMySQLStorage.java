@@ -10,9 +10,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class PlayerInventoryDataMySQLStorage implements PlayerInventoryStorage {
     public static Connection connection;
@@ -73,7 +75,7 @@ public class PlayerInventoryDataMySQLStorage implements PlayerInventoryStorage {
             maxPageDefault = 0;
         PlayerInventoryData data = new PlayerInventoryData(Bukkit.getPlayer(playerName), playerName, playerUUID, maxPageDefault,null, null, PlayerPageInventory.prevItem, PlayerPageInventory.prevPos, PlayerPageInventory.nextItem, PlayerPageInventory.nextPos, PlayerPageInventory.noPageItem);
 
-        if (!hasData(playerUUID))
+        if (!hasDataUUID(playerUUID))
             return data;
 
         String query = "select * from " + table + " where UUID=?";
@@ -126,7 +128,23 @@ public class PlayerInventoryDataMySQLStorage implements PlayerInventoryStorage {
         return data;
     }
 
-    private static boolean hasData(String playerUUID) {
+    @Override
+    public boolean hasDataPlayerName(String playerName) {
+        String query = "select * from " + table + " where PLAYERNAME=?";
+        try (PreparedStatement ps = connection.prepareStatement(query)){
+            ps.setString(1, playerName);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+            rs.close();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return false;
+    }
+
+    private static boolean hasDataUUID(String playerUUID) {
         String query = "select * from " + table + " where UUID=?";
         try (PreparedStatement ps = connection.prepareStatement(query)){
             ps.setString(1, playerUUID);
@@ -155,13 +173,40 @@ public class PlayerInventoryDataMySQLStorage implements PlayerInventoryStorage {
     }
 
     @Override
-    public PlayerInventoryData getData(Player player) {
-        return fromMySQL(player.getName(), player.getUniqueId().toString());
+    public PlayerInventoryData getData(String playerName) {
+        return fromMySQL(playerName, getUUIDFromData(playerName));
+    }
+
+    @Override
+    public String getUUIDFromData(String playerName) {
+        if (Bukkit.getPlayer(playerName) != null) {
+            return Bukkit.getPlayer(playerName).getUniqueId().toString();
+        }
+        // If server is in offline mode then can use this way to get player's UUID
+        if (!Bukkit.getServer().getOnlineMode()) {
+            String offlinePlayerString = "OfflinePlayer:" + playerName;
+            return UUID.nameUUIDFromBytes(offlinePlayerString.getBytes(StandardCharsets.UTF_8)).toString();
+        }
+
+        String UUID = null;
+        String query = "select * from " + table + " where PLAYERNAME=?";
+        try (PreparedStatement ps = connection.prepareStatement(query)){
+            ps.setString(1, playerName);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                UUID = rs.getString("UUID");
+            }
+            rs.close();
+            return UUID;
+        } catch ( Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
     public void saveData(PlayerInventoryData playerInventoryData) {
-        if (!hasData(playerInventoryData.getPlayerUUID()))
+        if (!hasDataUUID(playerInventoryData.getPlayerUUID()))
             initData(playerInventoryData.getPlayerUUID());
 
         String query = "UPDATE " + table + " "

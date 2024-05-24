@@ -25,7 +25,7 @@ public class PlayerDeathListener implements Listener {
         Player player = event.getEntity();
         String playerUUID = player.getUniqueId().toString();
         if (DatabaseManager.playerInventoryDatabase.containsKey(playerUUID)) {
-            DatabaseManager.updateInvToHashMap(player);
+            DatabaseManager.updateInvToHashMap(player.getName());
             event.setKeepInventory(true);
 
             if (InventoryPagesPlus.plugin.getConfig().getBoolean("inventory-settings.keep-inventory"))
@@ -55,7 +55,7 @@ public class PlayerDeathListener implements Listener {
             if (!player.hasPermission("inventorypagesplus.keep.hotbar") && dropOption > 0)
                 dropHotbar(player);
 
-            DatabaseManager.updateInvToHashMap(player);
+            DatabaseManager.updateInvToHashMap(player.getName());
         }
     }
 

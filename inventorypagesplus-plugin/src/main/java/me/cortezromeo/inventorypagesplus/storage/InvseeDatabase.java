@@ -6,20 +6,30 @@ import org.bukkit.inventory.Inventory;
 import java.util.UUID;
 
 public class InvseeDatabase {
-    Player player;
+    Inventory inventory;
+    String UUID;
     PlayerInventoryData targetInventoryData;
     boolean editMode;
     int page;
 
-    public InvseeDatabase(Player player, PlayerInventoryData targetInventoryData, boolean editMode, int page) {
-        this.player = player;
+    public InvseeDatabase(Inventory inventory, String targetUUID, PlayerInventoryData targetInventoryData, boolean editMode, int page) {
+        this.inventory = inventory;
+        this.UUID = targetUUID;
         this.targetInventoryData = targetInventoryData;
         this.editMode = editMode;
         this.page = page;
     }
 
-    public Player getPlayer() {
-        return this.player;
+    public Inventory getInventory() {
+        return this.inventory;
+    }
+
+    public String getTargetUUID() {
+        return UUID;
+    }
+
+    public void setTargetUUID(String UUID) {
+        this.UUID = UUID;
     }
 
     public PlayerInventoryData getTargetInventoryData() {

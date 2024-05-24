@@ -50,8 +50,16 @@ public class PlayerInventoryDataStorage {
         DebugManager.debug("LOADING DATABASE", "Loaded " + databaseType.toString() + " database.");
     }
 
-    public static PlayerInventoryData getPlayerInventoryData(Player player) {
-        return PlayerInventoryDataStorage.STORAGE.getData(player);
+    public static boolean hasData(String playerName) {
+        return PlayerInventoryDataStorage.STORAGE.hasDataPlayerName(playerName);
+    }
+
+    public static String getPlayerUUIDFromData(String playerName) {
+        return PlayerInventoryDataStorage.STORAGE.getUUIDFromData(playerName);
+    }
+
+    public static PlayerInventoryData getPlayerInventoryData(String playerName) {
+        return PlayerInventoryDataStorage.STORAGE.getData(playerName);
     }
 
     public static void savePlayerInventoryData(PlayerInventoryData data) {

@@ -75,7 +75,7 @@ public final class InventoryPagesPlus extends JavaPlugin {
 
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
             try {
-                DatabaseManager.loadPlayerInventory(player);
+                DatabaseManager.loadPlayerInventory(player.getName());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -207,9 +207,9 @@ public final class InventoryPagesPlus extends JavaPlugin {
             String playerUUID = player.getUniqueId().toString();
             if (DatabaseManager.playerInventoryDatabase.containsKey(playerUUID)) {
                 // update inventories to hashmap and save to file
-                DatabaseManager.updateInvToHashMap(player);
-                DatabaseManager.savePlayerInventory(player);
-                DatabaseManager.clearAndRemoveCrashedPlayer(player);
+                DatabaseManager.updateInvToHashMap(player.getName());
+                DatabaseManager.savePlayerInventory(player.getName());
+                DatabaseManager.clearAndRemoveCrashedPlayer(player.getName());
             }
         }
         MessageUtil.log("&f--------------------------------");

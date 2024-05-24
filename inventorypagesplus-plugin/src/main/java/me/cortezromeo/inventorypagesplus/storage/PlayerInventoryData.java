@@ -5,6 +5,7 @@ import me.cortezromeo.inventorypagesplus.inventory.PlayerPageInventory;
 import me.cortezromeo.inventorypagesplus.language.Messages;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.util.MessageUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -55,19 +56,19 @@ public class PlayerInventoryData {
         if (creativeItems != null)
             this.setCreativeItems(creativeItems);
 
-        GameMode gm = player.getGameMode();
-
-        boolean droppedItem = false;
-        for (int i = 0; i < 27; i++) {
-            ItemStack item = player.getInventory().getItem(i + 9);
-            if (item != null) {
-                if (this.storeOrDropItem(item, gm)) {
-                    droppedItem = true;
+        if (player != null) {
+            boolean droppedItem = false;
+            for (int i = 0; i < 27; i++) {
+                ItemStack item = player.getInventory().getItem(i + 9);
+                if (item != null) {
+                    if (this.storeOrDropItem(item, player.getGameMode())) {
+                        droppedItem = true;
+                    }
                 }
             }
+            if (droppedItem)
+                MessageUtil.sendMessage(player, Messages.ITEMS_DROPPED);
         }
-        if (droppedItem)
-            MessageUtil.sendMessage(player, Messages.ITEMS_DROPPED);
     }
 
     public String getPlayerName() {
@@ -96,7 +97,8 @@ public class PlayerInventoryData {
 
         this.maxPage = number;
         saveCurrentPage();
-        showPage(player.getGameMode());
+        if (player != null)
+            showPage(player.getGameMode());
         DebugManager.debug("(database) MAX PAGE", playerName + "'s max page now is " + number + ".");
     }
 
@@ -106,7 +108,8 @@ public class PlayerInventoryData {
 
         this.maxPage = this.maxPage + number;
         saveCurrentPage();
-        showPage(player.getGameMode());
+        if (player != null)
+            showPage(player.getGameMode());
         DebugManager.debug("(database) MAX PAGE", playerName + " has been added " + number + " more pages.");
     }
 
@@ -117,7 +120,8 @@ public class PlayerInventoryData {
 
         this.maxPage = this.maxPage - number;
         saveCurrentPage();
-        showPage(player.getGameMode());
+        if (player != null)
+            showPage(player.getGameMode());
         DebugManager.debug("(database) MAX PAGE", playerName + " has been removed " + number + " pages.");
     }
 
@@ -164,6 +168,9 @@ public class PlayerInventoryData {
     }
 
     public void saveCurrentPage() {
+
+        if (player == null)
+            return;
 
         if (!InventoryPagesPlus.useCreativeInventory || player.getGameMode() != GameMode.CREATIVE) {
             ArrayList<ItemStack> pageItems = new ArrayList<>(25);

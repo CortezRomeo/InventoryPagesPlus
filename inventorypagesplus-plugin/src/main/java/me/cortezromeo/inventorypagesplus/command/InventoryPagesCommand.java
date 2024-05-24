@@ -9,6 +9,8 @@ import me.cortezromeo.inventorypagesplus.language.English;
 import me.cortezromeo.inventorypagesplus.manager.AutoSaveManager;
 import me.cortezromeo.inventorypagesplus.manager.BackupManager;
 import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
+import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryDataStorage;
+import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryStorage;
 import me.cortezromeo.inventorypagesplus.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;

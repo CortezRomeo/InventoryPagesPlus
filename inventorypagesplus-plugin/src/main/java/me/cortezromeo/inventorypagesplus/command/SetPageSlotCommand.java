@@ -41,7 +41,7 @@ public class SetPageSlotCommand implements CommandExecutor, TabExecutor {
 
             if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("reset")) {
-                    DatabaseManager.updateInvToHashMap(player);
+                    DatabaseManager.updateInvToHashMap(player.getName());
 
                     int defaultPrevItemSlot = InventoryPagesPlus.plugin.getConfig().getInt("inventory-settings.prev-item-position-default");
                     int defaultNextItemSlot = InventoryPagesPlus.plugin.getConfig().getInt("inventory-settings.next-item-position-default");
@@ -65,7 +65,7 @@ public class SetPageSlotCommand implements CommandExecutor, TabExecutor {
 
                     playerInventoryData.setPrevItemPos(defaultPrevItemSlot);
                     playerInventoryData.setNextItemPos(defaultNextItemSlot);
-                    DatabaseManager.updateInvToHashMap(player);
+                    DatabaseManager.updateInvToHashMap(player.getName());
                     playerInventoryData.showPage(player.getGameMode());
                     player.sendMessage("successfully reset page slot number!");
                     return false;
@@ -113,7 +113,7 @@ public class SetPageSlotCommand implements CommandExecutor, TabExecutor {
                         player.sendMessage("please leave the " + slot + " blank!");
                         return false;
                     }
-                    DatabaseManager.updateInvToHashMap(player);
+                    DatabaseManager.updateInvToHashMap(player.getName());
                     playerInventoryData.showPage(player.getGameMode());
                 }
             }

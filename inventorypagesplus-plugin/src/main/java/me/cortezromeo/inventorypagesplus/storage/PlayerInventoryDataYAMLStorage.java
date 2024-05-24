@@ -4,6 +4,8 @@ import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
 import me.cortezromeo.inventorypagesplus.inventory.PlayerPageInventory;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
+import me.cortezromeo.inventorypagesplus.util.FileUtil;
+import me.cortezromeo.inventorypagesplus.util.MessageUtil;
 import me.cortezromeo.inventorypagesplus.util.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,14 +15,16 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class PlayerInventoryDataYAMLStorage implements PlayerInventoryStorage {
 
-    private File getFile(String playerUUID) {
-        String path = InventoryPagesPlus.plugin.getDataFolder() + "/database/" + playerUUID.substring(0, 1) + "/";
+    private File getFile(String playerName, String playerUUID) {
+        String path = InventoryPagesPlus.plugin.getDataFolder() + "/database/" + playerName.charAt(0) + "/";
         if (!new File(path).exists())
             new File(path).mkdir();
 
@@ -100,19 +104,68 @@ public class PlayerInventoryDataYAMLStorage implements PlayerInventoryStorage {
                 data.setNextItemPos(storage.getInt("nextItemPos"));
             }
         }
-
         return data;
     }
 
     @Override
-    public PlayerInventoryData getData(Player player) {
-        File file = getFile(player.getUniqueId().toString());
-        return fromFile(file, player.getName(), player.getUniqueId().toString());
+    public String getUUIDFromData(String playerName) {
+        if (Bukkit.getPlayer(playerName) != null) {
+            return Bukkit.getPlayer(playerName).getUniqueId().toString();
+        }
+        // If server is in offline mode then can use this way to get player's UUID
+        if (!Bukkit.getServer().getOnlineMode()) {
+            String offlinePlayerString = "OfflinePlayer:" + playerName;
+            return UUID.nameUUIDFromBytes(offlinePlayerString.getBytes(StandardCharsets.UTF_8)).toString();
+        }
+
+        String path = InventoryPagesPlus.plugin.getDataFolder() + "/database/" + playerName.charAt(0) + "/";
+        File playerDatabaseFolder = new File(path);
+        if (playerDatabaseFolder.exists()) {
+            File[] listUUIDFile = playerDatabaseFolder.listFiles();
+            if (listUUIDFile != null) {
+                for (File UUIDFile : listUUIDFile) {
+                    YamlConfiguration storage = YamlConfiguration.loadConfiguration(UUIDFile);
+                    if (storage.getString("name") != null) {
+                        if (storage.getString("name").equals(playerName)) {
+                            return FileUtil.removeExtension(UUIDFile.getName());
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean hasDataPlayerName(String playerName) {
+        String path = InventoryPagesPlus.plugin.getDataFolder() + "/database/" + playerName.charAt(0) + "/";
+        File playerDatabaseFolder = new File(path);
+        if (playerDatabaseFolder.exists()) {
+            File[] listUUIDFile = playerDatabaseFolder.listFiles();
+            if (listUUIDFile != null) {
+                for (File UUIDFile : listUUIDFile) {
+                    YamlConfiguration storage = YamlConfiguration.loadConfiguration(UUIDFile);
+                    if (storage.getString("name") != null) {
+                        if (storage.getString("name").equals(playerName)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public PlayerInventoryData getData(String playerName) {
+        String playerUUID = getUUIDFromData(playerName);
+        File file = getFile(playerName, playerUUID);
+        return fromFile(file, playerName, playerUUID);
     }
 
     @Override
     public void saveData(PlayerInventoryData data) {
-        File playerFile = getFile(data.getPlayerUUID());
+        File playerFile = getFile(data.getPlayerName(), data.getPlayerUUID());
         FileConfiguration playerDataCfg = YamlConfiguration.loadConfiguration(playerFile);
         PlayerInventoryData playerInventoryData = DatabaseManager.playerInventoryDatabase.get(data.getPlayerUUID());
 
