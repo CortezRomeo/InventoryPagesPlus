@@ -1,9 +1,6 @@
 package me.cortezromeo.inventorypagesplus.storage;
 
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-
-import java.util.UUID;
 
 public class InvseeDatabase {
     Inventory inventory;

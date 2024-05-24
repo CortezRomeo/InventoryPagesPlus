@@ -1,16 +1,14 @@
 package me.cortezromeo.inventorypagesplus.command;
 
-import me.cortezromeo.inventorypagesplus.language.Messages;
-import me.cortezromeo.inventorypagesplus.language.Vietnamese;
-import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
 import me.cortezromeo.inventorypagesplus.file.inventory.PlayerInventoryFile;
 import me.cortezromeo.inventorypagesplus.language.English;
+import me.cortezromeo.inventorypagesplus.language.Messages;
+import me.cortezromeo.inventorypagesplus.language.Vietnamese;
 import me.cortezromeo.inventorypagesplus.manager.AutoSaveManager;
 import me.cortezromeo.inventorypagesplus.manager.BackupManager;
 import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
-import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryDataStorage;
-import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryStorage;
+import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;

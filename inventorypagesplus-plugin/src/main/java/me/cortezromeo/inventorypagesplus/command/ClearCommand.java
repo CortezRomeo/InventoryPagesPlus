@@ -1,9 +1,9 @@
 package me.cortezromeo.inventorypagesplus.command;
 
-import me.cortezromeo.inventorypagesplus.language.Messages;
-import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
+import me.cortezromeo.inventorypagesplus.language.Messages;
 import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
+import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.util.MessageUtil;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
