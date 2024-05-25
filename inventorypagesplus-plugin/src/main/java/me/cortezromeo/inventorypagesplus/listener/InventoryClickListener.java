@@ -1,6 +1,7 @@
 package me.cortezromeo.inventorypagesplus.listener;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
+import me.cortezromeo.inventorypagesplus.inventory.InvseeInventory;
 import me.cortezromeo.inventorypagesplus.inventory.PlayerPageInventory;
 import me.cortezromeo.inventorypagesplus.language.Messages;
 import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
@@ -42,7 +43,6 @@ public class InventoryClickListener implements Listener {
 
         Player player = (Player) event.getWhoClicked();
         if (hasSwitcherItems(player)) {
-            boolean isPlayerInCreative = player.getGameMode() == GameMode.CREATIVE;
             ItemStack item = event.getCurrentItem();
             int customInvSlot = event.getSlot() - 9;
             if (/*isSwitcherItem(item, PlayerPageInventory.prevItem) || */customInvSlot == DatabaseManager.playerInventoryDatabase.get(player.getUniqueId().toString()).getPrevItemPos()) {
@@ -60,6 +60,11 @@ public class InventoryClickListener implements Listener {
                 MessageUtil.sendMessage(player, Messages.NO_PAGE_MESSAGES);
                 player.updateInventory();
             }
+        }
+        if (DatabaseManager.targetInvseeDatabase.containsKey(player.getUniqueId().toString())) {
+            Bukkit.getScheduler().runTaskLater(InventoryPagesPlus.plugin, () -> {
+                InvseeInventory.updateTargetInvseeInteraction(player);
+            }, 20);
         }
     }
 

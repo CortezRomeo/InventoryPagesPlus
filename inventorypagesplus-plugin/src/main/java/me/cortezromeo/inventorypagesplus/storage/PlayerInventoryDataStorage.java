@@ -53,8 +53,8 @@ public class PlayerInventoryDataStorage {
         return PlayerInventoryDataStorage.STORAGE.hasDataPlayerName(playerName);
     }
 
-    public static String getPlayerUUIDFromData(String playerName) {
-        return PlayerInventoryDataStorage.STORAGE.getUUIDFromData(playerName);
+    public static String getPlayerUUIDFromData(String playerName, boolean naturalCheck) {
+        return PlayerInventoryDataStorage.STORAGE.getUUIDFromData(playerName, naturalCheck);
     }
 
     public static PlayerInventoryData getPlayerInventoryData(String playerName) {

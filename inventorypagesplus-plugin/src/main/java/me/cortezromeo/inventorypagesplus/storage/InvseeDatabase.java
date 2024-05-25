@@ -4,14 +4,15 @@ import org.bukkit.inventory.Inventory;
 
 public class InvseeDatabase {
     Inventory inventory;
-    String UUID;
+    String targetName;
+    String targetUUID;
     PlayerInventoryData targetInventoryData;
     boolean editMode;
     int page;
 
-    public InvseeDatabase(Inventory inventory, String targetUUID, PlayerInventoryData targetInventoryData, boolean editMode, int page) {
+    public InvseeDatabase(Inventory inventory, String targetName, String targetUUID, PlayerInventoryData targetInventoryData, boolean editMode, int page) {
         this.inventory = inventory;
-        this.UUID = targetUUID;
+        this.targetUUID = targetUUID;
         this.targetInventoryData = targetInventoryData;
         this.editMode = editMode;
         this.page = page;
@@ -22,11 +23,19 @@ public class InvseeDatabase {
     }
 
     public String getTargetUUID() {
-        return UUID;
+        return targetUUID;
     }
 
     public void setTargetUUID(String UUID) {
-        this.UUID = UUID;
+        this.targetUUID = UUID;
+    }
+
+    public String getTargetName() {
+        return targetName;
+    }
+
+    public void setTargetName(String targetName) {
+        this.targetName = targetName;
     }
 
     public PlayerInventoryData getTargetInventoryData() {

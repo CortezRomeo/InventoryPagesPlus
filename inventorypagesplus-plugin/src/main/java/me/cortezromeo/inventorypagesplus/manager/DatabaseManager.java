@@ -27,7 +27,16 @@ public class DatabaseManager {
 
     public static void loadPlayerInventory(String playerName) {
         clearAndRemoveCrashedPlayer(playerName);
-        String playerUUID = PlayerInventoryDataStorage.getPlayerUUIDFromData(playerName);
+        String playerUUID;
+        if (tempPlayerUUID.containsKey(playerName))
+            playerUUID = tempPlayerUUID.get(playerName);
+        else
+            playerUUID = PlayerInventoryDataStorage.getPlayerUUIDFromData(playerName, true);
+
+        if (playerUUID == null) {
+            DebugManager.debug("LOADING DATABASE PLAYER (" + playerName + ")", "Canceled because cannot get the UUID.");
+            return;
+        }
 
         tempPlayerUUID.put(playerName, playerUUID);
         playerInventoryDatabase.put(playerUUID, PlayerInventoryDataStorage.getPlayerInventoryData(playerName));
@@ -53,7 +62,7 @@ public class DatabaseManager {
 
     public static void clearAndRemoveCrashedPlayer(String playerName) {
         if (crashedPlayersExist()) {
-            if (hasCrashed(PlayerInventoryDataStorage.getPlayerUUIDFromData(playerName)) && Bukkit.getPlayer(playerName) != null) {
+            if (hasCrashed(PlayerInventoryDataStorage.getPlayerUUIDFromData(playerName, true)) && Bukkit.getPlayer(playerName) != null) {
                 Player player = Bukkit.getPlayer(playerName);
                 for (int i = 0; i < 27; i++) {
                     player.getInventory().setItem(i + 9, null);
@@ -66,12 +75,12 @@ public class DatabaseManager {
     }
 
     public static void savePlayerInventory(String playerName) {
-        PlayerInventoryDataStorage.savePlayerInventoryData(playerInventoryDatabase.get(PlayerInventoryDataStorage.getPlayerUUIDFromData(playerName)));
+        PlayerInventoryDataStorage.savePlayerInventoryData(playerInventoryDatabase.get(PlayerInventoryDataStorage.getPlayerUUIDFromData(playerName, true)));
         DebugManager.debug("SAVING DATABASE PLAYER (" + playerName + ")", "Completed with no issues.");
     }
 
     public static void updateInvToHashMap(String playerName) {
-        String playerUUID = PlayerInventoryDataStorage.getPlayerUUIDFromData(playerName);
+        String playerUUID = PlayerInventoryDataStorage.getPlayerUUIDFromData(playerName, true);
         if (DatabaseManager.playerInventoryDatabase.containsKey(playerUUID)) {
             DatabaseManager.playerInventoryDatabase.get(playerUUID).saveCurrentPage();
             DebugManager.debug("UPDATING INV. TO HASHMAP PLAYER (" + playerName + ")", "Completed with no issues.");
@@ -86,7 +95,7 @@ public class DatabaseManager {
     }
 
     public static void removeInvFromHashMap(String playerName) {
-        String playerUUID = PlayerInventoryDataStorage.getPlayerUUIDFromData(playerName);
+        String playerUUID = PlayerInventoryDataStorage.getPlayerUUIDFromData(playerName, true);
         if (DatabaseManager.playerInventoryDatabase.containsKey(playerUUID)) {
             DatabaseManager.playerInventoryDatabase.remove(playerUUID);
             clearAndRemoveCrashedPlayer(playerName);

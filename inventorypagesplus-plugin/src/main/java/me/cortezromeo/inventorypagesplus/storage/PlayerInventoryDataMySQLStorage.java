@@ -4,11 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
 import me.cortezromeo.inventorypagesplus.inventory.PlayerPageInventory;
+import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.util.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
+import javax.xml.crypto.Data;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.ArrayList;
@@ -173,19 +175,23 @@ public class PlayerInventoryDataMySQLStorage implements PlayerInventoryStorage {
 
     @Override
     public PlayerInventoryData getData(String playerName) {
-        return fromMySQL(playerName, getUUIDFromData(playerName));
+        return fromMySQL(playerName, getUUIDFromData(playerName, true));
     }
 
     @Override
-    public String getUUIDFromData(String playerName) {
-        if (Bukkit.getPlayer(playerName) != null) {
-            return Bukkit.getPlayer(playerName).getUniqueId().toString();
+    public String getUUIDFromData(String playerName, boolean naturalCheck) {
+        if (naturalCheck) {
+            if (Bukkit.getPlayer(playerName) != null) {
+                return Bukkit.getPlayer(playerName).getUniqueId().toString();
+            }
+            // If server is in offline mode then can use this way to get player's UUID
+            if (!Bukkit.getServer().getOnlineMode()) {
+                String offlinePlayerString = "OfflinePlayer:" + playerName;
+                return UUID.nameUUIDFromBytes(offlinePlayerString.getBytes(StandardCharsets.UTF_8)).toString();
+            }
         }
-        // If server is in offline mode then can use this way to get player's UUID
-        if (!Bukkit.getServer().getOnlineMode()) {
-            String offlinePlayerString = "OfflinePlayer:" + playerName;
-            return UUID.nameUUIDFromBytes(offlinePlayerString.getBytes(StandardCharsets.UTF_8)).toString();
-        }
+        if (DatabaseManager.tempPlayerUUID.containsKey(playerName))
+            return DatabaseManager.tempPlayerUUID.get(playerName);
 
         String UUID = null;
         String query = "select * from " + table + " where PLAYERNAME=?";

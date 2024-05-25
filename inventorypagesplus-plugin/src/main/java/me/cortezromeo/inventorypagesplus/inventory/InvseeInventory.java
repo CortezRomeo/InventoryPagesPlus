@@ -2,8 +2,10 @@ package me.cortezromeo.inventorypagesplus.inventory;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
 import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
+import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.storage.InvseeDatabase;
 import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryData;
+import me.cortezromeo.inventorypagesplus.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -22,25 +24,30 @@ public class InvseeInventory implements Listener {
 
     }
 
-    public static Inventory inventory(Player player, String targetUUID, boolean editMode, int page) {
+    public static Inventory inventory(Player player, String targetName, String targetUUID, boolean editMode, int page) {
         if (!DatabaseManager.playerInventoryDatabase.containsKey(targetUUID)) {
+            DebugManager.debug("INVSEE FOR " + player.getName(), "Canceled because the database of " + targetName + " (UUID: " + targetUUID + ") does not exist!");
             return null;
         }
         DatabaseManager.updateInvToHashMapUUID(targetUUID);
 
-        Inventory inventory = Bukkit.createInventory(player, 54, "Invsee");
-        PlayerInventoryData playerInventoryData = DatabaseManager.playerInventoryDatabase.get(targetUUID);
-        updateInventory(inventory, targetUUID, playerInventoryData, page);
+        Inventory inventory = Bukkit.createInventory(player, 54, "Inventory of " + targetName);
+        PlayerInventoryData targetInventoryData = DatabaseManager.playerInventoryDatabase.get(targetUUID);
+        updateInventory(inventory, targetUUID, targetInventoryData, page);
 
         for (int border = 36; border < 45; border++)
             inventory.setItem(border, InventoryPagesPlus.nms.createItemStack("BLACK_STAINED_GLASS_PANE", 1, (short) 0));
 
-        DatabaseManager.playerInvseeDatabase.put(player, new InvseeDatabase(inventory, targetUUID, playerInventoryData, editMode, page));
+        DatabaseManager.playerInvseeDatabase.put(player, new InvseeDatabase(inventory, targetName, targetUUID, targetInventoryData, editMode, page));
         DatabaseManager.targetInvseeDatabase.put(targetUUID, player);
         return inventory;
     }
 
     private static void updateInventory(Inventory inventory, String targetUUID, PlayerInventoryData playerInventoryData, int page) {
+
+        if (!playerInventoryData.getPlayerUUID().equals(targetUUID))
+            return;
+
         if (!playerInventoryData.getItems().containsKey(page))
             page = 0;
 
@@ -95,29 +102,26 @@ public class InvseeInventory implements Listener {
                     event.setCancelled(true);
             }
         }
+    }
 
+    public static void updateTargetInvseeInteraction(Player player) {
         String playerUUID = player.getUniqueId().toString();
-        if (!DatabaseManager.targetInvseeDatabase.containsKey(playerUUID))
+        Player playerSeeing = DatabaseManager.targetInvseeDatabase.get(playerUUID);
+        if (!DatabaseManager.playerInvseeDatabase.containsKey(playerSeeing)) {
+            DatabaseManager.targetInvseeDatabase.remove(playerUUID);
             return;
-
-        if (event.getClickedInventory().getType() == InventoryType.PLAYER) {
-            Bukkit.getScheduler().runTaskLater(InventoryPagesPlus.plugin, () -> {
-                Player playerSeeing = DatabaseManager.targetInvseeDatabase.get(playerUUID);
-                if (!DatabaseManager.playerInvseeDatabase.containsKey(playerSeeing)) {
-                    DatabaseManager.targetInvseeDatabase.remove(playerUUID);
-                    return;
-                } else {
-                    if (playerSeeing == null) {
-                        DatabaseManager.targetInvseeDatabase.remove(playerUUID);
-                        DatabaseManager.playerInvseeDatabase.remove(playerSeeing);
-                    }
-                }
-                InvseeDatabase invseeDatabase = DatabaseManager.playerInvseeDatabase.get(playerSeeing);
-                DatabaseManager.updateInvToHashMapUUID(invseeDatabase.getTargetUUID());
-                updateInventory(invseeDatabase.getInventory(), playerUUID, DatabaseManager.playerInventoryDatabase.get(invseeDatabase.getTargetUUID()), invseeDatabase.getPage());
-                playerSeeing.updateInventory();
-            }, 20);
         }
+        if (playerSeeing == null
+                || !DatabaseManager.playerInvseeDatabase.get(playerSeeing).getInventory().equals(playerSeeing.getOpenInventory().getTopInventory())
+                || !DatabaseManager.playerInvseeDatabase.get(playerSeeing).getTargetUUID().equals(playerUUID)) {
+            DatabaseManager.targetInvseeDatabase.remove(playerUUID);
+            DatabaseManager.playerInvseeDatabase.remove(playerSeeing);
+            return;
+        }
+        InvseeDatabase invseeDatabase = DatabaseManager.playerInvseeDatabase.get(playerSeeing);
+        DatabaseManager.updateInvToHashMapUUID(invseeDatabase.getTargetUUID());
+        updateInventory(invseeDatabase.getInventory(), playerUUID, DatabaseManager.playerInventoryDatabase.get(invseeDatabase.getTargetUUID()), invseeDatabase.getPage());
+        playerSeeing.updateInventory();
     }
 
 }

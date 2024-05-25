@@ -106,15 +106,19 @@ public class PlayerInventoryDataYAMLStorage implements PlayerInventoryStorage {
     }
 
     @Override
-    public String getUUIDFromData(String playerName) {
-        if (Bukkit.getPlayer(playerName) != null) {
-            return Bukkit.getPlayer(playerName).getUniqueId().toString();
+    public String getUUIDFromData(String playerName, boolean naturalCheck) {
+        if (naturalCheck) {
+            if (Bukkit.getPlayer(playerName) != null) {
+                return Bukkit.getPlayer(playerName).getUniqueId().toString();
+            }
+            // If server is in offline mode then can use this way to get player's UUID
+            if (!Bukkit.getServer().getOnlineMode()) {
+                String offlinePlayerString = "OfflinePlayer:" + playerName;
+                return UUID.nameUUIDFromBytes(offlinePlayerString.getBytes(StandardCharsets.UTF_8)).toString();
+            }
         }
-        // If server is in offline mode then can use this way to get player's UUID
-        if (!Bukkit.getServer().getOnlineMode()) {
-            String offlinePlayerString = "OfflinePlayer:" + playerName;
-            return UUID.nameUUIDFromBytes(offlinePlayerString.getBytes(StandardCharsets.UTF_8)).toString();
-        }
+        if (DatabaseManager.tempPlayerUUID.containsKey(playerName))
+            return DatabaseManager.tempPlayerUUID.get(playerName);
 
         String path = InventoryPagesPlus.plugin.getDataFolder() + "/database/" + playerName.charAt(0) + "/";
         File playerDatabaseFolder = new File(path);
@@ -156,7 +160,7 @@ public class PlayerInventoryDataYAMLStorage implements PlayerInventoryStorage {
 
     @Override
     public PlayerInventoryData getData(String playerName) {
-        String playerUUID = getUUIDFromData(playerName);
+        String playerUUID = getUUIDFromData(playerName, true);
         File file = getFile(playerName, playerUUID);
         return fromFile(file, playerName, playerUUID);
     }

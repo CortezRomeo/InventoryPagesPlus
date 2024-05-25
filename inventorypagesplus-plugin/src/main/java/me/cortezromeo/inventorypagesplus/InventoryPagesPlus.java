@@ -183,6 +183,7 @@ public final class InventoryPagesPlus extends JavaPlugin {
         new InventoryClickListener();
         new PlayerDeathListener();
         new PlayerGameModeChangeListener();
+        new PlayerDropItemListener();
         new PlayerJoinListener();
         new PlayerQuitListener();
         new EntityPickupListener();
