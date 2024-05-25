@@ -23,7 +23,7 @@ public class PlayerInventoryDataMySQLStorage implements PlayerInventoryStorage {
 
     public PlayerInventoryDataMySQLStorage(String host, String port, String databaseName, String tableName, String user, String password) throws SQLException, ClassNotFoundException {
         table = tableName;
-        Class.forName("com.mysql.jdbc.Driver");
+        Class.forName("com.mysql.cj.jdbc.Driver");
         String url = "jdbc:mysql://" + host + ":" + port + "/" + databaseName + "?autoReconnect=true";
         connection = DriverManager.getConnection(url, user, password);
         createTable();

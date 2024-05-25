@@ -14,6 +14,7 @@
 # What database type should be used for managing and storing.
 database:
   # MYSQL, YAML
+  # Fact: Loading database on MySQL is faster than YAML, so I recommend using MySQL.
   type: YAML
   # Please provide the accurate login information and name that will be used for managing database.
   mysql:
@@ -70,9 +71,9 @@ inventory-settings:
   # inventorypagesplus.keep.hotbar - When the player dies, Keep all items in the hotbar.
   # inventorypagesplus.keep.all - Keep all items when player die.
   keep-inventory: true
-  # If this is on, then will show creative inventory database whenever player's mode changes to creative.
-  # Otherwise, will only use survival inventory database for all modes.
-  # Don't use reload command, please restart server after changing this option.
+  # If this is on, plugin will show creative inventory database whenever player's mode changes to creative.
+  # Otherwise, plugin will only use survival inventory database for all game modes.
+  # PLEASE don't use reload command, please restart server after changing this option.
   use-creative-inventory: true
 
 # Using for collecting the number of players in the server.

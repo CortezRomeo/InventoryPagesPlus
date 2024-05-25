@@ -6,6 +6,7 @@
   import me.cortezromeo.inventorypagesplus.command.InvseeCommand;
   import me.cortezromeo.inventorypagesplus.command.SetPageSlotCommand;
   import me.cortezromeo.inventorypagesplus.enums.DatabaseType;
+  import me.cortezromeo.inventorypagesplus.file.inventory.InvseeInventoryFile;
   import me.cortezromeo.inventorypagesplus.file.inventory.PlayerInventoryFile;
   import me.cortezromeo.inventorypagesplus.inventory.InvseeInventory;
   import me.cortezromeo.inventorypagesplus.inventory.PlayerPageInventory;
@@ -136,6 +137,19 @@ public final class InventoryPagesPlus extends JavaPlugin {
         }
         PlayerInventoryFile.reload();
         DebugManager.debug("LOADING FILE", "Loaded playerinventory.yml.");
+
+        // inventories/invseeinventory.yml
+        String invseeInventoryFileName = "invseeinventory.yml";
+        InvseeInventoryFile.setup();
+        InvseeInventoryFile.saveDefault();
+        File invseeInventoryFile = new File(getDataFolder() + "/inventories/invseeinventory.yml");
+        try {
+            ConfigUpdater.update(this, invseeInventoryFileName, invseeInventoryFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        InvseeInventoryFile.reload();
+        DebugManager.debug("LOADING FILE", "Loaded invseeinventory.yml.");
     }
 
     public void initLanguages() {
@@ -170,6 +184,7 @@ public final class InventoryPagesPlus extends JavaPlugin {
 
     public void initInventories() {
         PlayerPageInventory.setupItems();
+        InvseeInventory.setupItems();
     }
 
     public void initCommands() {

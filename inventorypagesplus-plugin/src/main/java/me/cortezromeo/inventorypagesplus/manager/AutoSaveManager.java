@@ -13,7 +13,6 @@ public class AutoSaveManager {
 
         autoSaveTask = new AutoSaveTask(time);
         autoSaveStatus = true;
-
     }
 
     public static void stopAutoSave() {
@@ -22,7 +21,6 @@ public class AutoSaveManager {
 
         autoSaveTask.cancel();
         autoSaveStatus = false;
-
     }
 
     public static void reloadTimeAutoSave() {

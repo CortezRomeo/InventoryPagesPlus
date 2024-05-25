@@ -12,6 +12,7 @@ public class InvseeDatabase {
 
     public InvseeDatabase(Inventory inventory, String targetName, String targetUUID, PlayerInventoryData targetInventoryData, boolean editMode, int page) {
         this.inventory = inventory;
+        this.targetName = targetName;
         this.targetUUID = targetUUID;
         this.targetInventoryData = targetInventoryData;
         this.editMode = editMode;

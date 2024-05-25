@@ -22,7 +22,7 @@ import java.util.UUID;
 public class PlayerInventoryDataYAMLStorage implements PlayerInventoryStorage {
 
     private File getFile(String playerName, String playerUUID) {
-        String path = InventoryPagesPlus.plugin.getDataFolder() + "/database/" + playerName.charAt(0) + "/";
+        String path = InventoryPagesPlus.plugin.getDataFolder() + "/database/" + playerName.length() + "/";
         if (!new File(path).exists())
             new File(path).mkdir();
 
@@ -120,7 +120,7 @@ public class PlayerInventoryDataYAMLStorage implements PlayerInventoryStorage {
         if (DatabaseManager.tempPlayerUUID.containsKey(playerName))
             return DatabaseManager.tempPlayerUUID.get(playerName);
 
-        String path = InventoryPagesPlus.plugin.getDataFolder() + "/database/" + playerName.charAt(0) + "/";
+        String path = InventoryPagesPlus.plugin.getDataFolder() + "/database/" + playerName.length() + "/";
         File playerDatabaseFolder = new File(path);
         if (playerDatabaseFolder.exists()) {
             File[] listUUIDFile = playerDatabaseFolder.listFiles();
@@ -140,7 +140,7 @@ public class PlayerInventoryDataYAMLStorage implements PlayerInventoryStorage {
 
     @Override
     public boolean hasDataPlayerName(String playerName) {
-        String path = InventoryPagesPlus.plugin.getDataFolder() + "/database/" + playerName.charAt(0) + "/";
+        String path = InventoryPagesPlus.plugin.getDataFolder() + "/database/" + playerName.length() + "/";
         File playerDatabaseFolder = new File(path);
         if (playerDatabaseFolder.exists()) {
             File[] listUUIDFile = playerDatabaseFolder.listFiles();
