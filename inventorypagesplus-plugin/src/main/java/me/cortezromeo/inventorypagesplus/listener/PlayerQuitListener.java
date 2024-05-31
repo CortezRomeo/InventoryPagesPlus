@@ -1,9 +1,9 @@
 package me.cortezromeo.inventorypagesplus.listener;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
-import me.cortezromeo.inventorypagesplus.inventory.InvseeInventory;
 import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
+import me.cortezromeo.inventorypagesplus.manager.InvseeManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,8 +22,8 @@ public class PlayerQuitListener implements Listener {
         String playerUUID = player.getUniqueId().toString();
 
         if (DatabaseManager.playerInventoryDatabase.containsKey(playerUUID)) {
-            if (DatabaseManager.targetInvseeDatabase.containsKey(playerUUID))
-                InvseeInventory.updateTargetInvseeInteraction(player);
+            if (InvseeManager.targetInvseeDatabase.containsKey(playerUUID))
+                InvseeManager.updateTargetInvseeInteraction(player);
             DatabaseManager.updateInvToHashMap(player.getName());
             DatabaseManager.savePlayerInventory(player.getName());
             DatabaseManager.removeInvFromHashMap(player.getName());
@@ -31,6 +31,6 @@ public class PlayerQuitListener implements Listener {
             for (int i = 9; i < 36; i++)
                 player.getInventory().setItem(i, null);
         }
-        DatabaseManager.playerInvseeDatabase.remove(player);
+        InvseeManager.playerInvseeDatabase.remove(player);
     }
 }

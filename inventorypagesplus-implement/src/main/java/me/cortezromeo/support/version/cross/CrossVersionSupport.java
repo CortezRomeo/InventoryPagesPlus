@@ -77,14 +77,14 @@ public class CrossVersionSupport extends VersionSupport {
     }
 
     @Override
-    public ItemStack addCustomData(ItemStack i, String data) {
-        return NBTEditor.set(i, data, NBT_KEY);
+    public ItemStack addCustomData(ItemStack itemStack, String data) {
+        return NBTEditor.set(itemStack, data, NBT_KEY);
     }
 
     @Override
-    public String getCustomData(ItemStack i) {
-        if (NBTEditor.contains(i, NBT_KEY)) {
-            return NBTEditor.getString(i, NBT_KEY);
+    public String getCustomData(ItemStack itemStack) {
+        if (NBTEditor.contains(itemStack, NBT_KEY)) {
+            return NBTEditor.getString(itemStack, NBT_KEY);
         }
         return "";
     }

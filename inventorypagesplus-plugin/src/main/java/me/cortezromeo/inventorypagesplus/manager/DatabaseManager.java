@@ -1,7 +1,6 @@
 package me.cortezromeo.inventorypagesplus.manager;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
-import me.cortezromeo.inventorypagesplus.storage.InvseeDatabase;
 import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryData;
 import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryDataStorage;
 import org.bukkit.Bukkit;
@@ -14,10 +13,6 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class DatabaseManager {
-
-    // Players' Inv. see Database
-    public static HashMap<Player, InvseeDatabase> playerInvseeDatabase = new HashMap<>();
-    public static HashMap<String, Player> targetInvseeDatabase = new HashMap<>();
 
     // Players' inventory database
     public static HashMap<String, PlayerInventoryData> playerInventoryDatabase = new HashMap<>();
@@ -52,7 +47,6 @@ public class DatabaseManager {
             for (Player player : Bukkit.getServer().getOnlinePlayers()) {
                 String playerUUID = player.getUniqueId().toString();
                 if (playerInventoryDatabase.containsKey(playerUUID)) {
-                    updateInvToHashMap(player.getName());
                     savePlayerInventory(player.getName());
                 }
             }
@@ -75,6 +69,7 @@ public class DatabaseManager {
     }
 
     public static void savePlayerInventory(String playerName) {
+        updateInvToHashMap(playerName);
         PlayerInventoryDataStorage.savePlayerInventoryData(playerInventoryDatabase.get(PlayerInventoryDataStorage.getPlayerUUIDFromData(playerName, true)));
         DebugManager.debug("SAVING DATABASE PLAYER (" + playerName + ")", "Completed with no issues.");
     }

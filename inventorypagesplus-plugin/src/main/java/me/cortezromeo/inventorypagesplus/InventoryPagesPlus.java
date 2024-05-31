@@ -7,8 +7,10 @@
   import me.cortezromeo.inventorypagesplus.command.SetPageSlotCommand;
   import me.cortezromeo.inventorypagesplus.enums.DatabaseType;
   import me.cortezromeo.inventorypagesplus.file.inventory.InvseeInventoryFile;
+  import me.cortezromeo.inventorypagesplus.file.inventory.InvseeOtherItemsInventoryFile;
   import me.cortezromeo.inventorypagesplus.file.inventory.PlayerInventoryFile;
   import me.cortezromeo.inventorypagesplus.inventory.InvseeInventory;
+  import me.cortezromeo.inventorypagesplus.inventory.InvseeOtherItemsInventory;
   import me.cortezromeo.inventorypagesplus.inventory.PlayerPageInventory;
   import me.cortezromeo.inventorypagesplus.language.English;
   import me.cortezromeo.inventorypagesplus.language.Messages;
@@ -150,6 +152,19 @@ public final class InventoryPagesPlus extends JavaPlugin {
         }
         InvseeInventoryFile.reload();
         DebugManager.debug("LOADING FILE", "Loaded invseeinventory.yml.");
+
+        // inventories/invseeotheritemsinventory.yml
+        String invseeOtherItemsInventoryFileName = "invseeotheritemsinventory.yml";
+        InvseeOtherItemsInventoryFile.setup();
+        InvseeOtherItemsInventoryFile.saveDefault();
+        File invseeOtherItemsInventoryFile = new File(getDataFolder() + "/inventories/invseeotheritemsinventory.yml");
+        try {
+            ConfigUpdater.update(this, invseeOtherItemsInventoryFileName, invseeOtherItemsInventoryFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        InvseeOtherItemsInventoryFile.reload();
+        DebugManager.debug("LOADING FILE", "Loaded invseeotheritemsinventory.yml.");
     }
 
     public void initLanguages() {
@@ -185,6 +200,7 @@ public final class InventoryPagesPlus extends JavaPlugin {
     public void initInventories() {
         PlayerPageInventory.setupItems();
         InvseeInventory.setupItems();
+        InvseeOtherItemsInventory.setupItems();
     }
 
     public void initCommands() {
@@ -202,7 +218,9 @@ public final class InventoryPagesPlus extends JavaPlugin {
         new PlayerJoinListener();
         new PlayerQuitListener();
         new EntityPickupListener();
+        new InventoryOpenListener();
         Bukkit.getPluginManager().registerEvents(new InvseeInventory(), InventoryPagesPlus.plugin);
+        Bukkit.getPluginManager().registerEvents(new InvseeOtherItemsInventory(), InventoryPagesPlus.plugin);
     }
 
     public void initSupports() {
@@ -223,7 +241,6 @@ public final class InventoryPagesPlus extends JavaPlugin {
             String playerUUID = player.getUniqueId().toString();
             if (DatabaseManager.playerInventoryDatabase.containsKey(playerUUID)) {
                 // update inventories to hashmap and save to file
-                DatabaseManager.updateInvToHashMap(player.getName());
                 DatabaseManager.savePlayerInventory(player.getName());
                 DatabaseManager.clearAndRemoveCrashedPlayer(player.getName());
             }

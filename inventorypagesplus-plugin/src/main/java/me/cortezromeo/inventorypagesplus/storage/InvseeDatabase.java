@@ -1,17 +1,21 @@
 package me.cortezromeo.inventorypagesplus.storage;
 
+import me.cortezromeo.inventorypagesplus.enums.InvseeType;
+import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import org.bukkit.inventory.Inventory;
 
 public class InvseeDatabase {
     Inventory inventory;
+    InvseeType invseeType;
     String targetName;
     String targetUUID;
     PlayerInventoryData targetInventoryData;
     boolean editMode;
     int page;
 
-    public InvseeDatabase(Inventory inventory, String targetName, String targetUUID, PlayerInventoryData targetInventoryData, boolean editMode, int page) {
+    public InvseeDatabase(Inventory inventory, InvseeType invseeType, String targetName, String targetUUID, PlayerInventoryData targetInventoryData, boolean editMode, int page) {
         this.inventory = inventory;
+        this.invseeType = invseeType;
         this.targetName = targetName;
         this.targetUUID = targetUUID;
         this.targetInventoryData = targetInventoryData;
@@ -21,6 +25,10 @@ public class InvseeDatabase {
 
     public Inventory getInventory() {
         return this.inventory;
+    }
+
+    public InvseeType getInvseeType() {
+        return this.invseeType;
     }
 
     public String getTargetUUID() {
@@ -40,6 +48,8 @@ public class InvseeDatabase {
     }
 
     public PlayerInventoryData getTargetInventoryData() {
+        if (DatabaseManager.playerInventoryDatabase.containsKey(targetUUID))
+            return DatabaseManager.playerInventoryDatabase.get(targetUUID);
         return this.targetInventoryData;
     }
 
@@ -56,6 +66,17 @@ public class InvseeDatabase {
     }
 
     public void setPage(int page) {
-        this.page = page;
+        if (page > getTargetInventoryData().getMaxPage()) {
+            this.page = getTargetInventoryData().getMaxPage();
+        } else
+            this.page = page;
+    }
+
+    public void addPage(int page) {
+        this.page = this.page + page;
+    }
+
+    public void removePage(int page) {
+        this.page = this.page - page;
     }
 }

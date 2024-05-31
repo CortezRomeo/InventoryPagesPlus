@@ -24,9 +24,9 @@ public abstract class VersionSupport {
 
     public abstract ItemStack getHeadItem(String headValue);
 
-    public abstract ItemStack addCustomData(ItemStack i, String data);
+    public abstract ItemStack addCustomData(ItemStack itemStack, String data);
 
-    public abstract String getCustomData(ItemStack i);
+    public abstract String getCustomData(ItemStack itemStack);
 
     public abstract String addColor(String textToTranslate);
 

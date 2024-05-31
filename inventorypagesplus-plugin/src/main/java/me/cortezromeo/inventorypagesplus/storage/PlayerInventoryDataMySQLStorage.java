@@ -10,7 +10,6 @@ import me.cortezromeo.inventorypagesplus.util.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
-import javax.xml.crypto.Data;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.ArrayList;

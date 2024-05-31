@@ -1,10 +1,9 @@
 package me.cortezromeo.inventorypagesplus.listener;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
-import me.cortezromeo.inventorypagesplus.inventory.InvseeInventory;
 import me.cortezromeo.inventorypagesplus.inventory.PlayerPageInventory;
-import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
+import me.cortezromeo.inventorypagesplus.manager.InvseeManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -28,9 +27,9 @@ public class EntityPickupListener implements Listener {
                 event.setCancelled(true);
                 event.getItem().remove();
             }
-            if (DatabaseManager.targetInvseeDatabase.containsKey(((Player) entity).getUniqueId().toString())) {
+            if (InvseeManager.targetInvseeDatabase.containsKey(((Player) entity).getUniqueId().toString())) {
                 Bukkit.getScheduler().runTaskLater(InventoryPagesPlus.plugin, () -> {
-                    InvseeInventory.updateTargetInvseeInteraction((Player) entity);
+                    InvseeManager.updateTargetInvseeInteraction((Player) entity);
                 }, 20);
             }
         }
