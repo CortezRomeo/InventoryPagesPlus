@@ -141,7 +141,6 @@ public class PlayerInventoryData {
             else if (number == 26)
                 number = 25;
         }
-
         this.nextItemPos = number;
     }
 
@@ -167,7 +166,6 @@ public class PlayerInventoryData {
     }
 
     public void saveCurrentPage() {
-
         if (player == null)
             return;
 
@@ -383,11 +381,9 @@ public class PlayerInventoryData {
     }
 
     public ArrayList<ItemStack> getItems(int page) {
-
         if (!pageExists(page)) {
             createPage(page);
         }
-
         return items.get(page);
     }
 
@@ -420,8 +416,8 @@ public class PlayerInventoryData {
     }
 
     SimpleEntry<Integer, Integer> nextFreeSpace() {
-        for (Integer page = 0; page < maxPage + 1; page++) {
-            for (Integer slotNumber = 0; slotNumber < 25; slotNumber++) {
+        for (int page = 0; page < maxPage + 1; page++) {
+            for (int slotNumber = 0; slotNumber < 25; slotNumber++) {
                 if (getItems(page).get(slotNumber) == null) {
                     SimpleEntry<Integer, Integer> pageAndPos = new AbstractMap.SimpleEntry<Integer, Integer>(page, slotNumber);
                     return pageAndPos;
@@ -441,7 +437,7 @@ public class PlayerInventoryData {
     }
 
     // returns true if dropped
-    Boolean storeOrDropItem(ItemStack item, GameMode gm) {
+    public boolean storeOrDropItem(ItemStack item, GameMode gm) {
         if (gm != GameMode.CREATIVE) {
             SimpleEntry<Integer, Integer> nextFreeSpace = nextFreeSpace();
             if (nextFreeSpace != null) {

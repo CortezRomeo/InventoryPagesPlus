@@ -38,12 +38,10 @@ public class ClearCommand implements CommandExecutor, TabExecutor {
 
             if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("all")) {
-
                     if (!player.hasPermission("inventorypagesplus.clear.all")) {
                         MessageUtil.sendMessage(player, Messages.NO_PERMISSION);
                         return false;
                     }
-
                     DatabaseManager.playerInventoryDatabase.get(playerUUID).clearAllPages(gm);
                     MessageUtil.sendMessage(player, Messages.CLEAR_ALL);
                 }

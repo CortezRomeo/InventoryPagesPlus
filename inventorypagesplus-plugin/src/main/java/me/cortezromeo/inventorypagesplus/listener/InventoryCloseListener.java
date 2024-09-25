@@ -6,16 +6,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 
-public class PlayerDropItemListener implements Listener {
-    public PlayerDropItemListener() {
+public class InventoryCloseListener implements Listener {
+    public InventoryCloseListener() {
         Bukkit.getPluginManager().registerEvents(this, InventoryPagesPlus.plugin);
-        DebugManager.debug("LOADING EVENT", "Loaded PlayerDropItemEvent.");
+        DebugManager.debug("LOADING EVENT", "Loaded InventoryCloseEvent.");
     }
 
     @EventHandler
-    public void onPickup(PlayerDropItemEvent event) {
-        Player player = event.getPlayer();
+    public void inventoryOpen(InventoryCloseEvent event) {
+        Player player = (Player) event.getPlayer();
+
     }
 }

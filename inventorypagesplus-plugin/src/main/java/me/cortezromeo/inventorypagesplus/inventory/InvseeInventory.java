@@ -1,12 +1,9 @@
 package me.cortezromeo.inventorypagesplus.inventory;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
-import me.cortezromeo.inventorypagesplus.enums.InvseeType;
 import me.cortezromeo.inventorypagesplus.file.inventory.InvseeInventoryFile;
 import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
-import me.cortezromeo.inventorypagesplus.manager.InvseeManager;
-import me.cortezromeo.inventorypagesplus.storage.InvseeDatabase;
 import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryData;
 import me.cortezromeo.inventorypagesplus.util.ItemUtil;
 import org.bukkit.Bukkit;
@@ -16,13 +13,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -107,50 +103,36 @@ public class InvseeInventory implements Listener {
         }
         DatabaseManager.updateInvToHashMapUUID(targetUUID);
 
-        Inventory inventory = Bukkit.createInventory(player, 54, InventoryPagesPlus.nms.addColor(title.replace("%player%", targetName)));
-        PlayerInventoryData targetInventoryData = DatabaseManager.playerInventoryDatabase.get(targetUUID);
+        InvseeInventoryData invseeInventory = new InvseeInventoryData(InvseeInventoryData.InventoryType.invsee, 54, InventoryPagesPlus.nms.addColor(title.replace("%player%", targetName)), targetName, targetUUID, editMode, page);
+        Inventory inventory = invseeInventory.getInventory();
 
-        for (int border = 36; border < 45; border++)
-            inventory.setItem(border, borderItem);
-
-        InvseeDatabase invseeDatabase = new InvseeDatabase(inventory, InvseeType.INSVEE, targetName, targetUUID, targetInventoryData, editMode, page);
-        InvseeManager.playerInvseeDatabase.put(player, invseeDatabase);
-        updateInvseeInventory(player, false);
-
-        if (!InvseeManager.targetInvseeDatabase.containsKey(targetUUID)) {
-            List<Player> players = new ArrayList<>();
-            players.add(player);
-            InvseeManager.targetInvseeDatabase.put(targetUUID, players);
-        } else {
-            List<Player> players = InvseeManager.targetInvseeDatabase.get(targetUUID);
-            if (!players.contains(player))
-                players.add(player);
-            InvseeManager.targetInvseeDatabase.replace(targetUUID, players);
-        }
+        // load target's items and GUI's buttons
+        updateInvseeInventory(inventory);
         return inventory;
     }
 
-    public static void updateInvseeInventory(Player player, boolean openInventory) {
-        if (!InvseeManager.playerInvseeDatabase.containsKey(player))
+    public static void updateInvseeInventory(Inventory inventory) {
+        if (!(inventory.getHolder() instanceof InvseeInventoryData))
             return;
 
-        InvseeDatabase invseeDatabase = InvseeManager.playerInvseeDatabase.get(player);
-        PlayerInventoryData targetInventoryData = invseeDatabase.getTargetInventoryData();
-        Inventory inventory = invseeDatabase.getInventory();
-        int page = invseeDatabase.getPage();
-        String targetUUID = invseeDatabase.getTargetUUID();
+        InvseeInventoryData invseeInventoryData = (InvseeInventoryData) inventory.getHolder();
+        PlayerInventoryData targetInventoryData = invseeInventoryData.getTargetInventoryData();
+        int page = invseeInventoryData.getPage();
+        String targetUUID = invseeInventoryData.getTargetUUID();
 
         if (!targetInventoryData.getPlayerUUID().equals(targetUUID))
             return;
 
         if (!targetInventoryData.getItems().containsKey(page)) {
-            invseeDatabase.setPage(0);
-            InvseeManager.saveInvseeDatabase(player, invseeDatabase);
-            updateInvseeInventory(player, false);
-            return;
+            invseeInventoryData.setPage(0);
+            page = 0;
         }
 
-        // page
+        for (int border = 36; border < 45; border++)
+            inventory.setItem(border, borderItem);
+
+        DatabaseManager.updateInvToHashMapUUID(targetInventoryData.getPlayerUUID());
+        // get items from page
         boolean foundPrevItem = false;
         boolean foundNextItem = false;
         for (int slot = 0; slot < 27; slot++) {
@@ -184,34 +166,29 @@ public class InvseeInventory implements Listener {
         }
 
         if (page == 0) {
-            inventory.setItem(prevItemSlot, getPageItemStack(noPageItem, invseeDatabase));
+            inventory.setItem(prevItemSlot, getPageItemStack(noPageItem, invseeInventoryData));
         } else {
-            inventory.setItem(prevItemSlot, getPageItemStack(prevItem, invseeDatabase));
+            inventory.setItem(prevItemSlot, getPageItemStack(prevItem, invseeInventoryData));
         }
 
         if (page == targetInventoryData.getMaxPage()) {
-            inventory.setItem(nextItemSlot, getPageItemStack(noPageItem, invseeDatabase));
+            inventory.setItem(nextItemSlot, getPageItemStack(noPageItem, invseeInventoryData));
         } else {
-            inventory.setItem(nextItemSlot, getPageItemStack(nextItem, invseeDatabase));
+            inventory.setItem(nextItemSlot, getPageItemStack(nextItem, invseeInventoryData));
         }
 
         inventory.setItem(infoItemSlot, getClickableItemStack(infoItem, targetInventoryData));
         inventory.setItem(creativeInventoryItemSlot, getClickableItemStack(creativeInventoryItem, targetInventoryData));
-
-        if (openInventory)
-            player.openInventory(inventory(player, invseeDatabase.getTargetName(), invseeDatabase.getTargetUUID(), invseeDatabase.isEditMode(), page));
-        else
-            player.updateInventory();
     }
 
-    private static @NotNull ItemStack getPageItemStack(ItemStack itemStack, InvseeDatabase invseeDatabase) {
+    private static @NotNull ItemStack getPageItemStack(ItemStack itemStack, InvseeInventoryData invseeInventoryData) {
         ItemStack modItem = new ItemStack(itemStack);
         ItemMeta itemMeta = modItem.getItemMeta();
 
         List<String> itemLore = itemMeta.getLore();
         for (int loreLine = 0; loreLine < itemLore.size(); loreLine++) {
-            Integer currentPageUser = invseeDatabase.getPage() + 1;
-            Integer maxPageUser = invseeDatabase.getTargetInventoryData().getMaxPage() + 1;
+            Integer currentPageUser = invseeInventoryData.getPage() + 1;
+            Integer maxPageUser = invseeInventoryData.getTargetInventoryData().getMaxPage() + 1;
             itemLore.set(loreLine, itemLore.get(loreLine).replace("{CURRENT}", currentPageUser.toString()).replace("{MAX}", maxPageUser.toString()));
         }
         itemMeta.setLore(itemLore);
@@ -241,40 +218,43 @@ public class InvseeInventory implements Listener {
         if (!(event.getWhoClicked() instanceof Player)) return;
         if (event.getInventory() == null || event.getClickedInventory() == null) return;
         Player player = (Player) event.getWhoClicked();
+        Inventory inventory = event.getClickedInventory();
+        InventoryHolder clickedInventoryHolder = inventory.getHolder();
 
-        if (InvseeManager.playerInvseeDatabase.containsKey(player)) {
-            InvseeDatabase invseeDatabase = InvseeManager.playerInvseeDatabase.get(player);
-            if (invseeDatabase.getInvseeType() == InvseeType.INSVEE && (event.getInventory() == invseeDatabase.getInventory())) {
-                if (event.getClickedInventory().getType() != InventoryType.PLAYER) {
-                    if (invseeDatabase.isEditMode()) {
-                        if (event.getSlot() == invseeDatabase.getTargetInventoryData().getPrevItemPos()
-                                || event.getSlot() == invseeDatabase.getTargetInventoryData().getNextItemPos())
-                            event.setCancelled(true);
-                        if (event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR)
-                            if (event.getCurrentItem().isSimilar(otherItemsInventoryOfflineItem))
-                                event.setCancelled(true);
-                        if (event.getSlot() > 35)
-                            event.setCancelled(true);
-                    } else
-                        event.setCancelled(true);
+        if (!(clickedInventoryHolder instanceof InvseeInventoryData))
+            return;
 
-                    if (event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
-                        ItemStack clickedItem = event.getCurrentItem();
-                        if (InventoryPagesPlus.nms.getCustomData(clickedItem).equals("nextitem")) {
-                            invseeDatabase.addPage(1);
-                            InvseeManager.saveInvseeDatabase(player, invseeDatabase);
-                            updateInvseeInventory(player, true);
-                        } else if (InventoryPagesPlus.nms.getCustomData(clickedItem).equals("previtem")) {
-                            invseeDatabase.removePage(1);
-                            InvseeManager.saveInvseeDatabase(player, invseeDatabase);
-                            updateInvseeInventory(player, true);
-                        } else if (InventoryPagesPlus.nms.getCustomData(clickedItem).equals("otheritemsitem")) {
-                            player.openInventory(InvseeOtherItemsInventory.inventory(player, invseeDatabase.getTargetName(), invseeDatabase.getTargetUUID(), invseeDatabase.isEditMode(), invseeDatabase.getPage()));
-                        }
-                    }
-                }
+        InvseeInventoryData invseeInventoryData = (InvseeInventoryData) clickedInventoryHolder;
+
+        if (invseeInventoryData.getInventoryType() != InvseeInventoryData.InventoryType.invsee)
+            return;
+
+        if (invseeInventoryData.isEditMode()) {
+            if (event.getSlot() == invseeInventoryData.getTargetInventoryData().getPrevItemPos()
+                    || event.getSlot() == invseeInventoryData.getTargetInventoryData().getNextItemPos())
+                event.setCancelled(true);
+            if (event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
+                if (event.getCurrentItem().isSimilar(otherItemsInventoryOfflineItem))
+                    event.setCancelled(true);
+            }
+            if (event.getSlot() > 35)
+                event.setCancelled(true);
+        } else
+            event.setCancelled(true);
+
+        if (event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
+            ItemStack clickedItem = event.getCurrentItem();
+            if (InventoryPagesPlus.nms.getCustomData(clickedItem).equals("nextitem")) {
+                invseeInventoryData.addPage(1);
+                updateInvseeInventory(inventory);
+                player.updateInventory();
+            } else if (InventoryPagesPlus.nms.getCustomData(clickedItem).equals("previtem")) {
+                invseeInventoryData.removePage(1);
+                updateInvseeInventory(inventory);
+                player.updateInventory();
+            } else if (InventoryPagesPlus.nms.getCustomData(clickedItem).equals("otheritemsitem")) {
+                player.openInventory(InvseeOtherItemsInventory.inventory(player, invseeInventoryData.getTargetName(), invseeInventoryData.getTargetUUID(), invseeInventoryData.isEditMode(), invseeInventoryData.getPage()));
             }
         }
     }
-
 }

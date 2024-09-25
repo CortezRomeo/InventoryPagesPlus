@@ -74,13 +74,9 @@
 
     <repositories>
         <!-- Spigot -->
-        <!--        <repository>
-                    <id>spigotmc-repo</id>
-                    <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-                </repository>-->
         <repository>
-            <id>maven-public</id>
-            <url>https://mvn.lumine.io/repository/maven-public/</url>
+            <id>spigotmc-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
         <!-- Config Updater -->
         <repository>

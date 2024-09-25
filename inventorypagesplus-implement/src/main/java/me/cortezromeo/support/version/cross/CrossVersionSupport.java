@@ -1,16 +1,21 @@
 package me.cortezromeo.support.version.cross;
 
-import com.cryptomorin.xseries.SkullUtils;
 import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.XSound;
+import com.cryptomorin.xseries.profiles.builder.XSkull;
+import com.cryptomorin.xseries.profiles.objects.ProfileInputType;
+import com.cryptomorin.xseries.profiles.objects.Profileable;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.cortezromeo.inventorypagesplus.server.VersionSupport;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -69,11 +74,18 @@ public class CrossVersionSupport extends VersionSupport {
     }
 
     @Override
-    public ItemStack getHeadItem(String headValue) {
-        ItemStack item = XMaterial.PLAYER_HEAD.parseItem();
-        assert item != null;
-        item.setItemMeta(SkullUtils.applySkin(item.getItemMeta(), headValue));
-        return item;
+    public ItemStack getHeadItemFromBase64(String headValue) {
+        return XSkull.createItem().profile(Profileable.of(ProfileInputType.BASE64, headValue)).apply();
+    }
+
+    public ItemStack getHeadItemFromPlayerName(String playerName) {
+        if (Bukkit.getPlayer(playerName) != null)
+            playerName = Bukkit.getPlayer(playerName).getUniqueId().toString();
+        else if (!Bukkit.getServer().getOnlineMode()) {
+            String offlinePlayerString = "OfflinePlayer:" + playerName;
+            playerName = UUID.nameUUIDFromBytes(offlinePlayerString.getBytes(StandardCharsets.UTF_8)).toString();
+        }
+        return XSkull.createItem().profile(Profileable.of(UUID.fromString(playerName))).apply();
     }
 
     @Override

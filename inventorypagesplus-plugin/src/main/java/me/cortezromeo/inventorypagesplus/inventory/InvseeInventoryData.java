@@ -1,34 +1,36 @@
-package me.cortezromeo.inventorypagesplus.storage;
+package me.cortezromeo.inventorypagesplus.inventory;
 
-import me.cortezromeo.inventorypagesplus.enums.InvseeType;
 import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
+import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryData;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 
-public class InvseeDatabase {
-    Inventory inventory;
-    InvseeType invseeType;
-    String targetName;
-    String targetUUID;
-    PlayerInventoryData targetInventoryData;
-    boolean editMode;
-    int page;
+public class InvseeInventoryData implements InventoryHolder {
 
-    public InvseeDatabase(Inventory inventory, InvseeType invseeType, String targetName, String targetUUID, PlayerInventoryData targetInventoryData, boolean editMode, int page) {
-        this.inventory = inventory;
-        this.invseeType = invseeType;
+    private InventoryType inventoryType;
+    private Inventory inventory;
+    private String targetName;
+    private String targetUUID;
+    private boolean editMode;
+    private int page;
+
+    public InvseeInventoryData(InventoryType inventoryType, int size, String title, String targetName, String targetUUID, boolean editMode, int page) {
+        this.inventory = Bukkit.createInventory(this, size, title);
+        this.inventoryType = inventoryType;
         this.targetName = targetName;
         this.targetUUID = targetUUID;
-        this.targetInventoryData = targetInventoryData;
         this.editMode = editMode;
         this.page = page;
     }
 
+    @Override
     public Inventory getInventory() {
         return this.inventory;
     }
 
-    public InvseeType getInvseeType() {
-        return this.invseeType;
+    public InventoryType getInventoryType() {
+        return this.inventoryType;
     }
 
     public String getTargetUUID() {
@@ -50,7 +52,7 @@ public class InvseeDatabase {
     public PlayerInventoryData getTargetInventoryData() {
         if (DatabaseManager.playerInventoryDatabase.containsKey(targetUUID))
             return DatabaseManager.playerInventoryDatabase.get(targetUUID);
-        return this.targetInventoryData;
+        return null;
     }
 
     public boolean isEditMode() {
@@ -78,5 +80,10 @@ public class InvseeDatabase {
 
     public void removePage(int page) {
         this.page = this.page - page;
+    }
+
+    public enum InventoryType{
+        invsee,
+        invseeotheritems
     }
 }

@@ -14,9 +14,10 @@ public class ItemUtil {
     public static ItemStack getItem(String type, String value, short itemData, String name, List<String> lore) {
         AtomicReference<ItemStack> material = new AtomicReference<>(new ItemStack(Material.BEDROCK));
 
-        if (type.equalsIgnoreCase("customhead") || type.equalsIgnoreCase("playerhead"))
-            material.set(InventoryPagesPlus.nms.getHeadItem(value));
-
+        if (type.equalsIgnoreCase("customhead"))
+            material.set(InventoryPagesPlus.nms.getHeadItemFromBase64(value));
+        if (type.equalsIgnoreCase("playerhead"))
+            material.set(InventoryPagesPlus.nms.getHeadItemFromPlayerName(value));
         if (type.equalsIgnoreCase("material"))
             material.set(InventoryPagesPlus.nms.createItemStack(value, 1, itemData));
 

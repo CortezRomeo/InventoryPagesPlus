@@ -17,6 +17,7 @@ public class InventoryOpenListener implements Listener {
     @EventHandler
     public void inventoryOpen(InventoryOpenEvent event) {
         Player player = (Player) event.getPlayer();
+
 /*        MessageUtil.devMessage("triggeredssss");
         InvseeManager.playerInvseeDatabase.remove(player);*/
     }

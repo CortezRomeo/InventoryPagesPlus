@@ -5,7 +5,6 @@ import me.cortezromeo.inventorypagesplus.inventory.PlayerPageInventory;
 import me.cortezromeo.inventorypagesplus.language.Messages;
 import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
-import me.cortezromeo.inventorypagesplus.manager.InvseeManager;
 import me.cortezromeo.inventorypagesplus.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -60,11 +59,6 @@ public class InventoryClickListener implements Listener {
                 MessageUtil.sendMessage(player, Messages.NO_PAGE_MESSAGES);
                 player.updateInventory();
             }
-        }
-        if (InvseeManager.targetInvseeDatabase.containsKey(player.getUniqueId().toString())) {
-            Bukkit.getScheduler().runTaskLater(InventoryPagesPlus.plugin, () -> {
-                InvseeManager.updateTargetInvseeInteraction(player);
-            }, 20);
         }
     }
 

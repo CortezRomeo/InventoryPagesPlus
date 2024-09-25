@@ -22,7 +22,9 @@ public abstract class VersionSupport {
 
     public abstract Sound createSound(String soundName);
 
-    public abstract ItemStack getHeadItem(String headValue);
+    public abstract ItemStack getHeadItemFromPlayerName(String playerName);
+
+    public abstract ItemStack getHeadItemFromBase64(String headValue);
 
     public abstract ItemStack addCustomData(ItemStack itemStack, String data);
 
