@@ -21,11 +21,13 @@
   import me.cortezromeo.inventorypagesplus.manager.DebugManager;
   import me.cortezromeo.inventorypagesplus.server.VersionSupport;
   import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryDataStorage;
+  import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryStorage;
   import me.cortezromeo.inventorypagesplus.support.PAPISupport;
   import me.cortezromeo.inventorypagesplus.util.MessageUtil;
   import me.cortezromeo.support.version.cross.CrossVersionSupport;
   import org.bukkit.Bukkit;
   import org.bukkit.entity.Player;
+  import org.bukkit.inventory.PlayerInventory;
   import org.bukkit.plugin.java.JavaPlugin;
 
   import java.io.File;
@@ -97,9 +99,9 @@ public final class InventoryPagesPlus extends JavaPlugin {
             MessageUtil.log("    &4ERROR");
             MessageUtil.log("&eDatabase type &c&l" + getConfig().getString("database.type") + "&e does not exist!");
             MessageUtil.log("&ePlease check it again in config.yml.");
-            MessageUtil.log("&eDatabase will automatically use &b&lYAML &eto load.");
+            MessageUtil.log("&eDatabase will automatically use &b&lH2 &eto load.");
             MessageUtil.log("&c--------------------------------------");
-            PlayerInventoryDataStorage.init(DatabaseType.YAML);
+            PlayerInventoryDataStorage.init(DatabaseType.H2);
         }
     }
 
@@ -258,5 +260,7 @@ public final class InventoryPagesPlus extends JavaPlugin {
         MessageUtil.log("");
         MessageUtil.log("&ePlugin is disabled successfully.");
         MessageUtil.log("");
-        MessageUtil.log("&f--------------------------------");    }
+        MessageUtil.log("&f--------------------------------");
+        PlayerInventoryDataStorage.disable();
+    }
 }

@@ -5,4 +5,5 @@ public interface PlayerInventoryStorage {
     String getUUIDFromData(String playerName, boolean naturalCheck);
     void saveData(PlayerInventoryData data);
     PlayerInventoryData getData(String playerName);
+    void disable();
 }

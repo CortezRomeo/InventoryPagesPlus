@@ -13,9 +13,10 @@
 
 # What database type should be used for managing and storing.
 database:
-  # MYSQL, YAML
-  # Fact: Loading database on MySQL is faster than YAML, so I recommend using MySQL.
-  type: YAML
+  # H2, MYSQL, YAML
+  # Loading database on H2 is faster than YAML, so I recommend using H2.
+  # For multiple server setups, use MYSQL.
+  type: H2
   # Please provide the accurate login information and name that will be used for managing database.
   mysql:
     database:
@@ -75,6 +76,9 @@ inventory-settings:
   # Otherwise, plugin will only use survival inventory database for all game modes.
   # PLEASE don't use reload command, please restart server after changing this option.
   use-creative-inventory: true
+
+advanced-pickup-settings:
+  enabled: false
 
 # Using for collecting the number of players in the server.
 # This option does not affect the server performance.

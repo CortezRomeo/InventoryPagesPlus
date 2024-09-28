@@ -13,8 +13,6 @@
 
     <pluginRepositories>
         <pluginRepository>
-            <!-- This is a temporary reference as the Maven Shade plugin
-                that supports Java 17 is not released yet -->
             <id>maven-snapshots</id>
             <url>https://repository.apache.org/content/repositories/snapshots/</url>
         </pluginRepository>
@@ -30,7 +28,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.13.0</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
@@ -39,7 +37,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
+                <version>3.6.0</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -52,11 +50,11 @@
                             <relocations>
                                 <relocation>
                                     <pattern>com.cryptomorin.xseries</pattern>
-                                    <shadedPattern>com.cortezromeo.taixiu.lib.xseries</shadedPattern>
+                                    <shadedPattern>com.cortezromeo.inventorypagesplus.lib.xseries</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>io.github.bananapuncher714.nbteditor</pattern>
-                                    <shadedPattern>com.cortezromeo.taixiu.lib.nbteditor</shadedPattern>
+                                    <shadedPattern>com.cortezromeo.inventorypagesplus.lib.nbteditor</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -101,6 +99,11 @@
             <groupId>com.tchristofferson</groupId>
             <artifactId>ConfigUpdater</artifactId>
             <version>2.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.3.232</version>
         </dependency>
         <dependency>
             <groupId>com.github.MilkBowl</groupId>

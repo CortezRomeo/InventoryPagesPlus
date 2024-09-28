@@ -9,69 +9,55 @@ import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.util.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
+import org.h2.jdbc.JdbcConnection;
 
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Properties;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
-public class PlayerInventoryDataMySQLStorage implements PlayerInventoryStorage {
-    public static Connection connection;
+public class PlayerInventoryDataH2Storage implements PlayerInventoryStorage {
+    public static JdbcConnection connection;
     private static String table;
 
-    public PlayerInventoryDataMySQLStorage(String host, String port, String databaseName, String tableName, String user, String password) throws SQLException, ClassNotFoundException {
-        table = tableName;
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        String url = "jdbc:mysql://" + host + ":" + port + "/" + databaseName + "?autoReconnect=true";
-        if (connection != null)
-            disable();
-        connection = DriverManager.getConnection(url, user, password);
+    public PlayerInventoryDataH2Storage() {
+        table = "inventorydata";
+        try {
+
+            if (connection != null)
+                disable();
+
+            connection = new JdbcConnection("jdbc:h2:./" + InventoryPagesPlus.plugin.getDataFolder() + "/data;mode=MySQL", new Properties(), null, null, false);
+            connection.setAutoCommit(true);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         createTable();
     }
 
     private static void createTable() {
-        if (ifTableExist(table)) {
-            DebugManager.debug("LOADING DATABASE", "Connected to table " + table + ".");
-        } else {
-            try {
-                Statement statement = connection.createStatement();
-                String sql = "CREATE TABLE " + table + " " +
-                        "(UUID VARCHAR(50) not NULL, " +
-                        " PLAYERNAME VARCHAR(50), " +
-                        " ITEMS TEXT, " +
-                        " CREATIVEITEMS TEXT, " +
-                        " MAXPAGE INT, " +
-                        " PAGE INT, " +
-                        " PREVITEMPOS VARCHAR(50), " +
-                        " NEXTITEMPOS VARCHAR(50), " +
-                        " PRIMARY KEY (UUID))";
-
-                statement.executeUpdate(sql);
-                DebugManager.debug("LOADING DATABASE (MySQL)", "Created and connected to table " + table + ".");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private static boolean ifTableExist(String name) {
         try {
-            DatabaseMetaData dbm = connection.getMetaData();
-            ResultSet tables = dbm.getTables(null, null, name, null);
-            if (tables.next()) {
-                return true;
-            } else {
-                return false;
-            }
+            Statement statement = connection.createStatement();
+            String sql = "CREATE TABLE IF NOT EXISTS " + table + " " +
+                    "(UUID VARCHAR(50) not NULL, " +
+                    " PLAYERNAME VARCHAR(50), " +
+                    " ITEMS TEXT, " +
+                    " CREATIVEITEMS TEXT, " +
+                    " MAXPAGE INT, " +
+                    " PAGE INT, " +
+                    " PREVITEMPOS VARCHAR(50), " +
+                    " NEXTITEMPOS VARCHAR(50), " +
+                    " PRIMARY KEY (UUID))";
+            statement.executeUpdate(sql);
+            DebugManager.debug("LOADING DATABASE (H2)", "Connected to table " + table + ".");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
     }
 
-    public PlayerInventoryData fromMySQL(String playerName, String playerUUID) {
+    public PlayerInventoryData fromH2(String playerName, String playerUUID) {
         HashMap<Integer, ArrayList<ItemStack>> pageItemHashMap = new HashMap<>();
         int maxPageDefault = InventoryPagesPlus.plugin.getConfig().getInt("inventory-settings.max-page-default");
         if (maxPageDefault < 0)
@@ -126,7 +112,6 @@ public class PlayerInventoryDataMySQLStorage implements PlayerInventoryStorage {
             }
             data.setPlayerName(playerName);
             data.setPlayerUUID(playerUUID);
-
         }
         catch (Exception exception) {
             exception.printStackTrace();
@@ -180,16 +165,7 @@ public class PlayerInventoryDataMySQLStorage implements PlayerInventoryStorage {
 
     @Override
     public PlayerInventoryData getData(String playerName) {
-        return fromMySQL(playerName, getUUIDFromData(playerName, true));
-    }
-
-    @Override
-    public void disable() {
-        try {
-            connection.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        return fromH2(playerName, getUUIDFromData(playerName, true));
     }
 
     @Override
@@ -273,6 +249,15 @@ public class PlayerInventoryDataMySQLStorage implements PlayerInventoryStorage {
             ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void disable() {
+        try {
+            connection.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

@@ -5,6 +5,7 @@ import me.cortezromeo.inventorypagesplus.enums.DatabaseType;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.util.MessageUtil;
 import org.bukkit.configuration.file.FileConfiguration;
+//import org.h2.engine.Database;
 
 import java.io.File;
 
@@ -24,6 +25,8 @@ public class PlayerInventoryDataStorage {
 
         if (databaseType == DatabaseType.YAML) {
             STORAGE = new PlayerInventoryDataYAMLStorage();
+        } else if (databaseType == DatabaseType.H2) {
+            STORAGE = new PlayerInventoryDataH2Storage();
         } else if (databaseType == DatabaseType.MYSQL) {
             FileConfiguration config = InventoryPagesPlus.plugin.getConfig();
             String host = config.getString("database.mysql.database.host");
@@ -37,12 +40,12 @@ public class PlayerInventoryDataStorage {
             } catch (Exception exception) {
                 exception.printStackTrace();
                 STORAGE = new PlayerInventoryDataYAMLStorage();
-                InventoryPagesPlus.databaseType = DatabaseType.YAML;
+                InventoryPagesPlus.databaseType = DatabaseType.H2;
                 MessageUtil.log("&c--------------------------------------");
                 MessageUtil.log("    &4ERROR");
                 MessageUtil.log("&eCannot connect to MySQL database!");
                 MessageUtil.log("&ePlease check the error messages provided above for the information.");
-                MessageUtil.log("&eDatabase will automatically use &b&lYAML &eto load.");
+                MessageUtil.log("&eDatabase will automatically use &b&lH2 &eto load.");
                 MessageUtil.log("&c--------------------------------------");
             }
         }
@@ -63,6 +66,10 @@ public class PlayerInventoryDataStorage {
 
     public static void savePlayerInventoryData(PlayerInventoryData data) {
         PlayerInventoryDataStorage.STORAGE.saveData(data);
+    }
+
+    public static void disable() {
+        PlayerInventoryDataStorage.STORAGE.disable();
     }
 
 }

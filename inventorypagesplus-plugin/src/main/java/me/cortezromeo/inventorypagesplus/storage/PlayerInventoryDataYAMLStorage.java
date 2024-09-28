@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerInventoryDataYAMLStorage implements PlayerInventoryStorage {
 
@@ -163,6 +164,11 @@ public class PlayerInventoryDataYAMLStorage implements PlayerInventoryStorage {
         String playerUUID = getUUIDFromData(playerName, true);
         File file = getFile(playerName, playerUUID);
         return fromFile(file, playerName, playerUUID);
+    }
+
+    @Override
+    public void disable() {
+        // do nothing
     }
 
     @Override

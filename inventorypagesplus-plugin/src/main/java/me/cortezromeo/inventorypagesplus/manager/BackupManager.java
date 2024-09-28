@@ -59,7 +59,7 @@ public class BackupManager {
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
-        } else {
+        } else if (InventoryPagesPlus.databaseType == DatabaseType.MYSQL){
             try {
                 Statement statement = PlayerInventoryDataMySQLStorage.connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
                         ResultSet.CONCUR_UPDATABLE);

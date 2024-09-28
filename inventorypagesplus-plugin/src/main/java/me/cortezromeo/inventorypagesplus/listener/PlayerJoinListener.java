@@ -18,8 +18,10 @@ public class PlayerJoinListener implements Listener {
     }
 
     @EventHandler
-    public void playerJoin(PlayerJoinEvent event) throws InterruptedException, IOException {
+    public void playerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        DatabaseManager.loadPlayerInventory(player.getName());
+        Bukkit.getScheduler().runTaskAsynchronously(InventoryPagesPlus.plugin, () -> {
+            DatabaseManager.loadPlayerInventory(player.getName());
+        });
     }
 }

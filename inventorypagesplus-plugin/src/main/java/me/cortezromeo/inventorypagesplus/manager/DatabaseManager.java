@@ -11,16 +11,18 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DatabaseManager {
 
     // Players' inventory database
-    public static HashMap<String, PlayerInventoryData> playerInventoryDatabase = new HashMap<>();
+    public static ConcurrentHashMap<String, PlayerInventoryData> playerInventoryDatabase = new ConcurrentHashMap<>();
     public static HashMap<String, String> tempPlayerUUID = new HashMap<>(); // mainly use for loading old database which already was created
     public static File crashedFile = new File(InventoryPagesPlus.plugin.getDataFolder() + "/database/crashed.yml");
     public static FileConfiguration crashedData = YamlConfiguration.loadConfiguration(crashedFile);
 
     public static void loadPlayerInventory(String playerName) {
+        long time = System.currentTimeMillis();
         clearAndRemoveCrashedPlayer(playerName);
         String playerUUID;
         if (tempPlayerUUID.containsKey(playerName))
@@ -39,10 +41,11 @@ public class DatabaseManager {
             addCrashedPlayer(playerUUID);
             playerInventoryDatabase.get(playerUUID).showPage(Bukkit.getPlayer(playerName).getGameMode());
         }
-        DebugManager.debug("LOADING DATABASE PLAYER (" + playerName + ")", "Completed with no issues.");
+        DebugManager.debug("LOADING DATABASE PLAYER (" + playerName + ")", "Completed with no issues. (" + (System.currentTimeMillis() - time + "ms)"));
     }
 
     public static void updateAndSaveAllInventoriesToDatabase() {
+        long time = System.currentTimeMillis();
         if (!Bukkit.getServer().getOnlinePlayers().isEmpty()) {
             for (Player player : Bukkit.getServer().getOnlinePlayers()) {
                 String playerUUID = player.getUniqueId().toString();
@@ -50,11 +53,12 @@ public class DatabaseManager {
                     savePlayerInventory(player.getName());
                 }
             }
-            DebugManager.debug("UPDATING AND SAVING ALL INVENTORIES", "Completed with no issues.");
+            DebugManager.debug("UPDATING AND SAVING ALL INVENTORIES", "Completed with no issues. (" + (System.currentTimeMillis() - time + "ms)"));
         }
     }
 
     public static void clearAndRemoveCrashedPlayer(String playerName) {
+        long time = System.currentTimeMillis();
         if (crashedPlayersExist()) {
             if (hasCrashed(PlayerInventoryDataStorage.getPlayerUUIDFromData(playerName, true)) && Bukkit.getPlayer(playerName) != null) {
                 Player player = Bukkit.getPlayer(playerName);
@@ -63,7 +67,7 @@ public class DatabaseManager {
                 }
                 crashedData.set("crashed." + player.getUniqueId().toString(), null);
                 saveCrashedFile();
-                DebugManager.debug("CLEARING CRASHED PLAYER (" + player.getName() + ")", "Completed with no issues.");
+                DebugManager.debug("CLEARING CRASHED PLAYER (" + player.getName() + ")", "Completed with no issues. (" + (System.currentTimeMillis() - time + "ms)"));
             }
         }
     }
@@ -75,10 +79,11 @@ public class DatabaseManager {
     }
 
     public static void updateInvToHashMap(String playerName) {
+        long time = System.currentTimeMillis();
         String playerUUID = PlayerInventoryDataStorage.getPlayerUUIDFromData(playerName, true);
         if (DatabaseManager.playerInventoryDatabase.containsKey(playerUUID)) {
             DatabaseManager.playerInventoryDatabase.get(playerUUID).saveCurrentPage();
-            DebugManager.debug("UPDATING INV. TO HASHMAP PLAYER (" + playerName + ")", "Completed with no issues.");
+            DebugManager.debug("UPDATING INV. TO HASHMAP PLAYER (" + playerName + ")", "Completed with no issues. (" + (System.currentTimeMillis() - time + "ms)"));
         }
     }
 

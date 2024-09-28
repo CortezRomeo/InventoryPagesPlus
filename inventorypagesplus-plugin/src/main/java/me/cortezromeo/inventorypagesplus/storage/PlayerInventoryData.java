@@ -10,11 +10,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.AbstractMap;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerInventoryData {
     private Player player;
@@ -93,8 +92,12 @@ public class PlayerInventoryData {
     public void setMaxPage(int number) {
         if (number < 0)
             number = 0;
-
         this.maxPage = number;
+
+        for (int page = 0; page < maxPage +1; page++)
+            if (!pageExists(page))
+                createPage(page);
+
         saveCurrentPage();
         if (player != null)
             showPage(player.getGameMode());
@@ -104,8 +107,12 @@ public class PlayerInventoryData {
     public void addMaxPage(int number) {
         if (number < 0)
             number = 0;
-
         this.maxPage = this.maxPage + number;
+
+        for (int page = 0; page < maxPage +1; page++)
+            if (!pageExists(page))
+                createPage(page);
+
         saveCurrentPage();
         if (player != null)
             showPage(player.getGameMode());
@@ -168,7 +175,6 @@ public class PlayerInventoryData {
     public void saveCurrentPage() {
         if (player == null)
             return;
-
         if (!InventoryPagesPlus.useCreativeInventory || player.getGameMode() != GameMode.CREATIVE) {
             ArrayList<ItemStack> pageItems = new ArrayList<>(25);
             for (int slotNumber = 0; slotNumber < 27; slotNumber++) {
@@ -191,7 +197,7 @@ public class PlayerInventoryData {
 
     void clearPage(int page, GameMode gm) {
         if (gm != GameMode.CREATIVE) {
-            ArrayList<ItemStack> pageItems = new ArrayList<ItemStack>(25);
+            ArrayList<ItemStack> pageItems = new ArrayList<>(25);
             for (int i = 0; i < 25; i++) {
                 pageItems.add(null);
             }
@@ -209,8 +215,8 @@ public class PlayerInventoryData {
 
     public void clearAllPages(GameMode gm) {
         if (gm != GameMode.CREATIVE) {
-            for (int i = 0; i < this.maxPage + 1; i++) {
-                clearPage(i, gm);
+            for (int page = 0; page < this.maxPage + 1; page++) {
+                clearPage(page, gm);
             }
         } else {
             if (!InventoryPagesPlus.useCreativeInventory) {
@@ -274,7 +280,6 @@ public class PlayerInventoryData {
     }
 
     void showPage(Integer page, GameMode gm) {
-
         if (!pageExists(page))
             createPage(page);
 
@@ -415,18 +420,6 @@ public class PlayerInventoryData {
         this.hasUsedCreative = hasUsedCreative;
     }
 
-    SimpleEntry<Integer, Integer> nextFreeSpace() {
-        for (int page = 0; page < maxPage + 1; page++) {
-            for (int slotNumber = 0; slotNumber < 25; slotNumber++) {
-                if (getItems(page).get(slotNumber) == null) {
-                    SimpleEntry<Integer, Integer> pageAndPos = new AbstractMap.SimpleEntry<Integer, Integer>(page, slotNumber);
-                    return pageAndPos;
-                }
-            }
-        }
-        return null;
-    }
-
     int nextCreativeFreeSpace() {
         for (Integer i = 0; i < 27; i++) {
             if (creativeItems.get(i) == null) {
@@ -438,16 +431,55 @@ public class PlayerInventoryData {
 
     // returns true if dropped
     public boolean storeOrDropItem(ItemStack item, GameMode gm) {
-        if (gm != GameMode.CREATIVE) {
-            SimpleEntry<Integer, Integer> nextFreeSpace = nextFreeSpace();
-            if (nextFreeSpace != null) {
-                this.getItems(nextFreeSpace.getKey()).set(nextFreeSpace.getValue(), item);
+        for (int hotBarSlot = 0; hotBarSlot <= 8; hotBarSlot++) {
+            ItemStack itemFromSlot = player.getInventory().getItem(hotBarSlot);
+            if (itemFromSlot == null) {
+                player.getInventory().setItem(hotBarSlot, item);
                 return false;
             } else {
-                this.player.getWorld().dropItem(player.getLocation(), item);
-                return true;
+                if (itemFromSlot.isSimilar(item)) {
+                    int amountCombined = item.getAmount() + itemFromSlot.getAmount();
+                    if (amountCombined <= item.getMaxStackSize()) {
+                        itemFromSlot.setAmount(amountCombined);
+                        player.getInventory().setItem(hotBarSlot, itemFromSlot);
+                        return false;
+                    }
+                }
             }
+        }
+        if (gm != GameMode.CREATIVE) {
+            for (int page = 0; page < maxPage + 1; page++) {
+                if (page == this.page)
+                    saveCurrentPage();
+                ArrayList<ItemStack> pageItems = getItems(page);
+                for (int slotNumber = 0; slotNumber < 25; slotNumber++) {
+                    if (pageItems.get(slotNumber) == null) {
+                        pageItems.set(slotNumber, item);
+                        this.items.put(page, pageItems);
+                        if (page == this.page)
+                            showPage();
+                        return false;
+                    } else {
+                        ItemStack itemFromSlot = pageItems.get(slotNumber);
+                        if (itemFromSlot.isSimilar(item)) {
+                            int amountCombined = item.getAmount() + itemFromSlot.getAmount();
+                            if (amountCombined <= item.getMaxStackSize()) {
+                                itemFromSlot.setAmount(amountCombined);
+                                pageItems.set(slotNumber, itemFromSlot);
+                                this.items.put(page, pageItems);
+                                if (page == this.page)
+                                    showPage();
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            this.player.getWorld().dropItem(player.getLocation(), item);
+            return true;
         } else {
+            if (!InventoryPagesPlus.useCreativeInventory)
+                return storeOrDropItem(item, GameMode.SURVIVAL);
             int nextFreeSpace = nextCreativeFreeSpace();
             if (nextFreeSpace != -1) {
                 this.creativeItems.set(nextFreeSpace, item);

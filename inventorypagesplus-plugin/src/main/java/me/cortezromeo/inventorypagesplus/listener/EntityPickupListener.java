@@ -2,7 +2,9 @@ package me.cortezromeo.inventorypagesplus.listener;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
 import me.cortezromeo.inventorypagesplus.inventory.PlayerPageInventory;
+import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
+import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryData;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -22,9 +24,20 @@ public class EntityPickupListener implements Listener {
         Entity entity = event.getEntity();
         if (entity instanceof Player) {
             ItemStack item = event.getItem().getItemStack();
+            Player player = (Player) entity;
+
             if (InventoryPagesPlus.nms.getCustomData(item).equals(PlayerPageInventory.itemCustomData)) {
                 event.setCancelled(true);
                 event.getItem().remove();
+            }
+            if (DatabaseManager.playerInventoryDatabase.containsKey(player.getUniqueId().toString())) {
+                PlayerInventoryData playerInventoryData = DatabaseManager.playerInventoryDatabase.get(player.getUniqueId().toString());
+                ItemStack itemStack = event.getItem().getItemStack();
+                if (!playerInventoryData.storeOrDropItem(itemStack, player.getGameMode())) {
+                    event.setCancelled(true);
+                    event.getItem().remove();
+                    player.playSound(player.getLocation(), InventoryPagesPlus.nms.createSound("ENTITY_ITEM_PICKUP"), 1, 1);
+                }
             }
         }
     }
