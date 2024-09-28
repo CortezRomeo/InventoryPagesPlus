@@ -21,13 +21,11 @@
   import me.cortezromeo.inventorypagesplus.manager.DebugManager;
   import me.cortezromeo.inventorypagesplus.server.VersionSupport;
   import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryDataStorage;
-  import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryStorage;
   import me.cortezromeo.inventorypagesplus.support.PAPISupport;
   import me.cortezromeo.inventorypagesplus.util.MessageUtil;
   import me.cortezromeo.support.version.cross.CrossVersionSupport;
   import org.bukkit.Bukkit;
   import org.bukkit.entity.Player;
-  import org.bukkit.inventory.PlayerInventory;
   import org.bukkit.plugin.java.JavaPlugin;
 
   import java.io.File;
@@ -170,7 +168,7 @@ public final class InventoryPagesPlus extends JavaPlugin {
     }
 
     public void initLanguages() {
-        // en.yml
+        // messages_en.yml
         String englishFileName = "messages_en.yml";
         English.setup();
         English.saveDefault();
@@ -183,7 +181,7 @@ public final class InventoryPagesPlus extends JavaPlugin {
         English.reload();
         DebugManager.debug("LOADING FILE (language)", "Loaded messages_en.yml.");
 
-        // en.yml
+        // messages_vi.yml
         String vietnameseFileName = "messages_vi.yml";
         Vietnamese.setup();
         Vietnamese.saveDefault();

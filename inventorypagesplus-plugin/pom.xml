@@ -56,6 +56,18 @@
                                     <pattern>io.github.bananapuncher714.nbteditor</pattern>
                                     <shadedPattern>com.cortezromeo.inventorypagesplus.lib.nbteditor</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>com.tchristofferson.configupdater</pattern>
+                                    <shadedPattern>com.cortezromeo.inventorypagesplus.lib.configupdater</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.google.gson</pattern>
+                                    <shadedPattern>com.cortezromeo.inventorypagesplus.lib.gson</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.h2</pattern>
+                                    <shadedPattern>com.cortezromeo.inventorypagesplus.lib.h2</shadedPattern>
+                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>

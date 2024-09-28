@@ -5,7 +5,6 @@ import me.cortezromeo.inventorypagesplus.enums.DatabaseType;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.util.MessageUtil;
 import org.bukkit.configuration.file.FileConfiguration;
-//import org.h2.engine.Database;
 
 import java.io.File;
 
@@ -23,18 +22,18 @@ public class PlayerInventoryDataStorage {
             file.mkdirs();
         }
 
+        FileConfiguration config = InventoryPagesPlus.plugin.getConfig();
         if (databaseType == DatabaseType.YAML) {
             STORAGE = new PlayerInventoryDataYAMLStorage();
         } else if (databaseType == DatabaseType.H2) {
-            STORAGE = new PlayerInventoryDataH2Storage();
+            STORAGE = new PlayerInventoryDataH2Storage(config.getString("database.settings.h2.file-name"), config.getString("database.settings.h2.table"));
         } else if (databaseType == DatabaseType.MYSQL) {
-            FileConfiguration config = InventoryPagesPlus.plugin.getConfig();
-            String host = config.getString("database.mysql.database.host");
-            String port = config.getString("database.mysql.database.port");
-            mySQLDatabaseName = config.getString("database.mysql.database.name");
-            mySQLTableName = InventoryPagesPlus.plugin.getConfig().getString("database.mysql.database.table");
-            mySQLUserName = config.getString("database.mysql.database.user");
-            mySQLUserPassword = config.getString("database.mysql.database.password");
+            String host = config.getString("database.settings.mysql.database.host");
+            String port = config.getString("database.settings.mysql.database.port");
+            mySQLDatabaseName = config.getString("database.settings.mysql.database.name");
+            mySQLTableName = InventoryPagesPlus.plugin.getConfig().getString("database.settings.mysql.database.table");
+            mySQLUserName = config.getString("database.settings.mysql.database.user");
+            mySQLUserPassword = config.getString("database.settings.mysql.database.password");
             try {
                 STORAGE = new PlayerInventoryDataMySQLStorage(host, port, mySQLDatabaseName, mySQLTableName, mySQLUserName, mySQLUserPassword);
             } catch (Exception exception) {
@@ -49,7 +48,7 @@ public class PlayerInventoryDataStorage {
                 MessageUtil.log("&c--------------------------------------");
             }
         }
-        DebugManager.debug("LOADING DATABASE", "Loaded " + databaseType.toString() + " database.");
+        DebugManager.debug("LOADING DATABASE", "Loaded " + InventoryPagesPlus.databaseType + " database.");
     }
 
     public static boolean hasData(String playerName) {

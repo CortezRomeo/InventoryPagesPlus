@@ -18,14 +18,18 @@ database:
   # For multiple server setups, use MYSQL.
   type: H2
   # Please provide the accurate login information and name that will be used for managing database.
-  mysql:
-    database:
-      host: localhost
-      port: 3306
-      name: inventorypagesplus
-      table: inventorydata
-      user: root
-      password: ''
+  settings:
+    h2:
+      file-name: 'h2Database'
+      table: 'inventorydata'
+    mysql:
+      database:
+        host: localhost
+        port: 3306
+        name: inventorypagesplus
+        table: inventorydata
+        user: root
+        password: ''
 
 # Set the locale for all messages.
 # To set language to English, set locale to en, to use the file "messages_en.yml" in folder "languages".
@@ -43,10 +47,8 @@ auto-saving:
   interval: 900 # seconds
 
 backup-settings:
-  # This will use SimpleDateFormat in Java to format the date.
-  # For more information:
   # https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html
-  date-format: 'HH-mm-ss MM-dd-yyyy'
+  file-name-date-format: 'HH-mm-ss MM-dd-yyyy'
 
 inventory-settings:
   # Set to 0 if you don't want the players to have any additional pages.

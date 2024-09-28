@@ -2,6 +2,7 @@ package me.cortezromeo.inventorypagesplus.manager;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
 import me.cortezromeo.inventorypagesplus.enums.DatabaseType;
+import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryDataH2Storage;
 import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryDataMySQLStorage;
 import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryDataStorage;
 
@@ -30,13 +31,13 @@ public class BackupManager {
     private final String backupPath = InventoryPagesPlus.plugin.getDataFolder() + "\\backup\\";
 
     public void backupAll() {
-        DebugManager.debug("BACKUP", "Start creating backup files (for all database).");
+        DatabaseType databaseType = InventoryPagesPlus.databaseType;
+        DebugManager.debug("BACKUP (DATABASE: " + databaseType + ")", "Start creating backup files (for all database).");
 
         // Save database before backing up
         DatabaseManager.updateAndSaveAllInventoriesToDatabase();
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(InventoryPagesPlus.plugin.getConfig().getString("backup-settings.date-format"));
-        DatabaseType databaseType = InventoryPagesPlus.databaseType;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(InventoryPagesPlus.plugin.getConfig().getString("backup-settings.file-name-date-format"));
         Date date = new Date();
         backupFileName = simpleDateFormat.format(date) + " (" + databaseType.toString().toLowerCase() + ")";
         String zipFileName = backupPath + backupFileName + ".zip";
@@ -59,9 +60,25 @@ public class BackupManager {
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
-        } else if (InventoryPagesPlus.databaseType == DatabaseType.MYSQL){
+        } else if (InventoryPagesPlus.databaseType == DatabaseType.H2) {
+            if (PlayerInventoryDataH2Storage.getConnection() ==  null) {
+                DebugManager.debug("BACKUP (DATABASE: " + databaseType + ")", "Cannot backup because H2 Database connection is not valid!");
+                return;
+            }
             try {
-                Statement statement = PlayerInventoryDataMySQLStorage.connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+                Statement statement = PlayerInventoryDataH2Storage.getConnection().createStatement();
+                String sql = "BACKUP TO '" + zipFileName + "'";
+                statement.executeUpdate(sql);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        } else if (InventoryPagesPlus.databaseType == DatabaseType.MYSQL){
+            if (PlayerInventoryDataMySQLStorage.getConnection() ==  null) {
+                DebugManager.debug("BACKUP (DATABASE: " + databaseType + ")", "Cannot backup because MySQL Database connection is not valid!");
+                return;
+            }
+            try {
+                Statement statement = PlayerInventoryDataMySQLStorage.getConnection().createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
                         ResultSet.CONCUR_UPDATABLE);
 
                 String databaseName = PlayerInventoryDataStorage.mySQLTableName;
@@ -69,11 +86,14 @@ public class BackupManager {
 
                 String executionPath = System.getProperty("user.dir").replace("\\", "/");
                 executionPath = executionPath + "/plugins/" + InventoryPagesPlus.plugin.getDescription().getName() + "/backup/" + databaseName + ".csv";
+                File file = new File(backupPath + databaseName + ".csv");
+                if (file.exists())
+                    if (file.delete())
+                        DebugManager.debug("BACKUP (DATABASE: " + databaseType + ")", "Deleted old backup csv file.");
                 String query = "SELECT * FROM " + tableName + " INTO OUTFILE '" + executionPath + "' FIELDS TERMINATED BY ','";
                 statement.executeQuery(query);
 
                 try {
-                    File file = new File(backupPath + databaseName + ".csv");
                     FileOutputStream fos = new FileOutputStream(zipFileName);
                     ZipOutputStream zos = new ZipOutputStream(fos);
 
@@ -91,7 +111,7 @@ public class BackupManager {
                 e.printStackTrace();
             }
         }
-        DebugManager.debug("BACKUP", "Created backup files (for all database).");
+        DebugManager.debug("BACKUP (DATABASE: " + databaseType + ")", "Created backup files (for all database).");
     }
 
 }

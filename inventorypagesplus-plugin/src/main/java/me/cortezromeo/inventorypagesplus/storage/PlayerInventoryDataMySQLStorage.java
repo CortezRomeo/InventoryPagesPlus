@@ -15,10 +15,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerInventoryDataMySQLStorage implements PlayerInventoryStorage {
-    public static Connection connection;
+    private static Connection connection;
     private static String table;
 
     public PlayerInventoryDataMySQLStorage(String host, String port, String databaseName, String tableName, String user, String password) throws SQLException, ClassNotFoundException {
@@ -28,10 +27,7 @@ public class PlayerInventoryDataMySQLStorage implements PlayerInventoryStorage {
         if (connection != null)
             disable();
         connection = DriverManager.getConnection(url, user, password);
-        createTable();
-    }
 
-    private static void createTable() {
         if (ifTableExist(table)) {
             DebugManager.debug("LOADING DATABASE", "Connected to table " + table + ".");
         } else {
@@ -69,6 +65,10 @@ public class PlayerInventoryDataMySQLStorage implements PlayerInventoryStorage {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static Connection getConnection() {
+        return connection;
     }
 
     public PlayerInventoryData fromMySQL(String playerName, String playerUUID) {

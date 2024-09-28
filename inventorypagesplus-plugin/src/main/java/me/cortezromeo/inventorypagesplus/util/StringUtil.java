@@ -35,8 +35,8 @@ public class StringUtil {
             }
             dataOutput.close();
             return Base64Coder.encodeLines(outputStream.toByteArray());
-        } catch (Exception e) {
-            throw new IllegalStateException("Unable to save item stacks.", e);
+        } catch (Exception exception) {
+            throw new IllegalStateException("Unable to save item stacks.", exception);
         }
     }
 

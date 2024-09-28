@@ -12,32 +12,30 @@ import org.bukkit.inventory.ItemStack;
 import org.h2.jdbc.JdbcConnection;
 
 import java.nio.charset.StandardCharsets;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.UUID;
 
 public class PlayerInventoryDataH2Storage implements PlayerInventoryStorage {
-    public static JdbcConnection connection;
+    private static JdbcConnection connection;
     private static String table;
 
-    public PlayerInventoryDataH2Storage() {
-        table = "inventorydata";
+    public PlayerInventoryDataH2Storage(String fileName, String tableName) {
+        table = tableName;
         try {
-
             if (connection != null)
                 disable();
 
-            connection = new JdbcConnection("jdbc:h2:./" + InventoryPagesPlus.plugin.getDataFolder() + "/data;mode=MySQL", new Properties(), null, null, false);
+            connection = new JdbcConnection("jdbc:h2:./" + InventoryPagesPlus.plugin.getDataFolder() + "/database/" + fileName + ";mode=MySQL", new Properties(), null, null, false);
             connection.setAutoCommit(true);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        createTable();
-    }
 
-    private static void createTable() {
         try {
             Statement statement = connection.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS " + table + " " +
@@ -55,6 +53,10 @@ public class PlayerInventoryDataH2Storage implements PlayerInventoryStorage {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static JdbcConnection getConnection() {
+        return connection;
     }
 
     public PlayerInventoryData fromH2(String playerName, String playerUUID) {
