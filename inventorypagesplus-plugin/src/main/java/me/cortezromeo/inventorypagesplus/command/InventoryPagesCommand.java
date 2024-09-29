@@ -39,6 +39,7 @@ public class InventoryPagesCommand implements CommandExecutor, TabExecutor {
 
         if (args.length == 1) {
             if (args[0].equalsIgnoreCase("reload")) {
+                long time = System.currentTimeMillis();
                 InventoryPagesPlus.plugin.reloadConfig();
                 English.reload();
                 Vietnamese.reload();
@@ -51,7 +52,7 @@ public class InventoryPagesCommand implements CommandExecutor, TabExecutor {
                     AutoSaveManager.startAutoSave(InventoryPagesPlus.plugin.getConfig().getInt("auto-saving.interval"));
                 }
                 AutoSaveManager.reloadTimeAutoSave();
-                DebugManager.debug("RELOADING PLUGIN", "Reloaded plugin.");
+                DebugManager.debug("RELOADING PLUGIN", "Reloaded plugin. (" + (System.currentTimeMillis() - time) + "ms)");
                 MessageUtil.sendMessage(sender, Messages.COMMAND_INVENTORYPAGESPLUS_RELOAD);
                 return false;
             }

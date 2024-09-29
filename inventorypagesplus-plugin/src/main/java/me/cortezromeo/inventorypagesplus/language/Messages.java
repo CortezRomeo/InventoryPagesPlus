@@ -28,6 +28,14 @@ public class Messages {
     public static String COMMAND_INVENTORYPAGESPLUS_ADD_MAX_PAGE = "";
     public static String COMMAND_INVENTORYPAGESPLUS_REMOVE_MAX_PAGE = "";
     public static List<String> COMMAND_SETPAGESLOT_MESSAGES = new ArrayList<>();
+    public static String COMMAND_SETPAGESLOT_MISMATCH_NEXT_PAGE = "";
+    public static String COMMAND_SETPAGESLOT_MISMATCH_PREV_PAGE = "";
+    public static String COMMAND_SETPAGESLOT_SLOT_RANGE_ERROR = "";
+    public static String COMMAND_SETPAGESLOT_EMPTY_SLOT_REQUEST = "";
+    public static String COMMAND_SETPAGESLOT_NO_CHANGE_RESET = "";
+    public static String COMMAND_SETPAGESLOT_SET_NEXT_PAGE = "";
+    public static String COMMAND_SETPAGESLOT_SET_PREV_PAGE = "";
+    public static String COMMAND_SETPAGESLOT_RESET_PAGE_SLOT = "";
     private static FileConfiguration messageFileYaml;
 
     public static void setupValue(String locale) {
@@ -63,9 +71,16 @@ public class Messages {
         COMMAND_INVENTORYPAGESPLUS_ADD_MAX_PAGE = fileConfiguration.getString("messages.commands.inventorypagesplus.add-max-page");
         COMMAND_INVENTORYPAGESPLUS_REMOVE_MAX_PAGE = fileConfiguration.getString("messages.commands.inventorypagesplus.remove-max-page");
         COMMAND_SETPAGESLOT_MESSAGES = fileConfiguration.getStringList("messages.commands.setpageslot.messages");
+        COMMAND_SETPAGESLOT_MISMATCH_NEXT_PAGE = fileConfiguration.getString("messages.commands.setpageslot.page-slot-mismatch.next-page");
+        COMMAND_SETPAGESLOT_MISMATCH_PREV_PAGE = fileConfiguration.getString("messages.commands.setpageslot.page-slot-mismatch.prev-page");
+        COMMAND_SETPAGESLOT_SLOT_RANGE_ERROR = fileConfiguration.getString("messages.commands.setpageslot.slot-range-error");
+        COMMAND_SETPAGESLOT_EMPTY_SLOT_REQUEST = fileConfiguration.getString("messages.commands.setpageslot.empty-slot-request");
+        COMMAND_SETPAGESLOT_NO_CHANGE_RESET = fileConfiguration.getString("messages.commands.setpageslot.no-change-reset");
+        COMMAND_SETPAGESLOT_SET_NEXT_PAGE = fileConfiguration.getString("messages.commands.setpageslot.next-page-slot-set");
+        COMMAND_SETPAGESLOT_SET_PREV_PAGE = fileConfiguration.getString("messages.commands.setpageslot.prev-page-slot-set");
+        COMMAND_SETPAGESLOT_RESET_PAGE_SLOT = fileConfiguration.getString("messages.commands.setpageslot.reset-page-slot-number");
 
-
-        DebugManager.debug("LOADING MESSAGES", "Loaded " + locale + ".");
+        DebugManager.debug("LOADING MESSAGES", "Loaded message file name: " + locale + ".");
     }
 
     public static FileConfiguration getMessageFileYaml() {

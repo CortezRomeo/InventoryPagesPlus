@@ -179,7 +179,6 @@ public final class InventoryPagesPlus extends JavaPlugin {
             e.printStackTrace();
         }
         English.reload();
-        DebugManager.debug("LOADING FILE (language)", "Loaded messages_en.yml.");
 
         // messages_vi.yml
         String vietnameseFileName = "messages_vi.yml";
@@ -192,7 +191,6 @@ public final class InventoryPagesPlus extends JavaPlugin {
             e.printStackTrace();
         }
         Vietnamese.reload();
-        DebugManager.debug("LOADING FILE (language)", "Loaded messages_vi.yml.");
 
         Messages.setupValue(getConfig().getString("locale"));
     }

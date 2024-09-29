@@ -40,8 +40,8 @@ public class SetPageSlotCommand implements CommandExecutor, TabExecutor {
 
             if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("reset")) {
-                    PageSlotManager.resetPageSlot(player);
-                    MessageUtil.devMessage(player, "successfully reset page slot number!");
+                    if (PageSlotManager.resetPageSlot(player))
+                        MessageUtil.sendMessage(player, Messages.COMMAND_SETPAGESLOT_RESET_PAGE_SLOT);
                     return false;
                 }
             }
@@ -51,21 +51,23 @@ public class SetPageSlotCommand implements CommandExecutor, TabExecutor {
                     try {
                         slot = Integer.parseInt(args[1]);
                     } catch (Exception exception) {
-                        player.sendMessage(Messages.INVALID_NUMBER);
+                        MessageUtil.sendMessage(player, Messages.INVALID_NUMBER);
                         return false;
                     }
                     if (args[0].equalsIgnoreCase("nextpage")) {
-                        PageSlotManager.setNextPageSlot(player, slot);
-                        MessageUtil.devMessage(player, "successfully set next page slot to " + slot);
+                        if (PageSlotManager.setNextPageSlot(player, slot))
+                            MessageUtil.sendMessage(player, Messages.COMMAND_SETPAGESLOT_SET_NEXT_PAGE.replace("%slotNumber%", String.valueOf(slot)));
+                        return false;
                     }
                     if (args[0].equalsIgnoreCase("prevpage")) {
-                        PageSlotManager.setPrevPageSlot(player, slot);
-                        MessageUtil.devMessage(player, "successfully set prev page slot to " + slot);
+                        if (PageSlotManager.setPrevPageSlot(player, slot))
+                            MessageUtil.sendMessage(player, Messages.COMMAND_SETPAGESLOT_SET_PREV_PAGE.replace("%slotNumber%", String.valueOf(slot)));
+                        return false;
                     }
                 }
             }
 
-            for (String message : Messages.COMMAND_INVENTORYPAGESPLUS_MESSAGES) {
+            for (String message : Messages.COMMAND_SETPAGESLOT_MESSAGES) {
                 message = message.replace("%version%", InventoryPagesPlus.plugin.getDescription().getVersion());
                 MessageUtil.sendMessage(sender, message);
             }
@@ -80,7 +82,6 @@ public class SetPageSlotCommand implements CommandExecutor, TabExecutor {
 
         if (args.length == 1) {
             if (sender.hasPermission("inventorypagesplus.setpageslot")) {
-                commands.add("gui");
                 commands.add("reset");
                 commands.add("nextpage");
                 commands.add("prevpage");

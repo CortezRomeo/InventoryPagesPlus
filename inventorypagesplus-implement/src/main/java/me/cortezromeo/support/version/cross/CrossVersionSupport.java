@@ -62,15 +62,20 @@ public class CrossVersionSupport extends VersionSupport {
 
     @Override
     public Sound createSound(String soundName) {
-        return XSound.matchXSound(soundName).map(XSound::parseSound).orElseGet(() -> {
-            getPlugin().getLogger().severe("----------------------------------------------------");
-            getPlugin().getLogger().severe("SOUND NAME " + soundName + " DOES NOT EXIST!");
-            getPlugin().getLogger().severe("Maybe you type it wrong or it does not exist in this server version.");
-            getPlugin().getLogger().severe("Please take a look at those valid sounds right here:");
-            getPlugin().getLogger().severe("https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html");
-            getPlugin().getLogger().severe("----------------------------------------------------");
+        try {
+            return XSound.matchXSound(soundName).map(XSound::parseSound).orElseGet(() -> {
+                getPlugin().getLogger().severe("----------------------------------------------------");
+                getPlugin().getLogger().severe("SOUND NAME " + soundName + " DOES NOT EXIST!");
+                getPlugin().getLogger().severe("Maybe you type it wrong or it does not exist in this server version.");
+                getPlugin().getLogger().severe("Please take a look at those valid sounds right here:");
+                getPlugin().getLogger().severe("https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html");
+                getPlugin().getLogger().severe("----------------------------------------------------");
+                return XSound.BLOCK_AMETHYST_CLUSTER_BREAK.parseSound();
+            });
+        } catch (Exception exception) {
+            exception.printStackTrace();
             return XSound.BLOCK_AMETHYST_CLUSTER_BREAK.parseSound();
-        });
+        }
     }
 
     @Override
