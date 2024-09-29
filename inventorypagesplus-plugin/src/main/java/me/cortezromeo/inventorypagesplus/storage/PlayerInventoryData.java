@@ -258,8 +258,8 @@ public class PlayerInventoryData {
 
     public void dropAllPages(GameMode gm) {
         if (gm != GameMode.CREATIVE) {
-            for (int i = 0; i < this.maxPage + 1; i++) {
-                dropPage(i, gm);
+            for (int page = 0; page < this.maxPage + 1; page++) {
+                dropPage(page, gm);
             }
         } else {
             dropPage(gm);

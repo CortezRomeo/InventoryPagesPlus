@@ -45,7 +45,6 @@ public class SetPageSlotCommand implements CommandExecutor, TabExecutor {
                     return false;
                 }
             }
-
             if (args.length == 2) {
                 if (args[0].equalsIgnoreCase("nextpage") || args[0].equalsIgnoreCase("prevpage")) {
                     int slot = 0;
@@ -64,6 +63,11 @@ public class SetPageSlotCommand implements CommandExecutor, TabExecutor {
                         MessageUtil.devMessage(player, "successfully set prev page slot to " + slot);
                     }
                 }
+            }
+
+            for (String message : Messages.COMMAND_INVENTORYPAGESPLUS_MESSAGES) {
+                message = message.replace("%version%", InventoryPagesPlus.plugin.getDescription().getVersion());
+                MessageUtil.sendMessage(sender, message);
             }
         }
         return false;

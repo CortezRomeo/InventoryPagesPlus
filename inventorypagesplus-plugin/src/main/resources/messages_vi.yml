@@ -48,3 +48,15 @@ messages:
       set-max-page: '%prefix%&fĐã set số trang tối đa của &e%player% &fthành &e%number%&f.'
       add-max-page: '%prefix%&fĐã thêm &e%number% trang tối đa cho &e%player%&f.'
       remove-max-page: '%prefix%&fĐã trừ &e%number% trang tối đa của &e%player%&f.'
+    setpageslot:
+      messages:
+        - ' '
+        - '&#FBFB14InventoryPagesPlus'
+        - '&7Version %version%'
+        - ' '
+        - '&#FBFB14/setpageslot gui &7- &fOpen GUI for setting pages'' item slot'
+        - '&#FBFB14/setpageslot nextpage &6<slot> &7- &fSet the slot of next page item'
+        - '&#FBFB14/setpageslot prevpage &6<slot> &7- &fSet the slot of previous page item'
+        - '&#FBFB14/setpageslot reset &7- &fReset the slots to the server''s setting default'
+        - ' '
+        - ' &6<>&7: Cannot leave blanked &7| &e()&7: Can leave blanked'

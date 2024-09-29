@@ -27,6 +27,7 @@ public class Messages {
     public static String COMMAND_INVENTORYPAGESPLUS_SET_MAX_PAGE = "";
     public static String COMMAND_INVENTORYPAGESPLUS_ADD_MAX_PAGE = "";
     public static String COMMAND_INVENTORYPAGESPLUS_REMOVE_MAX_PAGE = "";
+    public static List<String> COMMAND_SETPAGESLOT_MESSAGES = new ArrayList<>();
     private static FileConfiguration messageFileYaml;
 
     public static void setupValue(String locale) {
@@ -61,6 +62,8 @@ public class Messages {
         COMMAND_INVENTORYPAGESPLUS_SET_MAX_PAGE = fileConfiguration.getString("messages.commands.inventorypagesplus.set-max-page");
         COMMAND_INVENTORYPAGESPLUS_ADD_MAX_PAGE = fileConfiguration.getString("messages.commands.inventorypagesplus.add-max-page");
         COMMAND_INVENTORYPAGESPLUS_REMOVE_MAX_PAGE = fileConfiguration.getString("messages.commands.inventorypagesplus.remove-max-page");
+        COMMAND_SETPAGESLOT_MESSAGES = fileConfiguration.getStringList("messages.commands.setpageslot.messages");
+
 
         DebugManager.debug("LOADING MESSAGES", "Loaded " + locale + ".");
     }
