@@ -18,10 +18,10 @@ public class InvseeManager {
     public static void invsee(Player player, String targetName, boolean editMode) {
         Player target = Bukkit.getPlayer(targetName);
         if (target != null) {
-            Inventory inventory = InvseeInventory.inventory(player, target.getName(), target.getUniqueId().toString(), editMode, 0);
-            if (inventory != null)
+            Inventory inventory = InvseeInventory.inventory(player, target.getName(), target.getUniqueId().toString(), false, editMode, 0);
+            if (inventory != null) {
                 player.openInventory(inventory);
-            else {
+            } else {
                 MessageUtil.devMessage(player, "occurred an error while trying to see the inventory of " + target.getName() + ", pls contact admin.");
                 return;
             }
@@ -31,7 +31,7 @@ public class InvseeManager {
 
                 if (DatabaseManager.tempPlayerUUID.containsKey(targetName)) {
                     DatabaseManager.loadPlayerInventory(targetName);
-                    Inventory inventory = InvseeInventory.inventory(player, targetName, DatabaseManager.tempPlayerUUID.get(targetName), editMode, 0);
+                    Inventory inventory = InvseeInventory.inventory(player, targetName, DatabaseManager.tempPlayerUUID.get(targetName), false, editMode, 0);
                     if (inventory != null)
                         player.openInventory(inventory);
                     else {
@@ -61,7 +61,7 @@ public class InvseeManager {
                                 return;
                             } else {
                                 if (!invseeOfflineTargetUUIDQueue.get(player).equals("/.")) {
-                                    Inventory inventory = InvseeInventory.inventory(player, targetName, invseeOfflineTargetUUIDQueue.get(player), editMode, 0);
+                                    Inventory inventory = InvseeInventory.inventory(player, targetName, invseeOfflineTargetUUIDQueue.get(player), false, editMode, 0);
                                     if (inventory != null)
                                         player.openInventory(inventory);
                                     else

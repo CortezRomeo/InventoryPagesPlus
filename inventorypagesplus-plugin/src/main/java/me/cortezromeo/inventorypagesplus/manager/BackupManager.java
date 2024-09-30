@@ -1,6 +1,7 @@
 package me.cortezromeo.inventorypagesplus.manager;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
+import me.cortezromeo.inventorypagesplus.Settings;
 import me.cortezromeo.inventorypagesplus.enums.DatabaseType;
 import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryDataH2Storage;
 import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryDataMySQLStorage;
@@ -37,7 +38,7 @@ public class BackupManager {
         // Save database before backing up
         DatabaseManager.updateAndSaveAllInventoriesToDatabase();
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(InventoryPagesPlus.plugin.getConfig().getString("backup-settings.file-name-date-format"));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Settings.BACKUP_FILE_NAME_DATE_FORMAT);
         Date date = new Date();
         backupFileName = simpleDateFormat.format(date) + " (" + databaseType.toString().toLowerCase() + ")";
         String zipFileName = backupPath + backupFileName + ".zip";

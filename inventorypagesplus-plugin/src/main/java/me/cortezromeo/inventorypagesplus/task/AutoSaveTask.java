@@ -25,12 +25,12 @@ public class AutoSaveTask implements Runnable {
     @Override
     public void run() {
         if (Bukkit.getOnlinePlayers().isEmpty()) {
-            DebugManager.debug("AUTO SAVING", "The database is not saved because there is no players.");
+            DebugManager.debug("AUTO SAVE", "The database is not saved because there is no players.");
             return;
         }
 
         DatabaseManager.updateAndSaveAllInventoriesToDatabase();
-        DebugManager.debug("AUTO SAVING", "Saved " + Bukkit.getOnlinePlayers().size() + " player database.");
+        DebugManager.debug("AUTO SAVE", "Saved " + Bukkit.getOnlinePlayers().size() + " player database.");
     }
 
     public void cancel() {

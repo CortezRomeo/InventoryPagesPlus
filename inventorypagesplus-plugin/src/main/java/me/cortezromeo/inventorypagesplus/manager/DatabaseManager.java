@@ -83,14 +83,12 @@ public class DatabaseManager {
         String playerUUID = PlayerInventoryDataStorage.getPlayerUUIDFromData(playerName, true);
         if (DatabaseManager.playerInventoryDatabase.containsKey(playerUUID)) {
             DatabaseManager.playerInventoryDatabase.get(playerUUID).saveCurrentPage();
-            DebugManager.debug("UPDATING INV. TO HASHMAP PLAYER (" + playerName + ")", "Completed with no issues. (" + (System.currentTimeMillis() - time + "ms)"));
         }
     }
 
     public static void updateInvToHashMapUUID(String UUID) {
         if (DatabaseManager.playerInventoryDatabase.containsKey(UUID)) {
             DatabaseManager.playerInventoryDatabase.get(UUID).saveCurrentPage();
-            DebugManager.debug("UPDATING INV. TO HASHMAP UUID (" +UUID + ")", "Completed with no issues.");
         }
     }
 

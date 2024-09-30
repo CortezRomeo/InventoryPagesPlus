@@ -1,6 +1,7 @@
 package me.cortezromeo.inventorypagesplus.listener;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
+import me.cortezromeo.inventorypagesplus.Settings;
 import me.cortezromeo.inventorypagesplus.inventory.PlayerPageInventory;
 import me.cortezromeo.inventorypagesplus.language.Messages;
 import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
@@ -93,7 +94,7 @@ public class InventoryClickListener implements Listener {
     public Boolean hasSwitcherItems(Player player) {
         String playerUUID = player.getUniqueId().toString();
         if (DatabaseManager.playerInventoryDatabase.containsKey(playerUUID)) {
-            if (!InventoryPagesPlus.useCreativeInventory) {
+            if (!Settings.INVENTORY_SETTINGS_USE_CREATIVE_INVENTORY) {
                 return true;
             }
             return player.getGameMode() != GameMode.CREATIVE;

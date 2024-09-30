@@ -12,14 +12,16 @@ public class InvseeInventoryData implements InventoryHolder {
     private Inventory inventory;
     private String targetName;
     private String targetUUID;
+    private boolean beingUpdated;
     private boolean editMode;
     private int page;
 
-    public InvseeInventoryData(InventoryType inventoryType, int size, String title, String targetName, String targetUUID, boolean editMode, int page) {
+    public InvseeInventoryData(InventoryType inventoryType, int size, String title, String targetName, String targetUUID, boolean beingUpdaed, boolean editMode, int page) {
         this.inventory = Bukkit.createInventory(this, size, title);
         this.inventoryType = inventoryType;
         this.targetName = targetName;
         this.targetUUID = targetUUID;
+        this.beingUpdated = beingUpdaed;
         this.editMode = editMode;
         this.page = page;
     }
@@ -59,12 +61,20 @@ public class InvseeInventoryData implements InventoryHolder {
         return editMode;
     }
 
-    public void setEditMode(Boolean editMode) {
+    public void setEditMode(boolean editMode) {
         this.editMode = editMode;
     }
 
     public int getPage() {
         return page;
+    }
+
+    public boolean isBeingUpdated() {
+        return beingUpdated;
+    }
+
+    public void setBeingUpdated(boolean beingUpdated) {
+        this.beingUpdated = beingUpdated;
     }
 
     public void setPage(int page) {
@@ -82,7 +92,7 @@ public class InvseeInventoryData implements InventoryHolder {
         this.page = this.page - page;
     }
 
-    public enum InventoryType{
+    public enum InventoryType {
         invsee,
         invseeotheritems
     }

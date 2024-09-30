@@ -1,6 +1,7 @@
 package me.cortezromeo.inventorypagesplus.storage;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
+import me.cortezromeo.inventorypagesplus.Settings;
 import me.cortezromeo.inventorypagesplus.inventory.PlayerPageInventory;
 import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
@@ -41,7 +42,7 @@ public class PlayerInventoryDataYAMLStorage implements PlayerInventoryStorage {
         YamlConfiguration storage = YamlConfiguration.loadConfiguration(file);
 
         HashMap<Integer, ArrayList<ItemStack>> pageItemHashMap = new HashMap<>();
-        int maxPageDefault = InventoryPagesPlus.plugin.getConfig().getInt("inventory-settings.max-page-default");
+        int maxPageDefault = Settings.INVENTORY_SETTINGS_MAX_PAGE_DEFAULT;
         if (maxPageDefault < 0)
             maxPageDefault = 0;
 
@@ -94,10 +95,10 @@ public class PlayerInventoryDataYAMLStorage implements PlayerInventoryStorage {
                 data.setCreativeItems(creativeItems);
             }
 
-            if (InventoryPagesPlus.plugin.getConfig().getBoolean("inventory-settings.use-saved-current-page"))
+            if (Settings.INVENTORY_SETTINGS_USE_SAVED_CURRENT_PAGE)
                 data.setPage(storage.getInt("currentPage"));
 
-            if (!InventoryPagesPlus.plugin.getConfig().getBoolean("inventory-settings.focus-using-default-item-position")) {
+            if (!Settings.INVENTORY_SETTINGS_FOCUS_USING_DEFAULT_ITEM_POS) {
                 data.setPrevItemPos(storage.getInt("prevItemPos"));
                 data.setNextItemPos(storage.getInt("nextItemPos"));
             }

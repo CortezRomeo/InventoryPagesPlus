@@ -36,7 +36,6 @@ public final class InventoryPagesPlus extends JavaPlugin {
     public static VersionSupport nms;
     public static DatabaseType databaseType;
     private static boolean papiSupport = false;
-    public static boolean useCreativeInventory = false;
 
     @Override
     public void onLoad() {
@@ -47,8 +46,7 @@ public final class InventoryPagesPlus extends JavaPlugin {
     @Override
     public void onEnable() {
         initFiles();
-        useCreativeInventory = getConfig().getBoolean("inventory-settings.use-creative-inventory");
-        DebugManager.setDebug(getConfig().getBoolean("debug.enabled"));
+        Settings.setupValue();
         initLanguages();
         initDatabase();
         initInventories();
@@ -56,7 +54,7 @@ public final class InventoryPagesPlus extends JavaPlugin {
         initListeners();
         initSupports();
 
-        AutoSaveManager.startAutoSave(getConfig().getInt("auto-saving.interval"));
+        AutoSaveManager.startAutoSave(Settings.AUTO_SAVE_SECONDS);
 
         MessageUtil.log("&f--------------------------------");
         MessageUtil.log("&2  _                                                      _");
@@ -90,16 +88,17 @@ public final class InventoryPagesPlus extends JavaPlugin {
 
     public void initDatabase() {
         try {
-            databaseType = DatabaseType.valueOf(getConfig().getString("database.type").toUpperCase());
+            databaseType = DatabaseType.valueOf(Settings.DATABASE_TYPE.toUpperCase());
             PlayerInventoryDataStorage.init(databaseType);
         } catch (IllegalArgumentException exception) {
             MessageUtil.log("&c--------------------------------------");
             MessageUtil.log("    &4ERROR");
-            MessageUtil.log("&eDatabase type &c&l" + getConfig().getString("database.type") + "&e does not exist!");
+            MessageUtil.log("&eDatabase type &c&l" + Settings.DATABASE_TYPE + "&e does not exist!");
             MessageUtil.log("&ePlease check it again in config.yml.");
             MessageUtil.log("&eDatabase will automatically use &b&lH2 &eto load.");
             MessageUtil.log("&c--------------------------------------");
             PlayerInventoryDataStorage.init(DatabaseType.H2);
+            Settings.DATABASE_TYPE = "H2";
         }
     }
 
@@ -192,7 +191,7 @@ public final class InventoryPagesPlus extends JavaPlugin {
         }
         Vietnamese.reload();
 
-        Messages.setupValue(getConfig().getString("locale"));
+        Messages.setupValue(Settings.LOCALE);
     }
 
     public void initInventories() {

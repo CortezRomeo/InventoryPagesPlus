@@ -1,6 +1,7 @@
 package me.cortezromeo.inventorypagesplus.inventory;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
+import me.cortezromeo.inventorypagesplus.Settings;
 import me.cortezromeo.inventorypagesplus.file.inventory.PlayerInventoryFile;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.util.ItemUtil;
@@ -19,14 +20,14 @@ public class PlayerPageInventory {
                 (short) playerInvCfg.getInt("items.prev.data"),
                 playerInvCfg.getString("items.prev.name"),
                 playerInvCfg.getStringList("items.prev.lore")), itemCustomData);
-        prevPos = InventoryPagesPlus.plugin.getConfig().getInt("inventory-settings.prev-item-position-default");
+        prevPos = Settings.INVENTORY_SETTINGS_PREV_ITEM_POS_DEFAULT;
 
         nextItem = InventoryPagesPlus.nms.addCustomData(ItemUtil.getItem(playerInvCfg.getString("items.next.type"),
                 playerInvCfg.getString("items.next.value"),
                 (short) playerInvCfg.getInt("items.next.data"),
                 playerInvCfg.getString("items.next.name"),
                 playerInvCfg.getStringList("items.next.lore")), itemCustomData);
-        nextPos = InventoryPagesPlus.plugin.getConfig().getInt("inventory-settings.next-item-position-default");
+        nextPos = Settings.INVENTORY_SETTINGS_NEXT_ITEM_POS_DEFAULT;
 
         noPageItem = InventoryPagesPlus.nms.addCustomData(ItemUtil.getItem(playerInvCfg.getString("items.noPage.type"),
                 playerInvCfg.getString("items.noPage.value"),

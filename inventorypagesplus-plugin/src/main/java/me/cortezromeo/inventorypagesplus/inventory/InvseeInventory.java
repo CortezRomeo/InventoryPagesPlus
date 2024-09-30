@@ -6,6 +6,7 @@ import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryData;
 import me.cortezromeo.inventorypagesplus.util.ItemUtil;
+import me.cortezromeo.inventorypagesplus.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -17,6 +18,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -96,18 +98,32 @@ public class InvseeInventory implements Listener {
         DebugManager.debug("LOADING INVENTORIES (InvseeInventory)", "Completed with no issues.");
     }
 
-    public static Inventory inventory(Player player, String targetName, String targetUUID, boolean editMode, int page) {
+     public static Inventory inventory(Player player, String targetName, String targetUUID, boolean beingUpdated, boolean editMode, int page) {
         if (!DatabaseManager.playerInventoryDatabase.containsKey(targetUUID)) {
             DebugManager.debug("INVSEE FOR " + player.getName(), "Canceled because the database of " + targetName + " (UUID: " + targetUUID + ") does not exist!");
             return null;
         }
         DatabaseManager.updateInvToHashMapUUID(targetUUID);
 
-        InvseeInventoryData invseeInventory = new InvseeInventoryData(InvseeInventoryData.InventoryType.invsee, 54, InventoryPagesPlus.nms.addColor(title.replace("%player%", targetName)), targetName, targetUUID, editMode, page);
+        InvseeInventoryData invseeInventory = new InvseeInventoryData(InvseeInventoryData.InventoryType.invsee, 54, InventoryPagesPlus.nms.addColor(title.replace("%player%", targetName)), targetName, targetUUID, beingUpdated, editMode, page);
         Inventory inventory = invseeInventory.getInventory();
 
         // load target's items and GUI's buttons
-        updateInvseeInventory(inventory);
+         if (!invseeInventory.isBeingUpdated()) {
+             invseeInventory.setBeingUpdated(true);
+             new BukkitRunnable() {
+                 @Override
+                 public void run() {
+                     if (inventory.getViewers().isEmpty()) {
+                         MessageUtil.devMessage("Cancel updating inventory " + inventory.toString());
+                         cancel();
+                         return;
+                     }
+                     MessageUtil.devMessage("Update inventory " + inventory.toString());
+                     updateInvseeInventory(inventory);
+                 }
+             }.runTaskTimerAsynchronously(InventoryPagesPlus.plugin, 0, 10);
+         }
         return inventory;
     }
 
@@ -253,7 +269,7 @@ public class InvseeInventory implements Listener {
                 updateInvseeInventory(inventory);
                 player.updateInventory();
             } else if (InventoryPagesPlus.nms.getCustomData(clickedItem).equals("otheritemsitem")) {
-                player.openInventory(InvseeOtherItemsInventory.inventory(player, invseeInventoryData.getTargetName(), invseeInventoryData.getTargetUUID(), invseeInventoryData.isEditMode(), invseeInventoryData.getPage()));
+                player.openInventory(InvseeOtherItemsInventory.inventory(player, invseeInventoryData.getTargetName(), invseeInventoryData.getTargetUUID(), false, invseeInventoryData.isEditMode(), invseeInventoryData.getPage()));
             }
         }
     }

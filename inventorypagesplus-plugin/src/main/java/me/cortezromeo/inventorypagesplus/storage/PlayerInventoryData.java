@@ -1,10 +1,13 @@
 package me.cortezromeo.inventorypagesplus.storage;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
+import me.cortezromeo.inventorypagesplus.Settings;
 import me.cortezromeo.inventorypagesplus.inventory.PlayerPageInventory;
 import me.cortezromeo.inventorypagesplus.language.Messages;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.util.MessageUtil;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -58,7 +61,7 @@ public class PlayerInventoryData {
             for (int i = 0; i < 27; i++) {
                 ItemStack item = player.getInventory().getItem(i + 9);
                 if (item != null) {
-                    if (this.storeOrDropItem(item, player.getGameMode())) {
+                    if (this.storeOrDropItem(storeItemStackType.give, item, player.getGameMode())) {
                         droppedItem = true;
                     }
                 }
@@ -174,7 +177,7 @@ public class PlayerInventoryData {
     public void saveCurrentPage() {
         if (player == null)
             return;
-        if (!InventoryPagesPlus.useCreativeInventory || player.getGameMode() != GameMode.CREATIVE) {
+        if (!Settings.INVENTORY_SETTINGS_USE_CREATIVE_INVENTORY || player.getGameMode() != GameMode.CREATIVE) {
             ArrayList<ItemStack> pageItems = new ArrayList<>(25);
             for (int slotNumber = 0; slotNumber < 27; slotNumber++) {
                 if (slotNumber != prevItemPos && slotNumber != nextItemPos) {
@@ -202,7 +205,7 @@ public class PlayerInventoryData {
             }
             this.items.put(page, pageItems);
         } else {
-            if (!InventoryPagesPlus.useCreativeInventory) {
+            if (!Settings.INVENTORY_SETTINGS_USE_CREATIVE_INVENTORY) {
                 clearPage(page, GameMode.SURVIVAL);
                 return;
             }
@@ -218,7 +221,7 @@ public class PlayerInventoryData {
                 clearPage(page, gm);
             }
         } else {
-            if (!InventoryPagesPlus.useCreativeInventory) {
+            if (!Settings.INVENTORY_SETTINGS_USE_CREATIVE_INVENTORY) {
                 clearAllPages(GameMode.SURVIVAL);
                 return;
             }
@@ -241,7 +244,7 @@ public class PlayerInventoryData {
                 }
             }
         } else {
-            if (!InventoryPagesPlus.useCreativeInventory) {
+            if (!Settings.INVENTORY_SETTINGS_USE_CREATIVE_INVENTORY) {
                 dropPage(page, GameMode.SURVIVAL);
                 return;
             }
@@ -325,7 +328,7 @@ public class PlayerInventoryData {
             }
             //player.sendMessage("Showing Page: " + this.page);
         } else {
-            if (!InventoryPagesPlus.useCreativeInventory) {
+            if (!Settings.INVENTORY_SETTINGS_USE_CREATIVE_INVENTORY) {
                 showPage(page, GameMode.SURVIVAL);
                 return;
             }
@@ -429,16 +432,16 @@ public class PlayerInventoryData {
     }
 
     // returns true if dropped
-    public boolean storeOrDropItem(ItemStack item, GameMode gm) {
+    public boolean storeOrDropItem(storeItemStackType storeItemStackType, ItemStack itemStack, GameMode gameMode) {
         for (int hotBarSlot = 0; hotBarSlot <= 8; hotBarSlot++) {
             ItemStack itemFromSlot = player.getInventory().getItem(hotBarSlot);
             if (itemFromSlot == null) {
-                player.getInventory().setItem(hotBarSlot, item);
+                player.getInventory().setItem(hotBarSlot, itemStack);
                 return false;
             } else {
-                if (itemFromSlot.isSimilar(item)) {
-                    int amountCombined = item.getAmount() + itemFromSlot.getAmount();
-                    if (amountCombined <= item.getMaxStackSize()) {
+                if (itemFromSlot.isSimilar(itemStack)) {
+                    int amountCombined = itemStack.getAmount() + itemFromSlot.getAmount();
+                    if (amountCombined <= itemStack.getMaxStackSize()) {
                         itemFromSlot.setAmount(amountCombined);
                         player.getInventory().setItem(hotBarSlot, itemFromSlot);
                         return false;
@@ -446,48 +449,69 @@ public class PlayerInventoryData {
                 }
             }
         }
-        if (gm != GameMode.CREATIVE) {
+        if (gameMode != GameMode.CREATIVE) {
             for (int page = 0; page < maxPage + 1; page++) {
                 if (page == this.page)
                     saveCurrentPage();
                 ArrayList<ItemStack> pageItems = getItems(page);
-                for (int slotNumber = 0; slotNumber < 25; slotNumber++) {
+                for (int slotNumber = 0; slotNumber < 24; slotNumber++) {
                     if (pageItems.get(slotNumber) == null) {
-                        pageItems.set(slotNumber, item);
+                        pageItems.set(slotNumber, itemStack);
                         this.items.put(page, pageItems);
                         if (page == this.page)
                             showPage();
+                        if (Settings.ADVANCED_PICK_UP_SETTINGS_ACTIONBAR_ENABLED) {
+                            String actionBar = Settings.ADVANCED_PICK_UP_SETTINGS_ACTIONBAR_TEXT;
+                            actionBar = actionBar.replace("%amount%", String.valueOf(itemStack.getAmount()));
+                            actionBar = actionBar.replace("%itemName%", (itemStack.getItemMeta().hasDisplayName() ? itemStack.getItemMeta().getDisplayName() : itemStack.getType().name()));
+                            actionBar = actionBar.replace("%page%", String.valueOf(page));
+                            actionBar = actionBar.replace("%slotNumber%", String.valueOf(slotNumber));
+                            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(InventoryPagesPlus.nms.addColor(actionBar)));
+                        }
                         return false;
                     } else {
                         ItemStack itemFromSlot = pageItems.get(slotNumber);
-                        if (itemFromSlot.isSimilar(item)) {
-                            int amountCombined = item.getAmount() + itemFromSlot.getAmount();
-                            if (amountCombined <= item.getMaxStackSize()) {
+                        if (itemFromSlot.isSimilar(itemStack)) {
+                            int amountCombined = itemStack.getAmount() + itemFromSlot.getAmount();
+                            if (amountCombined <= itemStack.getMaxStackSize()) {
                                 itemFromSlot.setAmount(amountCombined);
                                 pageItems.set(slotNumber, itemFromSlot);
                                 this.items.put(page, pageItems);
                                 if (page == this.page)
                                     showPage();
+                                if (Settings.ADVANCED_PICK_UP_SETTINGS_ACTIONBAR_ENABLED) {
+                                    String actionBar = Settings.ADVANCED_PICK_UP_SETTINGS_ACTIONBAR_TEXT;
+                                    actionBar = actionBar.replace("%amount%", String.valueOf(itemStack.getAmount()));
+                                    actionBar = actionBar.replace("%itemName%", (itemStack.getItemMeta().hasDisplayName() ? itemStack.getItemMeta().getDisplayName() : itemStack.getType().name()));
+                                    actionBar = actionBar.replace("%page%", String.valueOf(page));
+                                    actionBar = actionBar.replace("%slotNumber%", String.valueOf(slotNumber));
+                                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(InventoryPagesPlus.nms.addColor(actionBar)));
+                                }
                                 return false;
                             }
                         }
                     }
                 }
             }
-            this.player.getWorld().dropItem(player.getLocation(), item);
+            this.player.getWorld().dropItem(player.getLocation(), itemStack);
             return true;
         } else {
-            if (!InventoryPagesPlus.useCreativeInventory)
-                return storeOrDropItem(item, GameMode.SURVIVAL);
+            if (!Settings.INVENTORY_SETTINGS_USE_CREATIVE_INVENTORY)
+                return storeOrDropItem(storeItemStackType, itemStack, GameMode.SURVIVAL);
             int nextFreeSpace = nextCreativeFreeSpace();
             if (nextFreeSpace != -1) {
-                this.creativeItems.set(nextFreeSpace, item);
+                this.creativeItems.set(nextFreeSpace, itemStack);
                 return false;
             } else {
-                this.player.getWorld().dropItem(player.getLocation(), item);
+                this.player.getWorld().dropItem(player.getLocation(), itemStack);
                 return true;
             }
         }
 
+    }
+
+    public enum storeItemStackType {
+        pickup,
+        give
     }
 }

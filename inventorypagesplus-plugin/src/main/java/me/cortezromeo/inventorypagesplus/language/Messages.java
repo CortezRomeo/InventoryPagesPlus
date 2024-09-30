@@ -12,30 +12,30 @@ import java.util.List;
 
 public class Messages {
 
-    public static String PREFIX = "";
-    public static String NO_PERMISSION = "";
-    public static String CLEAR = "";
-    public static String CLEAR_ALL = "";
-    public static String ITEMS_DROPPED = "";
-    public static String INVALID_NUMBER = "";
-    public static String INVALID_NAME = "";
-    public static String NO_PAGE_MESSAGES = "";
+    public static String PREFIX;
+    public static String NO_PERMISSION;
+    public static String CLEAR;
+    public static String CLEAR_ALL;
+    public static String ITEMS_DROPPED;
+    public static String INVALID_NUMBER;
+    public static String INVALID_NAME;
+    public static String NO_PAGE_MESSAGES;
     public static List<String> COMMAND_INVENTORYPAGESPLUS_MESSAGES = new ArrayList<>();
-    public static String COMMAND_INVENTORYPAGESPLUS_RELOAD = "";
-    public static String COMMAND_INVENTORYPAGESPLUS_BACKUP_START = "";
-    public static String COMMAND_INVENTORYPAGESPLUS_BACKUP_COMPLETE = "";
-    public static String COMMAND_INVENTORYPAGESPLUS_SET_MAX_PAGE = "";
-    public static String COMMAND_INVENTORYPAGESPLUS_ADD_MAX_PAGE = "";
-    public static String COMMAND_INVENTORYPAGESPLUS_REMOVE_MAX_PAGE = "";
+    public static String COMMAND_INVENTORYPAGESPLUS_RELOAD;
+    public static String COMMAND_INVENTORYPAGESPLUS_BACKUP_START;
+    public static String COMMAND_INVENTORYPAGESPLUS_BACKUP_COMPLETE;
+    public static String COMMAND_INVENTORYPAGESPLUS_SET_MAX_PAGE;
+    public static String COMMAND_INVENTORYPAGESPLUS_ADD_MAX_PAGE;
+    public static String COMMAND_INVENTORYPAGESPLUS_REMOVE_MAX_PAGE;
     public static List<String> COMMAND_SETPAGESLOT_MESSAGES = new ArrayList<>();
-    public static String COMMAND_SETPAGESLOT_MISMATCH_NEXT_PAGE = "";
-    public static String COMMAND_SETPAGESLOT_MISMATCH_PREV_PAGE = "";
-    public static String COMMAND_SETPAGESLOT_SLOT_RANGE_ERROR = "";
-    public static String COMMAND_SETPAGESLOT_EMPTY_SLOT_REQUEST = "";
-    public static String COMMAND_SETPAGESLOT_NO_CHANGE_RESET = "";
-    public static String COMMAND_SETPAGESLOT_SET_NEXT_PAGE = "";
-    public static String COMMAND_SETPAGESLOT_SET_PREV_PAGE = "";
-    public static String COMMAND_SETPAGESLOT_RESET_PAGE_SLOT = "";
+    public static String COMMAND_SETPAGESLOT_MISMATCH_NEXT_PAGE;
+    public static String COMMAND_SETPAGESLOT_MISMATCH_PREV_PAGE;
+    public static String COMMAND_SETPAGESLOT_SLOT_RANGE_ERROR;
+    public static String COMMAND_SETPAGESLOT_EMPTY_SLOT_REQUEST;
+    public static String COMMAND_SETPAGESLOT_NO_CHANGE_RESET;
+    public static String COMMAND_SETPAGESLOT_SET_NEXT_PAGE;
+    public static String COMMAND_SETPAGESLOT_SET_PREV_PAGE;
+    public static String COMMAND_SETPAGESLOT_RESET_PAGE_SLOT;
     private static FileConfiguration messageFileYaml;
 
     public static void setupValue(String locale) {

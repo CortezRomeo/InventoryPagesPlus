@@ -1,45 +1,43 @@
 package me.cortezromeo.inventorypagesplus.manager;
 
-import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
+import me.cortezromeo.inventorypagesplus.Settings;
 import me.cortezromeo.inventorypagesplus.task.AutoSaveTask;
 
 public class AutoSaveManager {
 
     private static AutoSaveTask autoSaveTask;
+    public static boolean autoSaveEnabled = false;
 
     public static void startAutoSave(int time) {
-        if (InventoryPagesPlus.plugin.getConfig().getBoolean("auto-saving.enabled") && autoSaveStatus && autoSaveTask != null)
+        if (Settings.AUTO_SAVE_ENABLED && autoSaveEnabled && autoSaveTask != null)
             return;
 
         autoSaveTask = new AutoSaveTask(time);
-        autoSaveStatus = true;
+        autoSaveEnabled = true;
     }
 
     public static void stopAutoSave() {
-        if (!autoSaveStatus && autoSaveTask == null)
+        if (!autoSaveEnabled && autoSaveTask == null)
             return;
 
         autoSaveTask.cancel();
-        autoSaveStatus = false;
+        autoSaveEnabled = false;
     }
 
     public static void reloadTimeAutoSave() {
-        if (!getAutoSaveStatus())
+        if (!isAutoSaveEnabled())
             return;
 
         stopAutoSave();
-        startAutoSave(InventoryPagesPlus.plugin.getConfig().getInt("auto-saving.interval"));
-
+        startAutoSave(Settings.AUTO_SAVE_SECONDS);
     }
 
-    public static boolean autoSaveStatus = false;
-
-    public static boolean getAutoSaveStatus() {
-        return autoSaveStatus;
+    public static boolean isAutoSaveEnabled() {
+        return autoSaveEnabled;
     }
 
-    public static void setAutoSaveStatus(boolean b) {
-        autoSaveStatus = b;
+    public static void setAutoSaveEnabled(boolean b) {
+        autoSaveEnabled = b;
     }
 
 }

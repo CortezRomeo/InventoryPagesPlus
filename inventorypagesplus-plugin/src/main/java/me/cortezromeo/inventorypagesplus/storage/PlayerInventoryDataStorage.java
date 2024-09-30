@@ -1,10 +1,10 @@
 package me.cortezromeo.inventorypagesplus.storage;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
+import me.cortezromeo.inventorypagesplus.Settings;
 import me.cortezromeo.inventorypagesplus.enums.DatabaseType;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.util.MessageUtil;
-import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
 
@@ -22,18 +22,17 @@ public class PlayerInventoryDataStorage {
             file.mkdirs();
         }
 
-        FileConfiguration config = InventoryPagesPlus.plugin.getConfig();
         if (databaseType == DatabaseType.YAML) {
             STORAGE = new PlayerInventoryDataYAMLStorage();
         } else if (databaseType == DatabaseType.H2) {
-            STORAGE = new PlayerInventoryDataH2Storage(config.getString("database.settings.h2.file-name"), config.getString("database.settings.h2.table"));
+            STORAGE = new PlayerInventoryDataH2Storage(Settings.DATABASE_SETTINGS_H2_FILE_NAME, Settings.DATABASE_SETTINGS_H2_TABLE);
         } else if (databaseType == DatabaseType.MYSQL) {
-            String host = config.getString("database.settings.mysql.database.host");
-            String port = config.getString("database.settings.mysql.database.port");
-            mySQLDatabaseName = config.getString("database.settings.mysql.database.name");
-            mySQLTableName = InventoryPagesPlus.plugin.getConfig().getString("database.settings.mysql.database.table");
-            mySQLUserName = config.getString("database.settings.mysql.database.user");
-            mySQLUserPassword = config.getString("database.settings.mysql.database.password");
+            String host = Settings.DATABASE_SETTINGS_MYSQL_HOST;
+            String port = Settings.DATABASE_SETTINGS_MYSQL_PORT;
+            mySQLDatabaseName = Settings.DATABASE_SETTINGS_MYSQL_NAME;
+            mySQLTableName = Settings.DATABASE_SETTINGS_MYSQL_TABLE;
+            mySQLUserName = Settings.DATABASE_SETTINGS_MYSQL_USER;
+            mySQLUserPassword = Settings.DATABASE_SETTINGS_MYSQL_PASSWORD;
             try {
                 STORAGE = new PlayerInventoryDataMySQLStorage(host, port, mySQLDatabaseName, mySQLTableName, mySQLUserName, mySQLUserPassword);
             } catch (Exception exception) {

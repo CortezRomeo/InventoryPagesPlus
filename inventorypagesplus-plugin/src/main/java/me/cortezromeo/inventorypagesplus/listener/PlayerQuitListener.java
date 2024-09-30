@@ -22,7 +22,6 @@ public class PlayerQuitListener implements Listener {
 
         if (DatabaseManager.playerInventoryDatabase.containsKey(playerUUID)) {
             DatabaseManager.savePlayerInventory(player.getName());
-            DatabaseManager.removeInvFromHashMap(player.getName());
 
             for (int i = 9; i < 36; i++)
                 player.getInventory().setItem(i, null);

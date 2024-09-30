@@ -1,6 +1,7 @@
 package me.cortezromeo.inventorypagesplus.command;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
+import me.cortezromeo.inventorypagesplus.Settings;
 import me.cortezromeo.inventorypagesplus.file.inventory.PlayerInventoryFile;
 import me.cortezromeo.inventorypagesplus.language.English;
 import me.cortezromeo.inventorypagesplus.language.Messages;
@@ -41,16 +42,15 @@ public class InventoryPagesCommand implements CommandExecutor, TabExecutor {
             if (args[0].equalsIgnoreCase("reload")) {
                 long time = System.currentTimeMillis();
                 InventoryPagesPlus.plugin.reloadConfig();
+                Settings.setupValue();
                 English.reload();
                 Vietnamese.reload();
-                Messages.setupValue(InventoryPagesPlus.plugin.getConfig().getString("locale"));
+                Messages.setupValue(Settings.LOCALE);
                 PlayerInventoryFile.reload();
-                DebugManager.setDebug(InventoryPagesPlus.plugin.getConfig().getBoolean("debug.enabled"));
-                if (AutoSaveManager.getAutoSaveStatus() && !InventoryPagesPlus.plugin.getConfig().getBoolean("auto-saving.enabled")) {
+                if (AutoSaveManager.isAutoSaveEnabled() && !Settings.AUTO_SAVE_ENABLED)
                     AutoSaveManager.stopAutoSave();
-                } else {
-                    AutoSaveManager.startAutoSave(InventoryPagesPlus.plugin.getConfig().getInt("auto-saving.interval"));
-                }
+                else
+                    AutoSaveManager.startAutoSave(Settings.AUTO_SAVE_SECONDS);
                 AutoSaveManager.reloadTimeAutoSave();
                 DebugManager.debug("RELOADING PLUGIN", "Reloaded plugin. (" + (System.currentTimeMillis() - time) + "ms)");
                 MessageUtil.sendMessage(sender, Messages.COMMAND_INVENTORYPAGESPLUS_RELOAD);

@@ -6,6 +6,7 @@ import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryData;
 import me.cortezromeo.inventorypagesplus.util.ItemUtil;
+import me.cortezromeo.inventorypagesplus.util.MessageUtil;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,6 +16,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -46,17 +48,31 @@ public class InvseeOtherItemsInventory implements Listener {
         DebugManager.debug("LOADING INVENTORIES (InvseeOtherItemsInventory)", "Completed with no issues.");
     }
 
-    public static Inventory inventory(Player player, String targetName, String targetUUID, boolean editMode, int page) {
+    public static Inventory inventory(Player player, String targetName, String targetUUID, boolean beingUpdated, boolean editMode, int page) {
         if (!DatabaseManager.playerInventoryDatabase.containsKey(targetUUID)) {
             DebugManager.debug("INVSEE FOR " + player.getName(), "Canceled because the database of " + targetName + " (UUID: " + targetUUID + ") does not exist!");
             return null;
         }
         DatabaseManager.updateInvToHashMapUUID(targetUUID);
 
-        InvseeInventoryData invseeInventory = new InvseeInventoryData(InvseeInventoryData.InventoryType.invseeotheritems, 54, InventoryPagesPlus.nms.addColor(title.replace("%player%", targetName)), targetName, targetUUID, editMode, page);
+        InvseeInventoryData invseeInventory = new InvseeInventoryData(InvseeInventoryData.InventoryType.invseeotheritems, 54, InventoryPagesPlus.nms.addColor(title.replace("%player%", targetName)), targetName, targetUUID, false, editMode, page);
         Inventory inventory = invseeInventory.getInventory();
-        updateInvseeInventory(inventory);
 
+        if (!invseeInventory.isBeingUpdated()) {
+            invseeInventory.setBeingUpdated(true);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (inventory.getViewers().isEmpty()) {
+                        MessageUtil.devMessage("Cancel updating inventory " + inventory.toString());
+                        cancel();
+                        return;
+                    }
+                    MessageUtil.devMessage("Update inventory " + inventory.toString());
+                    updateInvseeInventory(inventory);
+                }
+            }.runTaskTimerAsynchronously(InventoryPagesPlus.plugin, 0, 10);
+        }
         return inventory;
     }
 

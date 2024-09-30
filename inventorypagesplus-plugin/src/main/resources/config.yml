@@ -41,10 +41,10 @@ debug:
   enabled: false
   prefix: '&e[INV.PAGES+ DEBUG] '
 
-auto-saving:
+auto-save:
   enabled: true
   # Auto save database each...
-  interval: 900 # seconds
+  seconds: 900
 
 backup-settings:
   # https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html
@@ -79,8 +79,16 @@ inventory-settings:
   # PLEASE don't use reload command, please restart server after changing this option.
   use-creative-inventory: true
 
-advanced-pickup-settings:
+advanced-pick-up-settings:
   enabled: false
+  action-bar:
+    enabled: true
+    text: '&f+%amount% %itemName%&r | Page: &e%page%&f | Slot: &e%slotNumber%'
+  sound:
+    enabled: true
+    name: 'ENTITY_ITEM_PICKUP'
+    volume: 1
+    pitch: 1
 
 # Using for collecting the number of players in the server.
 # This option does not affect the server performance.

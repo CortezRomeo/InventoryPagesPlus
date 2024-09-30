@@ -1,6 +1,7 @@
 package me.cortezromeo.inventorypagesplus.manager;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
+import me.cortezromeo.inventorypagesplus.Settings;
 import me.cortezromeo.inventorypagesplus.inventory.PlayerPageInventory;
 import me.cortezromeo.inventorypagesplus.language.Messages;
 import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryData;
@@ -68,8 +69,8 @@ public class PageSlotManager {
     public static boolean resetPageSlot(@NotNull Player player) {
         DatabaseManager.updateInvToHashMap(player.getName());
         PlayerInventoryData playerInventoryData = DatabaseManager.playerInventoryDatabase.get(player.getUniqueId().toString());
-        int defaultPrevItemSlot = InventoryPagesPlus.plugin.getConfig().getInt("inventory-settings.prev-item-position-default");
-        int defaultNextItemSlot = InventoryPagesPlus.plugin.getConfig().getInt("inventory-settings.next-item-position-default");
+        int defaultPrevItemSlot = Settings.INVENTORY_SETTINGS_PREV_ITEM_POS_DEFAULT;
+        int defaultNextItemSlot = Settings.INVENTORY_SETTINGS_NEXT_ITEM_POS_DEFAULT;
 
         if (getItem(player, 9 + defaultNextItemSlot) != null) {
             if (!InventoryPagesPlus.nms.getCustomData(getItem(player, 9 + defaultNextItemSlot)).equals(PlayerPageInventory.itemCustomData)) {

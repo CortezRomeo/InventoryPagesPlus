@@ -1,6 +1,7 @@
 package me.cortezromeo.inventorypagesplus.listener;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
+import me.cortezromeo.inventorypagesplus.Settings;
 import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import org.bukkit.Bukkit;
@@ -28,7 +29,7 @@ public class PlayerDeathListener implements Listener {
             DatabaseManager.updateInvToHashMap(player.getName());
             event.setKeepInventory(true);
 
-            if (InventoryPagesPlus.plugin.getConfig().getBoolean("inventory-settings.keep-inventory"))
+            if (Settings.INVENTORY_SETTINGS_KEEP_INVENTORY)
                 return;
 
             GameMode gm = player.getGameMode();
