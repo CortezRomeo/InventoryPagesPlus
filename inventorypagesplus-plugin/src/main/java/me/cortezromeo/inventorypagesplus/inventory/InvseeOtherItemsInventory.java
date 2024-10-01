@@ -6,7 +6,6 @@ import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryData;
 import me.cortezromeo.inventorypagesplus.util.ItemUtil;
-import me.cortezromeo.inventorypagesplus.util.MessageUtil;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -64,11 +63,9 @@ public class InvseeOtherItemsInventory implements Listener {
                 @Override
                 public void run() {
                     if (inventory.getViewers().isEmpty()) {
-                        MessageUtil.devMessage("Cancel updating inventory " + inventory.toString());
                         cancel();
                         return;
                     }
-                    MessageUtil.devMessage("Update inventory " + inventory.toString());
                     updateInvseeInventory(inventory);
                 }
             }.runTaskTimerAsynchronously(InventoryPagesPlus.plugin, 0, 10);

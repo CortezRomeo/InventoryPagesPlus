@@ -67,9 +67,6 @@ public class Settings {
         ADVANCED_PICK_UP_SETTINGS_SOUND_NAME = configuration.getString("advanced-pick-up-settings.sound.name");
         ADVANCED_PICK_UP_SETTINGS_SOUND_VOLUME = configuration.getDouble("advanced-pick-up-settings.sound.volume");
         ADVANCED_PICK_UP_SETTINGS_SOUND_PITCH = configuration.getDouble("advanced-pick-up-settings.sound.pitch");
-
-
-
     }
 
 }

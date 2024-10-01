@@ -21,6 +21,7 @@
 messages:
   prefix: '&#FBFB14[InventoryPagesPlus]&r '
   no-permission: '%prefix%&cBạn không có quyền để xài lệnh này.'
+  non-console-command: '%prefix%&cConsole không thể xài lệnh này.'
   clear: '%prefix%&fXóa túi đồ trang hiện tại thành công &7(Sử dụng /clear all nếu muốn xóa ở tất cả trang).'
   clear-all: '%prefix%&fXóa túi đồ ở tất cả trang thành công!'
   items-dropped: '%prefix%&cQuá nhiều item! Một số item đã bị rớt ra trong quá trình chuyển đổi.'
@@ -68,3 +69,15 @@ messages:
       prev-page-slot-set: '%prefix%&fĐã thiết lâp vị trí ô cho &eTrang Trước&f thành &a%slotNumber%&f.'
       next-page-slot-set: '%prefix%&fĐã thiết lâp vị trí ô cho &eTrang Sau&f thành &a%slotNumber%&f.'
       reset-page-slot-number: '%prefix%&fĐã thiết lập lại ô chuyển trang.'
+    invsee:
+      messages:
+        - ' '
+        - '&#FBFB14InventoryPagesPlus'
+        - '&7Version %version%'
+        - ' '
+        - '&#FBFB14/invsee &6<player> &7- &fXem túi đồ của người chơi'
+        - ' '
+        - ' &6<>&7: Bắt buộc phải nhập &7| &e()&7: Tùy chỉnh'
+      targets-database-doesnt-exist: '%prefix%&cDữ liệu của &e%player%&c không tồn tại.'
+      no-offline-invsee-permission: '%prefix%&cBạn cần có quyền &einventorypagesplus.invsee.offline&c để có thể xem túi đồ của người chơi không trực tuyến.'
+      get-player-data: '%prefix%&eĐang lấy dữ liệu của người chơi...'

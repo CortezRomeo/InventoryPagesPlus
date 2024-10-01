@@ -19,11 +19,12 @@
 messages:
   prefix: '&#FBFB14[InventoryPagesPlus]&r '
   no-permission: '%prefix%&cYou do not have the permission to use this command.'
+  non-console-command: '%prefix%&cConsole cannot use this command.'
   clear: '%prefix%&fCleared the items in the current page successfully &7(You can also use /clear all if you want to clear all items in all pages).'
   clear-all: '%prefix%&fCleared the items in all pages successfully!'
   items-dropped: '%prefix%&cToo many items! Some items have been dropped.'
-  invalid-number: '%prefix%&cInvalid number!'
-  invalid-name: '%prefix%&cPlayer &e%player%&c is not online!'
+  invalid-number: '%prefix%&cInvalid number.'
+  invalid-name: '%prefix%&cPlayer &e%player%&c is not online.'
   no-page-message: ''
   commands:
     inventorypagesplus:
@@ -66,3 +67,15 @@ messages:
       next-page-slot-set: '%prefix%&fSuccessfully set the slot number for &eNext Page&f to &a%slotNumber%&f.'
       prev-page-slot-set: '%prefix%&fSuccessfully set the slot number for &ePrevious Page&f to &a%slotNumber%&f.'
       reset-page-slot-number: '%prefix%&fSuccessfully reset the slot page numbers.'
+    invsee:
+      messages:
+        - ' '
+        - '&#FBFB14InventoryPagesPlus'
+        - '&7Version %version%'
+        - ' '
+        - '&#FBFB14/invsee &6<player> &7- &fSee player''s inventory'
+        - ' '
+        - ' &6<>&7: Cannot leave blanked &7| &e()&7: Can leave blanked'
+      targets-database-doesnt-exist: '%prefix%&cDatabase of &e%player%&c does not exist.'
+      no-offline-invsee-permission: '%prefix%&cYou need to have permission &einventorypagesplus.invsee.offline&c to view offline player''s inventory.'
+      get-player-data: '%prefix%&eGetting player''s database...'

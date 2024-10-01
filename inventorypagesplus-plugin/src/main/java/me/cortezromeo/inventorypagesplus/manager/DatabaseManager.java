@@ -15,7 +15,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class DatabaseManager {
 
-    // Players' inventory database
     public static ConcurrentHashMap<String, PlayerInventoryData> playerInventoryDatabase = new ConcurrentHashMap<>();
     public static HashMap<String, String> tempPlayerUUID = new HashMap<>(); // mainly use for loading old database which already was created
     public static File crashedFile = new File(InventoryPagesPlus.plugin.getDataFolder() + "/database/crashed.yml");
@@ -113,9 +112,7 @@ public class DatabaseManager {
 
     public static Boolean crashedPlayersExist() {
         if (crashedData.contains("crashed")) {
-            if (!crashedData.getConfigurationSection("crashed").getKeys(false).isEmpty()) {
-                return true;
-            }
+            return !crashedData.getConfigurationSection("crashed").getKeys(false).isEmpty();
         }
         return false;
     }

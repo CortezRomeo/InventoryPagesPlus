@@ -19,10 +19,9 @@ public class InvseeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            MessageUtil.devMessage("this command is for player only!");
+            MessageUtil.log(Messages.NON_CONSOLE_COMMAND);
             return false;
         }
-
         Player player = (Player) sender;
 
         if (!player.hasPermission("inventorypagesplus.invsee")) {
@@ -32,11 +31,12 @@ public class InvseeCommand implements CommandExecutor {
 
         if (args.length == 1) {
             InvseeManager.invsee(player, args[0], false);
+            return false;
         }
-        if (args.length == 2) {
-            if (args[1].equalsIgnoreCase("yes")) {
-                InvseeManager.invsee(player, args[0], true);
-            }
+
+        for (String message : Messages.COMMAND_INVSEE_MESSAGES) {
+            message = message.replace("%version%", InventoryPagesPlus.plugin.getDescription().getVersion());
+            MessageUtil.sendMessage(sender, message);
         }
         return false;
     }

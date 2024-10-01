@@ -52,7 +52,6 @@ public class ClearCommand implements CommandExecutor, TabExecutor {
             clearHotbar(player);
             DatabaseManager.playerInventoryDatabase.get(playerUUID).showPage(gm);
         }
-
         return false;
     }
 

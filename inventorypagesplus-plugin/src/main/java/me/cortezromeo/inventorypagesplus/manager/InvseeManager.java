@@ -2,6 +2,7 @@ package me.cortezromeo.inventorypagesplus.manager;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
 import me.cortezromeo.inventorypagesplus.inventory.InvseeInventory;
+import me.cortezromeo.inventorypagesplus.language.Messages;
 import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryDataStorage;
 import me.cortezromeo.inventorypagesplus.util.MessageUtil;
 import org.bukkit.Bukkit;
@@ -21,21 +22,17 @@ public class InvseeManager {
             Inventory inventory = InvseeInventory.inventory(player, target.getName(), target.getUniqueId().toString(), false, editMode, 0);
             if (inventory != null) {
                 player.openInventory(inventory);
-            } else {
-                MessageUtil.devMessage(player, "occurred an error while trying to see the inventory of " + target.getName() + ", pls contact admin.");
                 return;
             }
         } else {
             if (player.hasPermission("inventorypagesplus.invsee.offline")) {
-                MessageUtil.devMessage(player, "Getting player data...");
+                MessageUtil.sendMessage(player, Messages.COMMAND_INVSEE_GET_PLAYER_DATA);
 
                 if (DatabaseManager.tempPlayerUUID.containsKey(targetName)) {
                     DatabaseManager.loadPlayerInventory(targetName);
                     Inventory inventory = InvseeInventory.inventory(player, targetName, DatabaseManager.tempPlayerUUID.get(targetName), false, editMode, 0);
-                    if (inventory != null)
+                    if (inventory != null) {
                         player.openInventory(inventory);
-                    else {
-                        MessageUtil.devMessage(player, "occurred an error while trying to see the inventory of " + targetName+ ", pls contact admin.");
                         return;
                     }
                 } else {
@@ -43,11 +40,10 @@ public class InvseeManager {
                         invseeOfflineTargetUUIDQueue.put(player, "/.");
                         String UUID = PlayerInventoryDataStorage.getPlayerUUIDFromData(targetName, false);
                         if (UUID == null) {
-                            MessageUtil.devMessage(player, "The database of " + targetName + " does not exist!");
+                            MessageUtil.sendMessage(player, Messages.COMMAND_INVSEE_TARGETS_DATABASE_DOESNT_EXIST.replace("%player%", targetName));
                             invseeOfflineTargetUUIDQueue.remove(player);
                             return;
                         }
-
                         if (!DatabaseManager.playerInventoryDatabase.containsKey(UUID)) {
                             DatabaseManager.loadPlayerInventory(targetName);
                             invseeOfflineTargetUUIDQueue.put(player, UUID);
@@ -64,8 +60,6 @@ public class InvseeManager {
                                     Inventory inventory = InvseeInventory.inventory(player, targetName, invseeOfflineTargetUUIDQueue.get(player), false, editMode, 0);
                                     if (inventory != null)
                                         player.openInventory(inventory);
-                                    else
-                                        MessageUtil.devMessage(player, "occurred an error while trying to see the inventory of " + targetName + ", pls contact admin.");
                                     invseeOfflineTargetUUIDQueue.remove(player);
                                     cancel();
                                     return;
@@ -74,6 +68,9 @@ public class InvseeManager {
                         }
                     }.runTaskTimer(InventoryPagesPlus.plugin, 10, 20);
                 }
+            } else {
+                MessageUtil.sendMessage(player, Messages.COMMAND_INVSEE_NO_OFFLINE_INVSEE_PERMISSION);
+                return;
             }
         }
     }

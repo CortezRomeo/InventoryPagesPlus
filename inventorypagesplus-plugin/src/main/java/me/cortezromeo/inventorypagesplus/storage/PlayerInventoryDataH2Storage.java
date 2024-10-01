@@ -188,7 +188,7 @@ public class PlayerInventoryDataH2Storage implements PlayerInventoryStorage {
 
         String UUID = null;
         String query = "select * from " + table + " where PLAYERNAME=?";
-        try (PreparedStatement ps = connection.prepareStatement(query)){
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, playerName);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -217,8 +217,8 @@ public class PlayerInventoryDataH2Storage implements PlayerInventoryStorage {
                 + " NEXTITEMPOS = ?"
                 + " WHERE UUID = ?";
 
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setString(1, playerInventoryData.getPlayerName());
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, playerInventoryData.getPlayerName());
 
             HashMap<Integer, ArrayList<String>> pageItemsBase64 = new HashMap<>();
             for (int page : playerInventoryData.getItems().keySet()) {
@@ -229,27 +229,22 @@ public class PlayerInventoryDataH2Storage implements PlayerInventoryStorage {
                 pageItemsBase64.put(page, itemsBase64);
             }
 
-            // Sử dụng thư viện của google gson để chuyển chuỗi HashMap sang json
             Gson gson = new Gson();
-            ps.setString(2, gson.toJson(pageItemsBase64));
+            preparedStatement.setString(2, gson.toJson(pageItemsBase64));
 
             if (playerInventoryData.hasUsedCreative()) {
                 ArrayList<String> creativeItemsBase64 = new ArrayList<>();
                 for (ItemStack itemStack : playerInventoryData.getCreativeItems())
                     creativeItemsBase64.add(StringUtil.toBase64(itemStack));
-                ps.setString(3, gson.toJson(creativeItemsBase64));
-            }
-            else
-                ps.setString(3, null);
-
-            ps.setInt(4, playerInventoryData.getMaxPage());
-            ps.setInt(5, playerInventoryData.getPage());
-            ps.setInt(6, playerInventoryData.getPrevItemPos());
-            ps.setInt(7, playerInventoryData.getNextItemPos());
-            ps.setString(8, playerInventoryData.getPlayerUUID());
-
-
-            ps.executeUpdate();
+                preparedStatement.setString(3, gson.toJson(creativeItemsBase64));
+            } else
+                preparedStatement.setString(3, null);
+            preparedStatement.setInt(4, playerInventoryData.getMaxPage());
+            preparedStatement.setInt(5, playerInventoryData.getPage());
+            preparedStatement.setInt(6, playerInventoryData.getPrevItemPos());
+            preparedStatement.setInt(7, playerInventoryData.getNextItemPos());
+            preparedStatement.setString(8, playerInventoryData.getPlayerUUID());
+            preparedStatement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }

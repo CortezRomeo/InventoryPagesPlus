@@ -113,12 +113,10 @@ public class InventoryPagesCommand implements CommandExecutor, TabExecutor {
                 }
             }
         }
-
         for (String message : Messages.COMMAND_INVENTORYPAGESPLUS_MESSAGES) {
             message = message.replace("%version%", InventoryPagesPlus.plugin.getDescription().getVersion());
             MessageUtil.sendMessage(sender, message);
         }
-
         return false;
     }
 
