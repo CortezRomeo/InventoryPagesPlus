@@ -1,10 +1,7 @@
   package me.cortezromeo.inventorypagesplus;
 
   import com.tchristofferson.configupdater.ConfigUpdater;
-  import me.cortezromeo.inventorypagesplus.command.ClearCommand;
-  import me.cortezromeo.inventorypagesplus.command.InventoryPagesCommand;
-  import me.cortezromeo.inventorypagesplus.command.InvseeCommand;
-  import me.cortezromeo.inventorypagesplus.command.SetPageSlotCommand;
+  import me.cortezromeo.inventorypagesplus.command.*;
   import me.cortezromeo.inventorypagesplus.enums.DatabaseType;
   import me.cortezromeo.inventorypagesplus.file.inventory.InvseeInventoryFile;
   import me.cortezromeo.inventorypagesplus.file.inventory.InvseeOtherItemsInventoryFile;
@@ -204,6 +201,7 @@ public final class InventoryPagesPlus extends JavaPlugin {
         new InventoryPagesCommand();
         new SetPageSlotCommand();
         new ClearCommand();
+        new ClearAllCommand();
         new InvseeCommand();
     }
 

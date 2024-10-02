@@ -15,11 +15,11 @@ public class Messages {
     public static String PREFIX;
     public static String NO_PERMISSION;
     public static String NON_CONSOLE_COMMAND;
-    public static String CLEAR;
-    public static String CLEAR_ALL;
     public static String ITEMS_DROPPED;
     public static String INVALID_NUMBER;
     public static String INVALID_NAME;
+    public static String GET_PLAYER_DATA;
+    public static String TARGETS_DATABASE_DOESNT_EXIST;
     public static String NO_PAGE_MESSAGES;
     public static List<String> COMMAND_INVENTORYPAGESPLUS_MESSAGES = new ArrayList<>();
     public static String COMMAND_INVENTORYPAGESPLUS_RELOAD;
@@ -38,9 +38,13 @@ public class Messages {
     public static String COMMAND_SETPAGESLOT_SET_PREV_PAGE;
     public static String COMMAND_SETPAGESLOT_RESET_PAGE_SLOT;
     public static List<String> COMMAND_INVSEE_MESSAGES = new ArrayList<>();
-    public static String COMMAND_INVSEE_TARGETS_DATABASE_DOESNT_EXIST;
     public static String COMMAND_INVSEE_NO_OFFLINE_INVSEE_PERMISSION;
-    public static String COMMAND_INVSEE_GET_PLAYER_DATA;
+    public static String COMMAND_CLEAR_CLEAR;
+    public static String COMMAND_CLEAR_CLEAR_ALL;
+    public static String COMMAND_CLEAR_CLEAR_TARGET;
+    public static String COMMAND_CLEAR_CLEAR_TARGETS_MESSAGE;
+    public static String COMMAND_CLEAR_CLEAR_ALL_TARGET;
+    public static String COMMAND_CLEAR_CLEAR_ALL_TARGETS_MESSAGE;
     private static FileConfiguration messageFileYaml;
 
     public static void setupValue(String locale) {
@@ -63,11 +67,11 @@ public class Messages {
         PREFIX = fileConfiguration.getString("messages.prefix");
         NO_PERMISSION = fileConfiguration.getString("messages.no-permission");
         NON_CONSOLE_COMMAND = fileConfiguration.getString("messages.non-console-command");
-        CLEAR = fileConfiguration.getString("messages.clear");
-        CLEAR_ALL = fileConfiguration.getString("messages.clear-all");
         ITEMS_DROPPED = fileConfiguration.getString("messages.items-dropped");
         INVALID_NUMBER = fileConfiguration.getString("messages.invalid-number");
         INVALID_NAME = fileConfiguration.getString("messages.invalid-name");
+        GET_PLAYER_DATA = fileConfiguration.getString("messages.get-player-data");
+        TARGETS_DATABASE_DOESNT_EXIST = fileConfiguration.getString("messages.targets-database-doesnt-exist");
         NO_PAGE_MESSAGES = fileConfiguration.getString("messages.no-page-message");
         COMMAND_INVENTORYPAGESPLUS_MESSAGES = fileConfiguration.getStringList("messages.commands.inventorypagesplus.messages");
         COMMAND_INVENTORYPAGESPLUS_RELOAD = fileConfiguration.getString("messages.commands.inventorypagesplus.reload");
@@ -86,9 +90,13 @@ public class Messages {
         COMMAND_SETPAGESLOT_SET_PREV_PAGE = fileConfiguration.getString("messages.commands.setpageslot.prev-page-slot-set");
         COMMAND_SETPAGESLOT_RESET_PAGE_SLOT = fileConfiguration.getString("messages.commands.setpageslot.reset-page-slot-number");
         COMMAND_INVSEE_MESSAGES = fileConfiguration.getStringList("messages.commands.invsee.messages");
-        COMMAND_INVSEE_TARGETS_DATABASE_DOESNT_EXIST = fileConfiguration.getString("messages.commands.invsee.targets-database-doesnt-exist");
         COMMAND_INVSEE_NO_OFFLINE_INVSEE_PERMISSION = fileConfiguration.getString("messages.commands.invsee.no-offline-invsee-permission");
-        COMMAND_INVSEE_GET_PLAYER_DATA = fileConfiguration.getString("messages.commands.invsee.get-player-data");
+        COMMAND_CLEAR_CLEAR = fileConfiguration.getString("messages.commands.clear.clear");
+        COMMAND_CLEAR_CLEAR_ALL = fileConfiguration.getString("messages.commands.clear.clear-all");
+        COMMAND_CLEAR_CLEAR_TARGET = fileConfiguration.getString("messages.commands.clear.clear-target");
+        COMMAND_CLEAR_CLEAR_TARGETS_MESSAGE = fileConfiguration.getString("messages.commands.clear.clear-targets-message");
+        COMMAND_CLEAR_CLEAR_ALL_TARGET = fileConfiguration.getString("messages.commands.clear.clear-all-target");
+        COMMAND_CLEAR_CLEAR_ALL_TARGETS_MESSAGE = fileConfiguration.getString("messages.commands.clear.clear-all-targets-message");
 
         DebugManager.debug("LOADING MESSAGES", "Loaded message file name: " + locale + ".");
     }

@@ -53,21 +53,17 @@ public class PlayerDeathListener implements Listener {
                 DatabaseManager.playerInventoryDatabase.get(playerUUID).dropAllPages(gm);
             }
 
-            if (!player.hasPermission("inventorypagesplus.keep.hotbar") && dropOption > 0)
-                dropHotbar(player);
+            if (!player.hasPermission("inventorypagesplus.keep.hotbar") && dropOption > 0) {
+                PlayerInventory playerInv = player.getInventory();
+                for (int i = 0; i <= 8; i++) {
+                    ItemStack item = InventoryPagesPlus.nms.getItemStack(playerInv.getItem(i));
+                    if (item != null) {
+                        player.getWorld().dropItemNaturally(player.getLocation(), item);
+                        player.getInventory().remove(item);
+                    }
+                }            }
 
             DatabaseManager.updateInvToHashMap(player.getName());
-        }
-    }
-
-    private void dropHotbar(Player player) {
-        PlayerInventory playerInv = player.getInventory();
-        for (int i = 0; i <= 8; i++) {
-            ItemStack item = InventoryPagesPlus.nms.getItemStack(playerInv.getItem(i));
-            if (item != null) {
-                player.getWorld().dropItemNaturally(player.getLocation(), item);
-                player.getInventory().remove(item);
-            }
         }
     }
 }

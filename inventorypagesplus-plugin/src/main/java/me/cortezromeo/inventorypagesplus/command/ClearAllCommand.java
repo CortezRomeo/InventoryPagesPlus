@@ -19,17 +19,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ClearCommand implements CommandExecutor, TabExecutor {
-    public ClearCommand() {
-        InventoryPagesPlus.plugin.getCommand("clear").setExecutor(this);
-        DebugManager.debug("LOADING COMMAND", "Loaded ClearCommand.");
+public class ClearAllCommand implements CommandExecutor, TabExecutor {
+    public ClearAllCommand() {
+        InventoryPagesPlus.plugin.getCommand("clearall").setExecutor(this);
+        DebugManager.debug("LOADING COMMAND", "Loaded ClearAllCommand.");
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 1) {
             if (sender instanceof Player) {
-                if (!sender.hasPermission("inventorypagesplus.clear.others")) {
+                if (!sender.hasPermission("inventorypagesplus.clearall.others")) {
                     MessageUtil.sendMessage(((Player) sender), Messages.NO_PERMISSION);
                     return false;
                 }
@@ -39,20 +39,20 @@ public class ClearCommand implements CommandExecutor, TabExecutor {
             Player target = Bukkit.getPlayer(targetName);
             if (target != null) {
                 if (DatabaseManager.playerInventoryDatabase.containsKey(target.getUniqueId().toString())) {
-                    DatabaseManager.playerInventoryDatabase.get(target.getUniqueId().toString()).clearPage(target.getGameMode());
+                    DatabaseManager.playerInventoryDatabase.get(target.getUniqueId().toString()).clearAllPages(target.getGameMode());
                     clearHotbar(target);
                     DatabaseManager.updateInvToHashMap(targetName);
-                    MessageUtil.sendMessage(sender, Messages.COMMAND_CLEAR_CLEAR_TARGET.replace("%player%", targetName));
-                    MessageUtil.sendMessage(target, Messages.COMMAND_CLEAR_CLEAR_TARGETS_MESSAGE.replace("%player%", sender.getName()));
+                    MessageUtil.sendMessage(sender, Messages.COMMAND_CLEAR_CLEAR_ALL_TARGET.replace("%player%", targetName));
+                    MessageUtil.sendMessage(target, Messages.COMMAND_CLEAR_CLEAR_ALL_TARGETS_MESSAGE.replace("%player%", sender.getName()));
                     return false;
                 }
             } else {
                 MessageUtil.sendMessage(sender, Messages.GET_PLAYER_DATA.replace("%player%", targetName));
                 if (DatabaseManager.tempPlayerUUID.containsKey(targetName)) {
                     DatabaseManager.loadPlayerInventory(targetName);
-                    DatabaseManager.playerInventoryDatabase.get(DatabaseManager.tempPlayerUUID.get(targetName)).clearPage(GameMode.SURVIVAL);
+                    DatabaseManager.playerInventoryDatabase.get(DatabaseManager.tempPlayerUUID.get(targetName)).clearAllPages(GameMode.SURVIVAL);
                     DatabaseManager.savePlayerInventory(targetName);
-                    MessageUtil.sendMessage(sender, Messages.COMMAND_CLEAR_CLEAR_TARGET.replace("%player%", targetName));
+                    MessageUtil.sendMessage(sender, Messages.COMMAND_CLEAR_CLEAR_ALL_TARGET.replace("%player%", targetName));
                 } else {
                     Bukkit.getScheduler().runTaskAsynchronously(InventoryPagesPlus.plugin, () -> {
                         String UUID = PlayerInventoryDataStorage.getPlayerUUIDFromData(targetName, false);
@@ -62,9 +62,9 @@ public class ClearCommand implements CommandExecutor, TabExecutor {
                         }
                         if (!DatabaseManager.playerInventoryDatabase.containsKey(UUID)) {
                             DatabaseManager.loadPlayerInventory(targetName);
-                            DatabaseManager.playerInventoryDatabase.get(UUID).clearPage(GameMode.SURVIVAL);
+                            DatabaseManager.playerInventoryDatabase.get(UUID).clearAllPages(GameMode.SURVIVAL);
                             DatabaseManager.savePlayerInventory(targetName);
-                            MessageUtil.sendMessage(sender, Messages.COMMAND_CLEAR_CLEAR_TARGET.replace("%player%", targetName));                        }
+                            MessageUtil.sendMessage(sender, Messages.COMMAND_CLEAR_CLEAR_ALL_TARGET.replace("%player%", targetName));                        }
                     });
                 }
             }
@@ -74,17 +74,17 @@ public class ClearCommand implements CommandExecutor, TabExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            if (!player.hasPermission("inventorypagesplus.clear")) {
+            if (!player.hasPermission("inventorypagesplus.clearall")) {
                 MessageUtil.sendMessage(player, Messages.NO_PERMISSION);
                 return false;
             }
             String playerUUID = player.getUniqueId().toString();
             GameMode playerGameMode = player.getGameMode();
 
-            DatabaseManager.playerInventoryDatabase.get(playerUUID).clearPage(playerGameMode);
+            DatabaseManager.playerInventoryDatabase.get(playerUUID).clearAllPages(playerGameMode);
             clearHotbar(player);
             DatabaseManager.updateInvToHashMap(player.getName());
-            MessageUtil.sendMessage(player, Messages.COMMAND_CLEAR_CLEAR);
+            MessageUtil.sendMessage(player, Messages.COMMAND_CLEAR_CLEAR_ALL);
         } else {
             MessageUtil.log(InventoryPagesPlus.plugin.getDescription().getName() + " - Clear commands for console");
             MessageUtil.log("/clear <player>");
@@ -94,8 +94,6 @@ public class ClearCommand implements CommandExecutor, TabExecutor {
     }
 
     public void clearHotbar(Player player) {
-        if (player == null)
-            return;
         for (int i = 0; i < 9; i++) {
             player.getInventory().setItem(i, null);
         }
@@ -107,7 +105,7 @@ public class ClearCommand implements CommandExecutor, TabExecutor {
         List<String> commands = new ArrayList<>();
 
         if (args.length == 1) {
-            if (sender.hasPermission("inventorypagesplus.clear.others"))
+            if (sender.hasPermission("inventorypagesplus.clearall.others"))
                 for (Player player : Bukkit.getOnlinePlayers())
                     commands.add(player.getName());
             StringUtil.copyPartialMatches(args[0], commands, completions);

@@ -12,16 +12,20 @@ commands:
     description: Main command
     aliases:
       - inventorypages
+      - inventorypage
       - inventorypages+
       - inventoryp
-      - tuidopage
-      - tudopage
-      - tuidopages
   clear:
-    description: Clear inventory
+    description: Clear current page
     aliases:
       - clearinventory
-      - ci
+      - clearpage
+      - clearcurrentpage
+  clearall:
+    description: Clear all pages
+    aliases:
+      - clearallinventory
+      - clearallpages
   setpageslot:
     description: Set pages' item slot
   invsee:

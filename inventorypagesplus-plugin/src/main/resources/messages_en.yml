@@ -20,11 +20,11 @@ messages:
   prefix: '&#FBFB14[InventoryPagesPlus]&r '
   no-permission: '%prefix%&cYou do not have the permission to use this command.'
   non-console-command: '%prefix%&cConsole cannot use this command.'
-  clear: '%prefix%&fCleared the items in the current page successfully &7(You can also use /clear all if you want to clear all items in all pages).'
-  clear-all: '%prefix%&fCleared the items in all pages successfully!'
   items-dropped: '%prefix%&cToo many items! Some items have been dropped.'
   invalid-number: '%prefix%&cInvalid number.'
   invalid-name: '%prefix%&cPlayer &e%player%&c is not online.'
+  get-player-data: '%prefix%&fGetting &e%player%''s&f database...'
+  targets-database-doesnt-exist: '%prefix%&cDatabase of &e%player%&c does not exist.'
   no-page-message: ''
   commands:
     inventorypagesplus:
@@ -76,6 +76,11 @@ messages:
         - '&#FBFB14/invsee &6<player> &7- &fSee player''s inventory'
         - ' '
         - ' &6<>&7: Cannot leave blanked &7| &e()&7: Can leave blanked'
-      targets-database-doesnt-exist: '%prefix%&cDatabase of &e%player%&c does not exist.'
       no-offline-invsee-permission: '%prefix%&cYou need to have permission &einventorypagesplus.invsee.offline&c to view offline player''s inventory.'
-      get-player-data: '%prefix%&eGetting player''s database...'
+    clear:
+      clear: '%prefix%&fCleared the items in the current page successfully &7(You can also use /clear all if you want to clear all items in all pages).'
+      clear-target: '%prefix%&fClear the items in &e%player%''s&f current page successfully.'
+      clear-targets-message: '%prefix%&fYour items in current page just got removed by &e%player%&f.'
+      clear-all: '%prefix%&fCleared the items in all pages successfully!'
+      clear-all-target: '%prefix%&fClear all pages of &e%player%&f successfully.'
+      clear-all-targets-message: '%prefix%&fYour items in all pages just got removed by &e%player%&f.'
