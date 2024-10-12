@@ -5,11 +5,13 @@
 # | | | | \ V /    | |_) | (_| | (_| |  __/\__ \   | |_) | | |_| \__ \
 # |_|_| |_|\_(_)   | .__/ \__,_|\__, |\___||___/   | .__/|_|\__,_|___/
 #                  |_|          |___/              |_|
-# A project made by Cortez_Romeo
+# A plugin made by Cortez_Romeo
 #
 # Contact me:
 # discord account: Cortez_Romeo
 # discord server: https://discord.gg/NWbTVddmBM
+#
+# Please join my discord server to report bugs, giving suggestions. Thank you for supporting plugin!
 #
 #  Some useful information:
 #  * You can set it to '' if you don't want to use the message.
@@ -78,7 +80,7 @@ messages:
         - ' &6<>&7: Cannot leave blanked &7| &e()&7: Can leave blanked'
       no-offline-invsee-permission: '%prefix%&cYou need to have permission &einventorypagesplus.invsee.offline&c to view offline player''s inventory.'
     clear:
-      clear: '%prefix%&fCleared the items in the current page successfully &7(You can also use /clear all if you want to clear all items in all pages).'
+      clear: '%prefix%&fCleared the items in the current page successfully &7(You can also use /clearall if you want to clear all items in all pages).'
       clear-target: '%prefix%&fClear the items in &e%player%''s&f current page successfully.'
       clear-targets-message: '%prefix%&fYour items in current page just got removed by &e%player%&f.'
       clear-all: '%prefix%&fCleared the items in all pages successfully!'

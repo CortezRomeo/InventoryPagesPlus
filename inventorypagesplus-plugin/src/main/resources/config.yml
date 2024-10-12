@@ -5,19 +5,27 @@
 # | | | | \ V /    | |_) | (_| | (_| |  __/\__ \   | |_) | | |_| \__ \
 # |_|_| |_|\_(_)   | .__/ \__,_|\__, |\___||___/   | .__/|_|\__,_|___/
 #                  |_|          |___/              |_|
-# A project made by Cortez_Romeo
+# A plugin made by Cortez_Romeo
 #
 # Contact me:
 # discord account: Cortez_Romeo
 # discord server: https://discord.gg/NWbTVddmBM
+#
+# Please join my discord server to report bugs, giving suggestions. Thank you for supporting plugin!
 
-# What database type should be used for managing and storing.
+# Use to show plugin information in order to support me fixing bugs.
+# You might be asked to turn this on if you have plugin troubles. Otherwise, you don't have to turn this on.
+debug:
+  enabled: false
+  prefix: '&e[INV.PAGES+ DEBUG] '
+
+# What based database will be used for storing player's inventory.
 database:
   # H2, MYSQL, YAML
-  # Loading database on H2 is faster than YAML, so I recommend using H2.
+  # Loading database on H2/MYSQL is faster than YAML, so I recommend using H2/MYSQL.
   # For multiple server setups, use MYSQL.
+  # For single server setup, use H2.
   type: H2
-  # Please provide the accurate login information and name that will be used for managing database.
   settings:
     h2:
       file-name: 'h2Database'
@@ -33,13 +41,13 @@ database:
 
 # Set the locale for all messages.
 # To set language to English, set locale to en, to use the file "messages_en.yml" in folder "languages".
-# Language available: en, vi
+# You can create your own message file by following these steps:
+#         1. copy messages_en.yml
+#         2. paste it to folder languages with a new file name
+#         3. file name must be: messages_<your locale>.yml
+#         4. After you're done editing your message file, go back to config.yml and change "locale" to <your locale>
+# Default languages available: en, vi
 locale: en
-
-# Using for detecting bugs.
-debug:
-  enabled: false
-  prefix: '&e[INV.PAGES+ DEBUG] '
 
 auto-save:
   enabled: true
@@ -74,11 +82,14 @@ inventory-settings:
   # inventorypagesplus.keep.hotbar - When the player dies, Keep all items in the hotbar.
   # inventorypagesplus.keep.all - Keep all items when player die.
   keep-inventory: true
-  # If this is on, plugin will show creative inventory database whenever player's mode changes to creative.
+  # If this is enabled, plugin will show creative inventory database whenever player's mode changes to creative.
   # Otherwise, plugin will only use survival inventory database for all game modes.
   # PLEASE don't use reload command, please restart server after changing this option.
   use-creative-inventory: true
 
+# Automatically move items to the next page if player's current page is full.
+# However, Bukkit API does not let me execute the event when player's inventory is full.
+# To fix this, player has to leave one slot empty in their page in order to allow the system to move items to the next page.
 advanced-pick-up-settings:
   enabled: false
   action-bar:

@@ -45,7 +45,6 @@ public class Messages {
     public static String COMMAND_CLEAR_CLEAR_TARGETS_MESSAGE;
     public static String COMMAND_CLEAR_CLEAR_ALL_TARGET;
     public static String COMMAND_CLEAR_CLEAR_ALL_TARGETS_MESSAGE;
-    private static FileConfiguration messageFileYaml;
 
     public static void setupValue(String locale) {
         locale = locale.toLowerCase();
@@ -61,7 +60,6 @@ public class Messages {
             MessageUtil.log("&c--------------------------------------");
         } else {
             fileConfiguration = YamlConfiguration.loadConfiguration(messageFile);
-            messageFileYaml = fileConfiguration;
         }
 
         PREFIX = fileConfiguration.getString("messages.prefix");
@@ -99,10 +97,6 @@ public class Messages {
         COMMAND_CLEAR_CLEAR_ALL_TARGETS_MESSAGE = fileConfiguration.getString("messages.commands.clear.clear-all-targets-message");
 
         DebugManager.debug("LOADING MESSAGES", "Loaded message file name: " + locale + ".");
-    }
-
-    public static FileConfiguration getMessageFileYaml() {
-        return messageFileYaml;
     }
 
 }

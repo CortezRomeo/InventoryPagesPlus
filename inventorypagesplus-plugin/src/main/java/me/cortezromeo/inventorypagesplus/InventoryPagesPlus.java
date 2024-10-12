@@ -6,9 +6,8 @@
   import me.cortezromeo.inventorypagesplus.file.inventory.InvseeInventoryFile;
   import me.cortezromeo.inventorypagesplus.file.inventory.InvseeOtherItemsInventoryFile;
   import me.cortezromeo.inventorypagesplus.file.inventory.PlayerInventoryFile;
-  import me.cortezromeo.inventorypagesplus.inventory.InvseeInventory;
-  import me.cortezromeo.inventorypagesplus.inventory.InvseeOtherItemsInventory;
   import me.cortezromeo.inventorypagesplus.inventory.PlayerPageInventory;
+  import me.cortezromeo.inventorypagesplus.inventory.inventorysee.InventorySeeMain;
   import me.cortezromeo.inventorypagesplus.language.English;
   import me.cortezromeo.inventorypagesplus.language.Messages;
   import me.cortezromeo.inventorypagesplus.language.Vietnamese;
@@ -29,6 +28,7 @@
   import java.io.IOException;
 
 public final class InventoryPagesPlus extends JavaPlugin {
+
     public static InventoryPagesPlus plugin;
     public static VersionSupport nms;
     public static DatabaseType databaseType;
@@ -192,9 +192,10 @@ public final class InventoryPagesPlus extends JavaPlugin {
     }
 
     public void initInventories() {
+        InventorySeeMain.setupItems();
         PlayerPageInventory.setupItems();
-        InvseeInventory.setupItems();
-        InvseeOtherItemsInventory.setupItems();
+/*        InvseeInventoryMain.setupItems();
+        InvseeOtherItemsInventory.setupItems();*/
     }
 
     public void initCommands() {
@@ -212,10 +213,10 @@ public final class InventoryPagesPlus extends JavaPlugin {
         new PlayerDropItemListener();
         new PlayerJoinListener();
         new PlayerQuitListener();
+        new InventoryCreativeListener();
         new EntityPickupListener();
         new InventoryOpenListener();
-        Bukkit.getPluginManager().registerEvents(new InvseeInventory(), InventoryPagesPlus.plugin);
-        Bukkit.getPluginManager().registerEvents(new InvseeOtherItemsInventory(), InventoryPagesPlus.plugin);
+        //Bukkit.getPluginManager().registerEvents(new InvseeOtherItemsInventory(), InventoryPagesPlus.plugin);
     }
 
     public void initSupports() {

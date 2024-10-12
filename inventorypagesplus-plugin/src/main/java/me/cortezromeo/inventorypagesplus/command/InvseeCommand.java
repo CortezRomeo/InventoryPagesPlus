@@ -30,7 +30,7 @@ public class InvseeCommand implements CommandExecutor {
         }
 
         if (args.length == 1) {
-            InvseeManager.invsee(player, args[0], false);
+            InvseeManager.openInventorySee(player, args[0], true);
             return false;
         }
 

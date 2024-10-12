@@ -4,6 +4,7 @@ import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
 import me.cortezromeo.inventorypagesplus.language.Messages;
 import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
+import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryData;
 import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryDataStorage;
 import me.cortezromeo.inventorypagesplus.util.MessageUtil;
 import org.bukkit.Bukkit;
@@ -39,9 +40,10 @@ public class ClearAllCommand implements CommandExecutor, TabExecutor {
             Player target = Bukkit.getPlayer(targetName);
             if (target != null) {
                 if (DatabaseManager.playerInventoryDatabase.containsKey(target.getUniqueId().toString())) {
-                    DatabaseManager.playerInventoryDatabase.get(target.getUniqueId().toString()).clearAllPages(target.getGameMode());
+                    PlayerInventoryData playerInventoryData = DatabaseManager.playerInventoryDatabase.get(target.getUniqueId().toString());
+                    playerInventoryData.clearAllPages(target.getGameMode());
                     clearHotbar(target);
-                    DatabaseManager.updateInvToHashMap(targetName);
+                    playerInventoryData.showPage(target.getGameMode());
                     MessageUtil.sendMessage(sender, Messages.COMMAND_CLEAR_CLEAR_ALL_TARGET.replace("%player%", targetName));
                     MessageUtil.sendMessage(target, Messages.COMMAND_CLEAR_CLEAR_ALL_TARGETS_MESSAGE.replace("%player%", sender.getName()));
                     return false;
@@ -80,10 +82,11 @@ public class ClearAllCommand implements CommandExecutor, TabExecutor {
             }
             String playerUUID = player.getUniqueId().toString();
             GameMode playerGameMode = player.getGameMode();
+            PlayerInventoryData playerInventoryData = DatabaseManager.playerInventoryDatabase.get(playerUUID);
 
-            DatabaseManager.playerInventoryDatabase.get(playerUUID).clearAllPages(playerGameMode);
+            playerInventoryData.clearAllPages(playerGameMode);
             clearHotbar(player);
-            DatabaseManager.updateInvToHashMap(player.getName());
+            playerInventoryData.showPage(player.getGameMode());
             MessageUtil.sendMessage(player, Messages.COMMAND_CLEAR_CLEAR_ALL);
         } else {
             MessageUtil.log(InventoryPagesPlus.plugin.getDescription().getName() + " - Clear commands for console");

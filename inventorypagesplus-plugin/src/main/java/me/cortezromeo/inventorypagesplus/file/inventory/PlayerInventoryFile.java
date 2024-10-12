@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class PlayerInventoryFile {
     private static File file;
-    private static FileConfiguration messageFile;
+    private static FileConfiguration fileConfiguration;
 
     public static void setup() {
         file = new File(InventoryPagesPlus.plugin.getDataFolder() + "/inventories/playerinventory.yml");
@@ -21,11 +21,11 @@ public class PlayerInventoryFile {
                 e.printStackTrace();
             }
         }
-        messageFile = YamlConfiguration.loadConfiguration(file);
+        fileConfiguration = YamlConfiguration.loadConfiguration(file);
     }
 
     public static FileConfiguration get() {
-        return messageFile;
+        return fileConfiguration;
     }
 
     public static void saveDefault() {
@@ -39,6 +39,6 @@ public class PlayerInventoryFile {
     }
 
     public static void reload() {
-        messageFile = YamlConfiguration.loadConfiguration(file);
+        fileConfiguration = YamlConfiguration.loadConfiguration(file);
     }
 }

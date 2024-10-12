@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class InvseeInventoryFile {
     private static File file;
-    private static FileConfiguration messageFile;
+    private static FileConfiguration fileConfiguration;
 
     public static void setup() {
         file = new File(InventoryPagesPlus.plugin.getDataFolder() + "/inventories/invseeinventory.yml");
@@ -21,11 +21,11 @@ public class InvseeInventoryFile {
                 e.printStackTrace();
             }
         }
-        messageFile = YamlConfiguration.loadConfiguration(file);
+        fileConfiguration = YamlConfiguration.loadConfiguration(file);
     }
 
     public static FileConfiguration get() {
-        return messageFile;
+        return fileConfiguration;
     }
 
     public static void saveDefault() {
@@ -39,6 +39,6 @@ public class InvseeInventoryFile {
     }
 
     public static void reload() {
-        messageFile = YamlConfiguration.loadConfiguration(file);
+        fileConfiguration = YamlConfiguration.loadConfiguration(file);
     }
 }

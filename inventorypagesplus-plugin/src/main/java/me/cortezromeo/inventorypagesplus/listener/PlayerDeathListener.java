@@ -61,8 +61,8 @@ public class PlayerDeathListener implements Listener {
                         player.getWorld().dropItemNaturally(player.getLocation(), item);
                         player.getInventory().remove(item);
                     }
-                }            }
-
+                }
+            }
             DatabaseManager.updateInvToHashMap(player.getName());
         }
     }

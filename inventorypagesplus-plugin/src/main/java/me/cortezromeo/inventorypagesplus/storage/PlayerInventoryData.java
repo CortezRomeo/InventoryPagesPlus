@@ -298,16 +298,16 @@ public class PlayerInventoryData {
                 int slotNumberClone = slotNumber;
                 if (slotNumber == prevItemPos) {
                     if (this.page == 0) {
-                        this.player.getInventory().setItem(slotNumber + 9, addPageNums(noPageItem));
+                        this.player.getInventory().setItem(slotNumber + 9, addPageNums(noPageItem, false));
                     } else {
-                        this.player.getInventory().setItem(slotNumber + 9, addPageNums(prevItem));
+                        this.player.getInventory().setItem(slotNumber + 9, addPageNums(prevItem, false));
                     }
                     foundPrev = true;
                 } else if (slotNumber == nextItemPos) {
                     if (this.page == maxPage) {
-                        this.player.getInventory().setItem(slotNumber + 9, addPageNums(noPageItem));
+                        this.player.getInventory().setItem(slotNumber + 9, addPageNums(noPageItem, false));
                     } else {
-                        this.player.getInventory().setItem(slotNumber + 9, addPageNums(nextItem));
+                        this.player.getInventory().setItem(slotNumber + 9, addPageNums(nextItem, true));
                     }
                     foundNext = true;
                 } else {
@@ -339,18 +339,43 @@ public class PlayerInventoryData {
         }
     }
 
-    ItemStack addPageNums(ItemStack item) {
+    ItemStack addPageNums(ItemStack item, boolean nextPage) {
         ItemStack modItem = new ItemStack(item);
         ItemMeta itemMeta = modItem.getItemMeta();
-        List<String> itemLore = itemMeta.getLore();
-        for (int j = 0; j < itemLore.size(); j++) {
-            Integer currentPageUser = page + 1;
-            Integer maxPageUser = maxPage + 1;
-            itemLore.set(j, itemLore.get(j).replace("{CURRENT}", currentPageUser.toString()).replace("{MAX}", maxPageUser.toString()));
+        int currentPageUser = page + 1;
+
+        if (itemMeta == null)
+            return item;
+
+        String displayName = itemMeta.getDisplayName();
+        displayName = displayName.replace("%previousPageNumber%", String.valueOf(currentPageUser - 1))
+                .replace("%nextPageNumber%", String.valueOf(currentPageUser + 1));
+        itemMeta.setDisplayName(displayName);
+
+        if (itemMeta.getLore() != null) {
+            List<String> itemLore = itemMeta.getLore();
+            itemLore.replaceAll(string -> string
+                    .replace("%usedSlots%", (nextPage ? String.valueOf(getUsedSlot(page + 1)) : String.valueOf(getUsedSlot(page - 1))))
+                    .replace("%currentPage%", String.valueOf(currentPageUser))
+                    .replace("%maxPage%", String.valueOf(maxPage + 1)));
+            itemMeta.setLore(itemLore);
         }
-        itemMeta.setLore(itemLore);
+
         modItem.setItemMeta(itemMeta);
         return modItem;
+    }
+
+    int getUsedSlot(int page) {
+        if (!getItems().containsKey(page))
+            return 0;
+
+        int usedSlot = 0;
+        for (ItemStack itemStack : getItems(page)) {
+            if (itemStack != null)
+                usedSlot = usedSlot + 1;
+        }
+
+        return usedSlot;
     }
 
     public void prevPage() {

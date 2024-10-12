@@ -1,13 +1,12 @@
 package me.cortezromeo.inventorypagesplus.manager;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
-import me.cortezromeo.inventorypagesplus.inventory.InvseeInventory;
+import me.cortezromeo.inventorypagesplus.inventory.inventorysee.InventorySeeMain;
 import me.cortezromeo.inventorypagesplus.language.Messages;
 import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryDataStorage;
 import me.cortezromeo.inventorypagesplus.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -16,25 +15,17 @@ public class InvseeManager {
 
     private static HashMap<Player, String> invseeOfflineTargetUUIDQueue = new HashMap<>();
 
-    public static void invsee(Player player, String targetName, boolean editMode) {
+    public static void openInventorySee(Player player, String targetName, boolean editMode) {
         Player target = Bukkit.getPlayer(targetName);
         if (target != null) {
-            Inventory inventory = InvseeInventory.inventory(player, target.getName(), target.getUniqueId().toString(), false, editMode, 0);
-            if (inventory != null) {
-                player.openInventory(inventory);
-                return;
-            }
+            new InventorySeeMain(player, targetName, target.getUniqueId().toString(), 0).open();
         } else {
             if (player.hasPermission("inventorypagesplus.invsee.offline")) {
                 MessageUtil.sendMessage(player, Messages.GET_PLAYER_DATA.replace("%player%", targetName));
 
                 if (DatabaseManager.tempPlayerUUID.containsKey(targetName)) {
                     DatabaseManager.loadPlayerInventory(targetName);
-                    Inventory inventory = InvseeInventory.inventory(player, targetName, DatabaseManager.tempPlayerUUID.get(targetName), false, editMode, 0);
-                    if (inventory != null) {
-                        player.openInventory(inventory);
-                        return;
-                    }
+                    new InventorySeeMain(player, targetName, DatabaseManager.tempPlayerUUID.get(targetName), 0).open();
                 } else {
                     Bukkit.getScheduler().runTaskAsynchronously(InventoryPagesPlus.plugin, () -> {
                         invseeOfflineTargetUUIDQueue.put(player, "/.");
@@ -57,9 +48,7 @@ public class InvseeManager {
                                 return;
                             } else {
                                 if (!invseeOfflineTargetUUIDQueue.get(player).equals("/.")) {
-                                    Inventory inventory = InvseeInventory.inventory(player, targetName, invseeOfflineTargetUUIDQueue.get(player), false, editMode, 0);
-                                    if (inventory != null)
-                                        player.openInventory(inventory);
+                                    new InventorySeeMain(player, targetName, invseeOfflineTargetUUIDQueue.get(player), 0).open();
                                     invseeOfflineTargetUUIDQueue.remove(player);
                                     cancel();
                                     return;
