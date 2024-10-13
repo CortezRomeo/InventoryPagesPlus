@@ -20,6 +20,7 @@ debug:
   prefix: '&e[INV.PAGES+ DEBUG] '
 
 # What based database will be used for storing player's inventory.
+# Please restart server after you change this setting.
 database:
   # H2, MYSQL, YAML
   # Loading database on H2/MYSQL is faster than YAML, so I recommend using H2/MYSQL.

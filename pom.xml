@@ -56,7 +56,7 @@
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
                 <artifactId>wagon-ftp</artifactId>
-                <version>3.5.1</version>
+                <version>3.5.3</version>
             </extension>
         </extensions>
         <plugins>
@@ -78,7 +78,9 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
+                <version>3.1.2</version>
                 <executions>
                     <execution>
                         <id>deploy</id>

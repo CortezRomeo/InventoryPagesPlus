@@ -139,6 +139,8 @@ public class InventorySeeMain extends InventorySee {
 
     @Override
     public void handleMenu(InventoryClickEvent event) {
+        if (event.getClickedInventory() == null)
+            return;
         if (event.getClickedInventory().getType() == InventoryType.PLAYER) {
             PlayerPageInventory.handleEvent(event);
             return;

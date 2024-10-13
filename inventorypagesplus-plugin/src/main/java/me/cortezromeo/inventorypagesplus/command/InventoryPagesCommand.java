@@ -2,7 +2,10 @@ package me.cortezromeo.inventorypagesplus.command;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
 import me.cortezromeo.inventorypagesplus.Settings;
+import me.cortezromeo.inventorypagesplus.file.inventory.InvseeInventoryFile;
+import me.cortezromeo.inventorypagesplus.file.inventory.InvseeOtherItemsInventoryFile;
 import me.cortezromeo.inventorypagesplus.file.inventory.PlayerInventoryFile;
+import me.cortezromeo.inventorypagesplus.inventory.inventorysee.InventorySeeMain;
 import me.cortezromeo.inventorypagesplus.language.English;
 import me.cortezromeo.inventorypagesplus.language.Messages;
 import me.cortezromeo.inventorypagesplus.language.Vietnamese;
@@ -47,12 +50,15 @@ public class InventoryPagesCommand implements CommandExecutor, TabExecutor {
                 Vietnamese.reload();
                 Messages.setupValue(Settings.LOCALE);
                 PlayerInventoryFile.reload();
+                InvseeInventoryFile.reload();
+                InvseeOtherItemsInventoryFile.reload();
+                InventorySeeMain.setupItems();
                 if (AutoSaveManager.isAutoSaveEnabled() && !Settings.AUTO_SAVE_ENABLED)
                     AutoSaveManager.stopAutoSave();
                 else
                     AutoSaveManager.startAutoSave(Settings.AUTO_SAVE_SECONDS);
                 AutoSaveManager.reloadTimeAutoSave();
-                DebugManager.debug("RELOADING PLUGIN", "Reloaded plugin. (" + (System.currentTimeMillis() - time) + "ms)");
+                DebugManager.debug("RELOADING PLUGIN", "Reloaded plugin. &b&l(" + (System.currentTimeMillis() - time) + "ms)");
                 MessageUtil.sendMessage(sender, Messages.COMMAND_INVENTORYPAGESPLUS_RELOAD);
                 return false;
             }

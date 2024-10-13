@@ -40,7 +40,7 @@ public class DatabaseManager {
             addCrashedPlayer(playerUUID);
             playerInventoryDatabase.get(playerUUID).showPage(Bukkit.getPlayer(playerName).getGameMode());
         }
-        DebugManager.debug("LOADING DATABASE PLAYER (" + playerName + ")", "Completed with no issues. (" + (System.currentTimeMillis() - time + "ms)"));
+        DebugManager.debug("LOADING DATABASE PLAYER (" + playerName + ")", "Completed with no issues. &b&l(" + (System.currentTimeMillis() - time + "ms)"));
     }
 
     public static void updateAndSaveAllInventoriesToDatabase() {
@@ -52,7 +52,7 @@ public class DatabaseManager {
                     savePlayerInventory(player.getName());
                 }
             }
-            DebugManager.debug("UPDATING AND SAVING ALL INVENTORIES", "Completed with no issues. (" + (System.currentTimeMillis() - time + "ms)"));
+            DebugManager.debug("UPDATING AND SAVING ALL INVENTORIES", "Completed with no issues. &b&l(" + (System.currentTimeMillis() - time + "ms)"));
         }
     }
 
@@ -66,7 +66,7 @@ public class DatabaseManager {
                 }
                 crashedData.set("crashed." + player.getUniqueId().toString(), null);
                 saveCrashedFile();
-                DebugManager.debug("CLEARING CRASHED PLAYER (" + player.getName() + ")", "Completed with no issues. (" + (System.currentTimeMillis() - time + "ms)"));
+                DebugManager.debug("CLEARING CRASHED PLAYER (" + player.getName() + ")", "Completed with no issues. &b&l(" + (System.currentTimeMillis() - time + "ms)"));
             }
         }
     }

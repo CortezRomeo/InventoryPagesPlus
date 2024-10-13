@@ -50,9 +50,8 @@ public class PlayerPageInventory {
     public static void handleEvent(InventoryClickEvent event) {
         Inventory inventory = event.getClickedInventory();
 
-        if (inventory == null || inventory.getType() != InventoryType.PLAYER) {
+        if (inventory == null || inventory.getType() != InventoryType.PLAYER)
             return;
-        }
 
         Player player = (Player) event.getWhoClicked();
         if (hasSwitcherItems(player)) {

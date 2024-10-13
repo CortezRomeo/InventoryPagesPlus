@@ -19,6 +19,9 @@ public class InventoryClickListener implements Listener {
 
     @EventHandler (ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onInventoryClick(InventoryClickEvent event) {
+        if (event.getClickedInventory() == null)
+            return;
+
         InventoryHolder holder = event.getInventory().getHolder();
 
         if (holder instanceof CustomInventoryBase) {

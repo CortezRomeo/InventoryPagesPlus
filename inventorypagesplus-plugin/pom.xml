@@ -8,7 +8,7 @@
         <artifactId>InventoryPagesPlus</artifactId>
         <version>1.0</version>
     </parent>
-    <version>${project.parent.version}</version>
+    <version>1.0</version>
     <artifactId>inventorypagesplus-plugin</artifactId>
 
     <pluginRepositories>
@@ -50,23 +50,27 @@
                             <relocations>
                                 <relocation>
                                     <pattern>com.cryptomorin.xseries</pattern>
-                                    <shadedPattern>com.cortezromeo.inventorypagesplus.lib.xseries</shadedPattern>
+                                    <shadedPattern>me.cortezromeo.inventorypagesplus.lib.xseries</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>io.github.bananapuncher714.nbteditor</pattern>
-                                    <shadedPattern>com.cortezromeo.inventorypagesplus.lib.nbteditor</shadedPattern>
+                                    <pattern>de.tr7zw.changeme.nbtapi</pattern>
+                                    <shadedPattern>me.cortezromeo.inventorypagesplus.lib.nbtapi</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>com.tchristofferson.configupdater</pattern>
-                                    <shadedPattern>com.cortezromeo.inventorypagesplus.lib.configupdater</shadedPattern>
+                                    <shadedPattern>me.cortezromeo.inventorypagesplus.lib.configupdater</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>com.google.gson</pattern>
-                                    <shadedPattern>com.cortezromeo.inventorypagesplus.lib.gson</shadedPattern>
+                                    <shadedPattern>me.cortezromeo.inventorypagesplus.lib.google.gson</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.google.errorprone.annotations</pattern>
+                                    <shadedPattern>me.cortezromeo.inventorypagesplus.lib.google.errorprone</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>org.h2</pattern>
-                                    <shadedPattern>com.cortezromeo.inventorypagesplus.lib.h2</shadedPattern>
+                                    <shadedPattern>me.cortezromeo.inventorypagesplus.lib.h2</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -112,6 +116,7 @@
             <artifactId>ConfigUpdater</artifactId>
             <version>2.0-SNAPSHOT</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -126,13 +131,13 @@
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.11.1</version>
+            <version>2.11.6</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.10</version>
+            <version>2.11.0</version>
         </dependency>
         <dependency>
             <groupId>me.cortezromeo</groupId>
