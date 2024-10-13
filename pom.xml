@@ -3,6 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>me.cortezromeo</groupId>
     <artifactId>InventoryPagesPlus</artifactId>
     <version>1.0</version>
@@ -18,19 +19,12 @@
     </modules>
 
     <properties>
-        <java.version>17</java.version>
+        <java.version>16</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <repositories>
-<!--        <repository>
-            <id>spigotmc-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>-->
-        <repository>
-            <id>maven-public</id>
-            <url>https://mvn.lumine.io/repository/maven-public/</url>
-        </repository>
+        <!-- /\ -->
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
@@ -38,6 +32,26 @@
         <repository>
             <id>CodeMC</id>
             <url>https://repo.codemc.org/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>minecraft-libraries</id>
+            <name>Minecraft Libraries</name>
+            <url>https://libraries.minecraft.net/</url>
+        </repository>
+        <!-- Spigot -->
+        <repository>
+            <id>spigotmc-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <!-- Config Updater -->
+        <repository>
+            <id>maven-central</id>
+            <url>https://oss.sonatype.org/content/groups/public</url>
+        </repository>
+        <!-- PlaceholderAPI -->
+        <repository>
+            <id>placeholderapi</id>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
     </repositories>
 

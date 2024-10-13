@@ -1,7 +1,7 @@
 name: InventoryPagesPlus
 version: '${project.version}'
 main: me.cortezromeo.inventorypagesplus.InventoryPagesPlus
-api-version: '1.18'
+api-version: '1.16'
 softdepend:
   - PlaceholderAPI
 authors:
