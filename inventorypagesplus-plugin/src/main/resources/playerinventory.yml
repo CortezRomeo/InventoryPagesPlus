@@ -39,7 +39,7 @@ items:
     name: '&#55ff00Previous page (%previousPageNumber%)'
     #slot: Change this in config.yml (datatabase.prev-item-position-default)
     lore:
-      - '&7Page %currentPage%/%maxPage%'
+      - '&fPage %currentPage%/%maxPage%'
       - ''
       - '&fSlots: &#aaffaa%usedSlots%&7/&#55ff0025'
       - ''
@@ -51,7 +51,7 @@ items:
     name: '&#55ff00Next page (%nextPageNumber%)'
     #slot: Change this in config.yml (datatabase.prev-item-position-default)
     lore:
-      - '&7Page %currentPage%/%maxPage%'
+      - '&fPage %currentPage%/%maxPage%'
       - ''
       - '&fSlots: &#aaffaa%usedSlots%&7/&#55ff0025'
       - ''
@@ -62,4 +62,4 @@ items:
     data: 0
     name: '&#FF0000No pages'
     lore:
-      - '&7Page %currentPage%/%maxPage%'
+      - '&fPage %currentPage%/%maxPage%'

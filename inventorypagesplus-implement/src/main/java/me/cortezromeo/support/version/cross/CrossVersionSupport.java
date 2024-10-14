@@ -95,6 +95,9 @@ public class CrossVersionSupport extends VersionSupport {
 
     @Override
     public ItemStack addCustomData(ItemStack itemStack, String data) {
+        if (itemStack == null)
+            return null;
+
         NBTItem nbtItem = new NBTItem(itemStack);
         nbtItem.setString(NBT_KEY + ".customdata", data);
         return nbtItem.getItem();
@@ -102,6 +105,9 @@ public class CrossVersionSupport extends VersionSupport {
 
     @Override
     public String getCustomData(ItemStack itemStack) {
+        if (itemStack == null)
+            return null;
+
         NBTItem nbtItem = new NBTItem(itemStack);
         if (nbtItem.getString(NBT_KEY + ".customdata") != null) {
             return nbtItem.getString(NBT_KEY + ".customdata");

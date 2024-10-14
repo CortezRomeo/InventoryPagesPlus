@@ -14,8 +14,12 @@ public class InventoryCreativeListener implements Listener {
         Bukkit.getPluginManager().registerEvents(this, InventoryPagesPlus.plugin);
         DebugManager.debug("LOADING EVENT", "Loaded InventoryCreativeEvent.");
     }
+
     @EventHandler
     public void inventoryCreativeEvent(InventoryCreativeEvent event) {
+        if (event.getCursor() == null)
+            return;
+
         if (InventoryPagesPlus.nms.getCustomData(event.getCursor()).equals(PlayerPageInventory.itemCustomData)) {
             event.setCancelled(true);
             event.setCursor(null);

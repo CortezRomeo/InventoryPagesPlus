@@ -27,6 +27,7 @@ messages:
   invalid-name: '%prefix%&cPlayer &e%player%&c is not online.'
   get-player-data: '%prefix%&fGetting &e%player%''s&f database...'
   targets-database-doesnt-exist: '%prefix%&cDatabase of &e%player%&c does not exist.'
+  loading: '%prefix%'
   no-page-message: ''
   commands:
     inventorypagesplus:

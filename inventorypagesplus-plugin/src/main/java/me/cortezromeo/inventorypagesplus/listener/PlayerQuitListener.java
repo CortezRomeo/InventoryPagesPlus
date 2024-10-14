@@ -21,7 +21,9 @@ public class PlayerQuitListener implements Listener {
         String playerUUID = player.getUniqueId().toString();
 
         if (DatabaseManager.playerInventoryDatabase.containsKey(playerUUID)) {
-            DatabaseManager.savePlayerInventory(player.getName());
+            Bukkit.getScheduler().runTaskAsynchronously(InventoryPagesPlus.plugin, () -> {
+                DatabaseManager.savePlayerInventory(player.getName());
+            });
 
             for (int i = 9; i < 36; i++)
                 player.getInventory().setItem(i, null);

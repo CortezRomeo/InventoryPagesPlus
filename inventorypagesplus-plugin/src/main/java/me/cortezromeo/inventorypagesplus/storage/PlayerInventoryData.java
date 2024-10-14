@@ -96,7 +96,7 @@ public class PlayerInventoryData {
             number = 0;
         this.maxPage = number;
 
-        for (int page = 0; page < maxPage +1; page++)
+        for (int page = 0; page < maxPage + 1; page++)
             if (!pageExists(page))
                 createPage(page);
 
@@ -111,7 +111,7 @@ public class PlayerInventoryData {
             number = 0;
         this.maxPage = this.maxPage + number;
 
-        for (int page = 0; page < maxPage +1; page++)
+        for (int page = 0; page < maxPage + 1; page++)
             if (!pageExists(page))
                 createPage(page);
 

@@ -27,7 +27,8 @@
 #          Step 1: Get into the website https://minecraft-heads.com/custom-heads/ and get whatever head you want
 #          Step 2: Scroll down to the 'For Developers:' part, copy the 'Value' section and then paste it into 'value:'
 
-title: '&0Inventory of %player% &c[Other items]'
+title: '&0%player%''s inventory &c[Other items]'
+rows: 6
 items:
   border:
     type: MATERIAL
@@ -36,12 +37,31 @@ items:
     name: ''
     lore:
       - ''
-  info:
+  offlinePlayer:
     type: MATERIAL
-    value: BOOK
+    value: RED_STAINED_GLASS_PANE
     data: 0
-    name: '&fInventory of &b%player%'
-    slot: 49
+    name: '&cUnknown item'
     lore:
-      - '&fTotal page: &a%totalpage%'
-      - '&fPlayer''s current viewing page: &a%currentviewingpage%'
+      - ''
+      - '&fCannot view this item because player is offline.'
+  close:
+    type: customhead
+    value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmViNTg4YjIxYTZmOThhZDFmZjRlMDg1YzU1MmRjYjA1MGVmYzljYWI0MjdmNDYwNDhmMThmYzgwMzQ3NWY3In19fQ==
+    data: 0
+    name: '&cClose'
+    lore:
+      - '&eClick to close.'
+    slot: 49
+  headItem:
+    slot: 11
+  playerChestItem:
+    slot: 20
+  playerPantsItem:
+    slot: 29
+  playerBootsItem:
+    slot: 38
+  playerItemInMainHand:
+    slot: 19
+  playerItemInSecondHand:
+    slot: 21

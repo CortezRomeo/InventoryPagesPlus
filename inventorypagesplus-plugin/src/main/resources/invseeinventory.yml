@@ -27,7 +27,7 @@
 #          Step 1: Get into the website https://minecraft-heads.com/custom-heads/ and get whatever head you want
 #          Step 2: Scroll down to the 'For Developers:' part, copy the 'Value' section and then paste it into 'value:'
 
-title: '&0Inventory of %player%'
+title: '&0%player%''s inventory'
 items:
   border:
     type: MATERIAL
@@ -36,54 +36,60 @@ items:
     name: ''
     lore:
       - ''
-  hotBarOffline:
+  offlinePlayer:
     type: MATERIAL
     value: RED_STAINED_GLASS_PANE
     data: 0
-    name: '&eCannot view these items'
+    name: '&cUnknown item'
     lore:
       - ''
-      - '&fCannot view items from hot bar from offline player.'
+      - '&fCannot view this item because player is offline.'
+  close:
+    type: customhead
+    value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmViNTg4YjIxYTZmOThhZDFmZjRlMDg1YzU1MmRjYjA1MGVmYzljYWI0MjdmNDYwNDhmMThmYzgwMzQ3NWY3In19fQ==
+    data: 0
+    name: '&cClose'
+    lore:
+      - '&eClick to close.'
+    slot: 49
   otherItemsInventory:
     online:
-      type: MATERIAL
-      value: CHEST
+      type: customhead
+      value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDQ2NzUxNThjMDc2N2VlNTA4YzUyZDUyNDI2Y2VmM2EyYzJiMjliN2U0ODdjOTI5NTNhMzgyM2Y1NjFkMDZhZiJ9fX0=
       data: 0
       name: '&fView &b%player%''s&f other items'
       slot: 48
       lore:
         - ''
-        - '&fThis includes &b%player%''s&f armor and item in second hand.'
+        - '&fThis includes &b%player%''s&f armor, creative items, and'
+        - '&fitems in second hand.'
         - ''
         - '&eClick here to view.'
     offline:
       type: MATERIAL
-      value: BARRIER
+      value: RED_STAINED_GLASS_PANE
       data: 0
       name: '&c&mView %player%''s other items'
       slot: 48
       lore:
         - ''
-        - '&fThis includes &b%player%''s&f armor and item in second hand.'
+        - '&fThis includes &b%player%''s&f armor, creative items, and'
+        - '&fitems in second hand.'
         - ''
         - '&eCannot view because player is offline!'
   info:
     type: MATERIAL
     value: BOOK
     data: 0
-    name: '&fInventory of &b%player%'
-    slot: 49
-    lore:
-      - '&fTotal page: &a%totalpage%'
-      - '&fPlayer''s current viewing page: &a%currentviewingpage%'
-  creativeInventory:
-    type: MATERIAL
-    value: CHEST
-    data: 0
-    name: '&fView &b%player%''s&f creative inventory'
+    name: '&fInventory of &e%player%'
     slot: 50
     lore:
-      - '&eClick here to view.'
+      - ''
+      - '&fTotal page: &#55ff00%totalpage%'
+      - '&fPlayer''s current viewing page: &#55ff00%currentviewingpage%'
+      - '&fNext page item slot number: &#55ff00%nextpageslotnumber%'
+      - '&fPrevious page item slot number: &#55ff00%previouspageslotnumber%'
+      - ''
   prev:
     type: customhead
     value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmQ2OWUwNmU1ZGFkZmQ4NGU1ZjNkMWMyMTA2M2YyNTUzYjJmYTk0NWVlMWQ0ZDcxNTJmZGM1NDI1YmMxMmE5In19fQ==
@@ -91,7 +97,7 @@ items:
     name: '&#55ff00Previous page (%previousPageNumber%)'
     slot: 45
     lore:
-      - '&7Page %currentPage%/%maxPage%'
+      - '&fPage %currentPage%/%maxPage%'
       - ''
       - '&fSlots: &#aaffaa%usedSlots%&7/&#55ff0025'
       - ''
@@ -103,7 +109,7 @@ items:
     name: '&#55ff00Next page (%nextPageNumber%)'
     slot : 53
     lore:
-      - '&7Page %currentPage%/%maxPage%'
+      - '&fPage %currentPage%/%maxPage%'
       - ''
       - '&fSlots: &#aaffaa%usedSlots%&7/&#55ff0025'
       - ''
@@ -114,4 +120,4 @@ items:
     data: 0
     name: '&#FF0000No pages'
     lore:
-      - '&7Page %currentPage%/%maxPage%'
+      - '&fPage %currentPage%/%maxPage%'

@@ -23,8 +23,8 @@ import java.util.UUID;
 
 public class InventorySeeMain extends InventorySee {
 
-    public static ItemStack borderItem, hotBarItemOffline, nextItem, prevItem, noPageItem, otherItemsInventoryOfflineItem, otherItemsInventoryOnlineItem, infoItem, creativeInventoryItem;
-    public static int nextItemSlot, prevItemSlot, otherItemsInventoryOfflineItemSlot, otherItemsInventoryOnlineItemSlot, infoItemSlot, creativeInventoryItemSlot;
+    public static ItemStack borderItem, offlinePlayerItem, nextItem, prevItem, noPageItem, otherItemsInventoryOfflineItem, otherItemsInventoryOnlineItem, infoItem, closeItem;
+    public static int nextItemSlot, prevItemSlot, otherItemsInventoryOfflineItemSlot, otherItemsInventoryOnlineItemSlot, infoItemSlot, closeItemSlot;
     private BukkitTask bukkitRunnable;
 
     public InventorySeeMain(Player owner, String targetName, String targetUUID, int page) {
@@ -64,11 +64,11 @@ public class InventorySeeMain extends InventorySee {
                     invseeInvFile.getString("items.noPage.name"),
                     invseeInvFile.getStringList("items.noPage.lore"));
 
-            hotBarItemOffline = ItemUtil.getItem(invseeInvFile.getString("items.hotBarOffline.type"),
-                    invseeInvFile.getString("items.hotBarOffline.value"),
-                    (short) invseeInvFile.getInt("items.hotBarOffline.data"),
-                    invseeInvFile.getString("items.hotBarOffline.name"),
-                    invseeInvFile.getStringList("items.hotBarOffline.lore"));
+            offlinePlayerItem = ItemUtil.getItem(invseeInvFile.getString("items.offlinePlayer.type"),
+                    invseeInvFile.getString("items.offlinePlayer.value"),
+                    (short) invseeInvFile.getInt("items.offlinePlayer.data"),
+                    invseeInvFile.getString("items.offlinePlayer.name"),
+                    invseeInvFile.getStringList("items.offlinePlayer.lore"));
 
             otherItemsInventoryOfflineItem = ItemUtil.getItem(invseeInvFile.getString("items.otherItemsInventory.offline.type"),
                     invseeInvFile.getString("items.otherItemsInventory.offline.value"),
@@ -91,12 +91,12 @@ public class InventorySeeMain extends InventorySee {
                     invseeInvFile.getStringList("items.info.lore"));
             infoItemSlot = invseeInvFile.getInt("items.info.slot");
 
-            creativeInventoryItem = InventoryPagesPlus.nms.addCustomData(ItemUtil.getItem(invseeInvFile.getString("items.creativeInventory.type"),
-                    invseeInvFile.getString("items.creativeInventory.value"),
-                    (short) invseeInvFile.getInt("items.creativeInventory.data"),
-                    invseeInvFile.getString("items.creativeInventory.name"),
-                    invseeInvFile.getStringList("items.creativeInventory.lore")), "creativeitem");
-            creativeInventoryItemSlot = invseeInvFile.getInt("items.creativeInventory.slot");
+            closeItem = InventoryPagesPlus.nms.addCustomData(ItemUtil.getItem(invseeInvFile.getString("items.close.type"),
+                    invseeInvFile.getString("items.close.value"),
+                    (short) invseeInvFile.getInt("items.close.data"),
+                    invseeInvFile.getString("items.close.name"),
+                    invseeInvFile.getStringList("items.close.lore")), "close");
+            closeItemSlot = invseeInvFile.getInt("items.close.slot");
 
             DebugManager.debug("LOADING INVENTORIES (InventorySeeMain)", "Completed with no issues.");
         }
@@ -146,6 +146,7 @@ public class InventorySeeMain extends InventorySee {
             return;
         }
 
+        // cancel click event
         event.setCancelled(true);
 
         if (event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
@@ -154,13 +155,17 @@ public class InventorySeeMain extends InventorySee {
                 addPage(1);
                 setMenuItems();
                 open();
-            } else if (InventoryPagesPlus.nms.getCustomData(clickedItem).equals("previtem")) {
+            }
+            if (InventoryPagesPlus.nms.getCustomData(clickedItem).equals("previtem")) {
                 removePage(1);
                 setMenuItems();
                 open();
-            } else if (InventoryPagesPlus.nms.getCustomData(clickedItem).equals("otheritemsitem")) {
-                //player.openInventory(InvseeOtherItemsInventory.inventory(player, invseeInventoryData.getTargetName(), invseeInventoryData.getTargetUUID(), false, invseeInventoryData.isEditMode(), invseeInventoryData.getPage()));
+            } if (InventoryPagesPlus.nms.getCustomData(clickedItem).equals("otheritemsitem")) {
+                new InventorySeeOtherItems(getOwner(), getTargetName(), getTargetUUID(), getPage()).open();
             }
+             if (InventoryPagesPlus.nms.getCustomData(clickedItem).equals("close")) {
+                 getOwner().closeInventory();
+             }
         }
     }
 
@@ -182,7 +187,7 @@ public class InventorySeeMain extends InventorySee {
         }
 
         inventory.setItem(infoItemSlot, getClickableItemStack(infoItem));
-        inventory.setItem(creativeInventoryItemSlot, getClickableItemStack(creativeInventoryItem));
+        inventory.setItem(closeItemSlot, getClickableItemStack(closeItem));
     }
 
     private @NotNull ItemStack getPageItemStack(ItemStack itemStack, boolean nextPage) {
@@ -226,8 +231,10 @@ public class InventorySeeMain extends InventorySee {
         List<String> itemLores = modItem.getItemMeta().getLore();
         for (int itemLore = 0; itemLore < itemLores.size(); itemLore++) {
             String lore = itemLores.get(itemLore).replace("%player%", getTargetInventoryDatabase().getPlayerName());
-            lore = lore.replace("%totalpage%", String.valueOf(getTargetInventoryDatabase().getMaxPage()));
-            lore = lore.replace("%currentviewingpage%", String.valueOf(getTargetInventoryDatabase().getPage()));
+            lore = lore.replace("%totalpage%", String.valueOf(getTargetInventoryDatabase().getMaxPage()))
+                            .replace("%currentviewingpage%", String.valueOf(getTargetInventoryDatabase().getPage()))
+                            .replace("%nextpageslotnumber%", String.valueOf(getTargetInventoryDatabase().getNextItemPos()))
+                            .replace("%previouspageslotnumber%", String.valueOf(getTargetInventoryDatabase().getPrevItemPos()));
             itemLores.set(itemLore, lore);
         }
         itemMeta.setLore(itemLores);
@@ -244,10 +251,8 @@ public class InventorySeeMain extends InventorySee {
             int slotClone = slot;
             if (slot == getTargetInventoryDatabase().getPrevItemPos()) {
                 foundPrevItem = true;
-                inventory.setItem(slot, InventoryPagesPlus.nms.addCustomData(new ItemStack(Material.BEDROCK), "playersswitchitem"));
             } else if (slot == getTargetInventoryDatabase().getNextItemPos()) {
                 foundNextItem = true;
-                inventory.setItem(slot, InventoryPagesPlus.nms.addCustomData(new ItemStack(Material.BEDROCK), "playersswitchitem"));
             } else {
                 if (foundPrevItem)
                     slotClone--;
@@ -265,7 +270,7 @@ public class InventorySeeMain extends InventorySee {
             inventory.setItem(otherItemsInventoryOnlineItemSlot, getClickableItemStack(otherItemsInventoryOnlineItem));
         } else {
             for (int slot = 27; slot < 36; slot++) {
-                inventory.setItem(slot, hotBarItemOffline);
+                inventory.setItem(slot, offlinePlayerItem);
             }
             inventory.setItem(otherItemsInventoryOfflineItemSlot, getClickableItemStack(otherItemsInventoryOfflineItem));
         }
