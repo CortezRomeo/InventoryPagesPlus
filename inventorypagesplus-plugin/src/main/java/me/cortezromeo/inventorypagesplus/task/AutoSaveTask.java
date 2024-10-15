@@ -1,7 +1,6 @@
 package me.cortezromeo.inventorypagesplus.task;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
-import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
@@ -29,7 +28,7 @@ public class AutoSaveTask implements Runnable {
             return;
         }
 
-        DatabaseManager.updateAndSaveAllInventoriesToDatabase();
+        InventoryPagesPlus.getDatabaseManager().updateAndSaveAllInventoriesToDatabase();
         DebugManager.debug("AUTO SAVE", "Saved " + Bukkit.getOnlinePlayers().size() + " player database.");
     }
 

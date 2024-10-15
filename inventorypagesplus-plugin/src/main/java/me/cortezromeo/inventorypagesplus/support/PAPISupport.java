@@ -2,7 +2,6 @@ package me.cortezromeo.inventorypagesplus.support;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
-import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import org.bukkit.entity.Player;
 
 public class PAPISupport extends PlaceholderExpansion {
@@ -28,10 +27,10 @@ public class PAPISupport extends PlaceholderExpansion {
             return null;
 
         if (s.equals("page"))
-            DatabaseManager.playerInventoryDatabase.get(player.getUniqueId().toString()).getPage();
+            InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(player.getUniqueId()).getCurrentPage();
 
         if (s.equals("maxpage"))
-            DatabaseManager.playerInventoryDatabase.get(player.getUniqueId().toString()).getMaxPage();
+            InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(player.getUniqueId()).getMaxPage();
 
         return null;
     }

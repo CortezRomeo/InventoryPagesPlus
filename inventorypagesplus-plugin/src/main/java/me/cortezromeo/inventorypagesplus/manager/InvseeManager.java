@@ -23,9 +23,9 @@ public class InvseeManager {
             if (player.hasPermission("inventorypagesplus.invsee.offline")) {
                 MessageUtil.sendMessage(player, Messages.GET_PLAYER_DATA.replace("%player%", targetName));
 
-                if (DatabaseManager.tempPlayerUUID.containsKey(targetName)) {
-                    DatabaseManager.loadPlayerInventory(targetName);
-                    new InventorySeeMain(player, targetName, DatabaseManager.tempPlayerUUID.get(targetName), 0).open();
+                if (InventoryPagesPlus.getDatabaseManager().getTempPlayerUUID().containsKey(targetName)) {
+                    InventoryPagesPlus.getDatabaseManager().loadPlayerInventory(targetName);
+                    new InventorySeeMain(player, targetName, InventoryPagesPlus.getDatabaseManager().getTempPlayerUUID().get(targetName), 0).open();
                 } else {
                     Bukkit.getScheduler().runTaskAsynchronously(InventoryPagesPlus.plugin, () -> {
                         invseeOfflineTargetUUIDQueue.put(player, "/.");
@@ -35,8 +35,8 @@ public class InvseeManager {
                             invseeOfflineTargetUUIDQueue.remove(player);
                             return;
                         }
-                        if (!DatabaseManager.playerInventoryDatabase.containsKey(UUID)) {
-                            DatabaseManager.loadPlayerInventory(targetName);
+                        if (!InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase().containsKey(UUID)) {
+                            InventoryPagesPlus.getDatabaseManager().loadPlayerInventory(targetName);
                             invseeOfflineTargetUUIDQueue.put(player, UUID);
                         }
                     });

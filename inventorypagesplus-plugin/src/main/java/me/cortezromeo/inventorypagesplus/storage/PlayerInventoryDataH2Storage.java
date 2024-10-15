@@ -5,7 +5,6 @@ import com.google.gson.reflect.TypeToken;
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
 import me.cortezromeo.inventorypagesplus.Settings;
 import me.cortezromeo.inventorypagesplus.inventory.PlayerPageInventory;
-import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.util.StringUtil;
 import org.bukkit.Bukkit;
@@ -60,12 +59,12 @@ public class PlayerInventoryDataH2Storage implements PlayerInventoryStorage {
         return connection;
     }
 
-    public PlayerInventoryData fromH2(String playerName, String playerUUID) {
+    public PlayerInventoryDatabase fromH2(String playerName, String playerUUID) {
         HashMap<Integer, ArrayList<ItemStack>> pageItemHashMap = new HashMap<>();
         int maxPageDefault = Settings.INVENTORY_SETTINGS_MAX_PAGE_DEFAULT;
         if (maxPageDefault < 0)
             maxPageDefault = 0;
-        PlayerInventoryData data = new PlayerInventoryData(Bukkit.getPlayer(playerName), playerName, playerUUID, maxPageDefault,null, null, PlayerPageInventory.prevItem, PlayerPageInventory.prevPos, PlayerPageInventory.nextItem, PlayerPageInventory.nextPos, PlayerPageInventory.noPageItem);
+        PlayerInventoryDatabase data = new PlayerInventory(Bukkit.getPlayer(playerName), playerName, playerUUID, maxPageDefault,null, null, PlayerPageInventory.prevItem, PlayerPageInventory.prevPos, PlayerPageInventory.nextItem, PlayerPageInventory.nextPos, PlayerPageInventory.noPageItem);
 
         if (!hasDataUUID(playerUUID))
             return data;
@@ -77,25 +76,31 @@ public class PlayerInventoryDataH2Storage implements PlayerInventoryStorage {
 
             while (resultSet.next()) {
                 int maxPage = resultSet.getInt("MAXPAGE");
-                int page = resultSet.getInt("PAGE");
+                int currentPage = resultSet.getInt("PAGE");
                 String creativeItemsString = resultSet.getString("CREATIVEITEMS");
 
                 data.setMaxPage(maxPage);
                 if (Settings.INVENTORY_SETTINGS_USE_SAVED_CURRENT_PAGE)
-                    data.setPage(page);
+                    data.setCurrentPage(currentPage);
 
                 // load survival items
                 Gson gson = new Gson();
                 HashMap<Integer, ArrayList<String>> pageItemsBase64 = gson.fromJson(resultSet.getString("ITEMS"), new TypeToken<HashMap<Integer, ArrayList<String>>>(){}.getType());
-                for (int pages = 0; pages < maxPage + 1; pages++) {
-                    ArrayList<ItemStack> pageItems = new ArrayList<>(25);
-                    if (pageItemsBase64.get(pages) == null)
-                        for (int i = 0; i < 25; i++)
-                            pageItems.add(null);
-                    else
-                        for (int slotNumber = 0; slotNumber < 25; slotNumber++)
-                            pageItems.add(StringUtil.stacksFromBase64(pageItemsBase64.get(pages).get(slotNumber))[0]);
-                    pageItemHashMap.put(pages, pageItems);
+                for (int page = 0; page < maxPage + 1; page++) {
+                    if (pageItemsBase64.get(page) == null)
+                        continue;
+                    else {
+                        ArrayList<ItemStack> pageItems = new ArrayList<>(25);
+                        boolean emptyPage = true;
+                        for (int slotNumber = 0; slotNumber < 25; slotNumber++) {
+                            ItemStack itemStack = StringUtil.stacksFromBase64(pageItemsBase64.get(page).get(slotNumber))[0];
+                            if (itemStack != null)
+                                emptyPage = false;
+                            pageItems.add(itemStack);
+                        }
+                        if (!emptyPage)
+                            pageItemHashMap.put(page, pageItems);
+                    }
                 }
                 data.setItems(pageItemHashMap);
 
@@ -167,7 +172,7 @@ public class PlayerInventoryDataH2Storage implements PlayerInventoryStorage {
     }
 
     @Override
-    public PlayerInventoryData getData(String playerName) {
+    public PlayerInventoryDatabase getData(String playerName) {
         return fromH2(playerName, getUUIDFromData(playerName, true));
     }
 
@@ -183,8 +188,8 @@ public class PlayerInventoryDataH2Storage implements PlayerInventoryStorage {
                 return UUID.nameUUIDFromBytes(offlinePlayerString.getBytes(StandardCharsets.UTF_8)).toString();
             }
         }
-        if (DatabaseManager.tempPlayerUUID.containsKey(playerName))
-            return DatabaseManager.tempPlayerUUID.get(playerName);
+        if (InventoryPagesPlus.getDatabaseManager().getTempPlayerUUID().containsKey(playerName))
+            return InventoryPagesPlus.getDatabaseManager().getTempPlayerUUID().get(playerName);
 
         String UUID = null;
         String query = "select * from " + table + " where PLAYERNAME=?";
@@ -203,7 +208,7 @@ public class PlayerInventoryDataH2Storage implements PlayerInventoryStorage {
     }
 
     @Override
-    public void saveData(PlayerInventoryData playerInventoryData) {
+    public void saveData(PlayerInventoryDatabase playerInventoryData) {
         if (!hasDataUUID(playerInventoryData.getPlayerUUID()))
             initData(playerInventoryData.getPlayerUUID());
 
@@ -223,10 +228,14 @@ public class PlayerInventoryDataH2Storage implements PlayerInventoryStorage {
             HashMap<Integer, ArrayList<String>> pageItemsBase64 = new HashMap<>();
             for (int page : playerInventoryData.getItems().keySet()) {
                 ArrayList<String> itemsBase64 = new ArrayList<>();
+                boolean emptyPage = true;
                 for (ItemStack itemStack : playerInventoryData.getItems().get(page)) {
+                    if (itemStack != null)
+                        emptyPage = false;
                     itemsBase64.add(StringUtil.toBase64(itemStack));
                 }
-                pageItemsBase64.put(page, itemsBase64);
+                if (!emptyPage)
+                    pageItemsBase64.put(page, itemsBase64);
             }
 
             Gson gson = new Gson();
@@ -240,7 +249,7 @@ public class PlayerInventoryDataH2Storage implements PlayerInventoryStorage {
             } else
                 preparedStatement.setString(3, null);
             preparedStatement.setInt(4, playerInventoryData.getMaxPage());
-            preparedStatement.setInt(5, playerInventoryData.getPage());
+            preparedStatement.setInt(5, playerInventoryData.getCurrentPage());
             preparedStatement.setInt(6, playerInventoryData.getPrevItemPos());
             preparedStatement.setInt(7, playerInventoryData.getNextItemPos());
             preparedStatement.setString(8, playerInventoryData.getPlayerUUID());

@@ -3,7 +3,6 @@ package me.cortezromeo.inventorypagesplus.inventory.inventorysee;
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
 import me.cortezromeo.inventorypagesplus.file.inventory.InvseeOtherItemsInventoryFile;
 import me.cortezromeo.inventorypagesplus.inventory.PlayerPageInventory;
-import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.util.ItemUtil;
 import org.bukkit.Bukkit;
@@ -12,7 +11,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -21,6 +19,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.UUID;
 
 public class InventorySeeOtherItems extends InventorySee {
 
@@ -128,7 +127,7 @@ public class InventorySeeOtherItems extends InventorySee {
         for (int border = 0; border < getSlots(); border++)
             inventory.setItem(border, borderItem);
 
-        DatabaseManager.updateInvToHashMapUUID(getTargetUUID());
+        InventoryPagesPlus.getDatabaseManager().saveCurrentPage(UUID.fromString(getTargetUUID()));
         inventory.setItem(closeItemSlot, getClickableItemStack(closeItem));
 
         Player target = Bukkit.getPlayer(getTargetInventoryDatabase().getPlayerName());
@@ -159,7 +158,7 @@ public class InventorySeeOtherItems extends InventorySee {
         for (int itemLore = 0; itemLore < itemLores.size(); itemLore++) {
             String lore = itemLores.get(itemLore).replace("%player%", getTargetInventoryDatabase().getPlayerName());
             lore = lore.replace("%totalpage%", String.valueOf(getTargetInventoryDatabase().getMaxPage()));
-            lore = lore.replace("%currentviewingpage%", String.valueOf(getTargetInventoryDatabase().getPage()));
+            lore = lore.replace("%currentviewingpage%", String.valueOf(getTargetInventoryDatabase().getCurrentPage()));
             itemLores.set(itemLore, lore);
         }
         itemMeta.setLore(itemLores);

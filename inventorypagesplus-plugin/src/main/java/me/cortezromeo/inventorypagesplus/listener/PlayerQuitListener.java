@@ -1,7 +1,6 @@
 package me.cortezromeo.inventorypagesplus.listener;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
-import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -20,10 +19,11 @@ public class PlayerQuitListener implements Listener {
         Player player = event.getPlayer();
         String playerUUID = player.getUniqueId().toString();
 
-        if (DatabaseManager.playerInventoryDatabase.containsKey(playerUUID)) {
-            Bukkit.getScheduler().runTaskAsynchronously(InventoryPagesPlus.plugin, () -> {
+        if (InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase().containsKey(playerUUID)) {
+/*            Bukkit.getScheduler().runTaskAsynchronously(InventoryPagesPlus.plugin, () -> {
                 DatabaseManager.savePlayerInventory(player.getName());
-            });
+            });*/
+            InventoryPagesPlus.getDatabaseManager().savePlayerInventory(player.getName());
 
             for (int i = 9; i < 36; i++)
                 player.getInventory().setItem(i, null);

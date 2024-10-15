@@ -4,7 +4,6 @@ import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
 import me.cortezromeo.inventorypagesplus.Settings;
 import me.cortezromeo.inventorypagesplus.file.inventory.PlayerInventoryFile;
 import me.cortezromeo.inventorypagesplus.language.Messages;
-import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.util.ItemUtil;
 import me.cortezromeo.inventorypagesplus.util.MessageUtil;
@@ -16,6 +15,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.UUID;
 
 public class PlayerPageInventory {
     public static ItemStack nextItem, prevItem, noPageItem;
@@ -57,13 +58,14 @@ public class PlayerPageInventory {
         if (hasSwitcherItems(player)) {
             ItemStack item = event.getCurrentItem();
             int customInvSlot = event.getSlot() - 9;
+            UUID playerUUID = player.getUniqueId();
 
-            if (customInvSlot == DatabaseManager.playerInventoryDatabase.get(player.getUniqueId().toString()).getPrevItemPos()) {
+            if (customInvSlot == InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(playerUUID).getPrevItemPos()) {
                 event.setCancelled(true);
-                DatabaseManager.playerInventoryDatabase.get(player.getUniqueId().toString()).prevPage();
-            } else if (customInvSlot == DatabaseManager.playerInventoryDatabase.get(player.getUniqueId().toString()).getNextItemPos()) {
+                InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(playerUUID).prevPage();
+            } else if (customInvSlot == InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(playerUUID).getNextItemPos()) {
                 event.setCancelled(true);
-                DatabaseManager.playerInventoryDatabase.get(player.getUniqueId().toString()).nextPage();
+                InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(playerUUID).nextPage();
             }
             if (item != null) {
                 if (item.getType() != Material.AIR) {
@@ -79,7 +81,7 @@ public class PlayerPageInventory {
 
     private static boolean hasSwitcherItems(Player player) {
         String playerUUID = player.getUniqueId().toString();
-        if (DatabaseManager.playerInventoryDatabase.containsKey(playerUUID)) {
+        if (InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase().containsKey(playerUUID)) {
             if (!Settings.INVENTORY_SETTINGS_USE_CREATIVE_INVENTORY) {
                 return true;
             }

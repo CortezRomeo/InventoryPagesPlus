@@ -1,7 +1,6 @@
 package me.cortezromeo.inventorypagesplus.listener;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
-import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -18,8 +17,9 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void playerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        Bukkit.getScheduler().runTaskAsynchronously(InventoryPagesPlus.plugin, () -> {
+/*        Bukkit.getScheduler().runTaskAsynchronously(InventoryPagesPlus.plugin, () -> {
             DatabaseManager.loadPlayerInventory(player.getName());
-        });
+        });*/
+        InventoryPagesPlus.getDatabaseManager().loadPlayerInventory(player.getName());
     }
 }

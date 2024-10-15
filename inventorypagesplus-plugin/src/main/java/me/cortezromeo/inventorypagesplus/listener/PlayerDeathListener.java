@@ -2,7 +2,6 @@ package me.cortezromeo.inventorypagesplus.listener;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
 import me.cortezromeo.inventorypagesplus.Settings;
-import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -12,6 +11,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+
+import java.util.UUID;
 
 public class PlayerDeathListener implements Listener {
     public PlayerDeathListener() {
@@ -24,9 +25,9 @@ public class PlayerDeathListener implements Listener {
         event.getDrops().clear();
 
         Player player = event.getEntity();
-        String playerUUID = player.getUniqueId().toString();
-        if (DatabaseManager.playerInventoryDatabase.containsKey(playerUUID)) {
-            DatabaseManager.updateInvToHashMap(player.getName());
+        UUID playerUUID = player.getUniqueId();
+        if (InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase().containsKey(playerUUID.toString())) {
+            InventoryPagesPlus.getDatabaseManager().saveCurrentPage(player.getName());
             event.setKeepInventory(true);
 
             if (Settings.INVENTORY_SETTINGS_KEEP_INVENTORY)
@@ -48,9 +49,9 @@ public class PlayerDeathListener implements Listener {
             }
 
             if (dropOption == 1) {
-                DatabaseManager.playerInventoryDatabase.get(playerUUID).dropPage(gm);
+                InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(playerUUID).dropPage(gm);
             } else if (dropOption == 2) {
-                DatabaseManager.playerInventoryDatabase.get(playerUUID).dropAllPages(gm);
+                InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(playerUUID).dropAllPages(gm);
             }
 
             if (!player.hasPermission("inventorypagesplus.keep.hotbar") && dropOption > 0) {
@@ -63,7 +64,7 @@ public class PlayerDeathListener implements Listener {
                     }
                 }
             }
-            DatabaseManager.updateInvToHashMap(player.getName());
+            InventoryPagesPlus.getDatabaseManager().saveCurrentPage(player.getName());
         }
     }
 }

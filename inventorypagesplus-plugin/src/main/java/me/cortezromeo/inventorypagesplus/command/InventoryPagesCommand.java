@@ -12,7 +12,6 @@ import me.cortezromeo.inventorypagesplus.language.Messages;
 import me.cortezromeo.inventorypagesplus.language.Vietnamese;
 import me.cortezromeo.inventorypagesplus.manager.AutoSaveManager;
 import me.cortezromeo.inventorypagesplus.manager.BackupManager;
-import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.util.MessageUtil;
 import org.bukkit.Bukkit;
@@ -94,35 +93,26 @@ public class InventoryPagesCommand implements CommandExecutor, TabExecutor {
                 }
 
                 if (args[0].equalsIgnoreCase("setmaxpage")) {
-                    DatabaseManager.playerInventoryDatabase.get(target.getUniqueId().toString()).setMaxPage(maxPage);
+                    InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(target.getUniqueId()).setMaxPage(maxPage);
                     MessageUtil.sendMessage(sender, Messages.COMMAND_INVENTORYPAGESPLUS_SET_MAX_PAGE
                             .replace("%player%", args[1])
                             .replace("%number%", args[2]));
-                    Bukkit.getScheduler().runTaskAsynchronously(InventoryPagesPlus.plugin, () -> {
-                        DatabaseManager.savePlayerInventory(args[1]);
-                    });
                     return false;
                 }
 
                 if (args[0].equalsIgnoreCase("addmaxpage")) {
-                    DatabaseManager.playerInventoryDatabase.get(target.getUniqueId().toString()).addMaxPage(maxPage);
+                    InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(target.getUniqueId()).addMaxPage(maxPage);
                     MessageUtil.sendMessage(sender, Messages.COMMAND_INVENTORYPAGESPLUS_ADD_MAX_PAGE
                             .replace("%player%", args[1])
                             .replace("%number%", args[2]));
-                    Bukkit.getScheduler().runTaskAsynchronously(InventoryPagesPlus.plugin, () -> {
-                        DatabaseManager.savePlayerInventory(args[1]);
-                    });
                     return false;
                 }
 
                 if (args[0].equalsIgnoreCase("removemaxpage")) {
-                    DatabaseManager.playerInventoryDatabase.get(target.getUniqueId().toString()).removeMaxPage(maxPage);
+                    InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(target.getUniqueId()).removeMaxPage(maxPage);
                     MessageUtil.sendMessage(sender, Messages.COMMAND_INVENTORYPAGESPLUS_REMOVE_MAX_PAGE
                             .replace("%player%", args[1])
                             .replace("%number%", args[2]));
-                    Bukkit.getScheduler().runTaskAsynchronously(InventoryPagesPlus.plugin, () -> {
-                        DatabaseManager.savePlayerInventory(args[1]);
-                    });
                     return false;
                 }
             }

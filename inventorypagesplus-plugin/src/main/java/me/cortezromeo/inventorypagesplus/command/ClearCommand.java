@@ -2,10 +2,9 @@ package me.cortezromeo.inventorypagesplus.command;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
 import me.cortezromeo.inventorypagesplus.language.Messages;
-import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
-import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryData;
 import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryDataStorage;
+import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryDatabase;
 import me.cortezromeo.inventorypagesplus.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -19,6 +18,7 @@ import org.bukkit.util.StringUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class ClearCommand implements CommandExecutor, TabExecutor {
     public ClearCommand() {
@@ -39,8 +39,8 @@ public class ClearCommand implements CommandExecutor, TabExecutor {
             String targetName = args[0];
             Player target = Bukkit.getPlayer(targetName);
             if (target != null) {
-                if (DatabaseManager.playerInventoryDatabase.containsKey(target.getUniqueId().toString())) {
-                    PlayerInventoryData playerInventoryData = DatabaseManager.playerInventoryDatabase.get(target.getUniqueId().toString());
+                if (InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase().containsKey(target.getUniqueId().toString())) {
+                    PlayerInventoryDatabase playerInventoryData = InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(target.getUniqueId());
                     playerInventoryData.clearPage(target.getGameMode());
                     clearHotbar(target);
                     playerInventoryData.showPage(target.getGameMode());
@@ -50,22 +50,20 @@ public class ClearCommand implements CommandExecutor, TabExecutor {
                 }
             } else {
                 MessageUtil.sendMessage(sender, Messages.GET_PLAYER_DATA.replace("%player%", targetName));
-                if (DatabaseManager.tempPlayerUUID.containsKey(targetName)) {
-                    DatabaseManager.loadPlayerInventory(targetName);
-                    DatabaseManager.playerInventoryDatabase.get(DatabaseManager.tempPlayerUUID.get(targetName)).clearPage(GameMode.SURVIVAL);
-                    DatabaseManager.savePlayerInventory(targetName);
+                if (InventoryPagesPlus.getDatabaseManager().getTempPlayerUUID().containsKey(targetName)) {
+                    InventoryPagesPlus.getDatabaseManager().loadPlayerInventory(targetName);
+                    InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(InventoryPagesPlus.getDatabaseManager().getTempPlayerUUID().get(targetName)).clearPage(GameMode.SURVIVAL);
                     MessageUtil.sendMessage(sender, Messages.COMMAND_CLEAR_CLEAR_TARGET.replace("%player%", targetName));
                 } else {
                     Bukkit.getScheduler().runTaskAsynchronously(InventoryPagesPlus.plugin, () -> {
-                        String UUID = PlayerInventoryDataStorage.getPlayerUUIDFromData(targetName, false);
-                        if (UUID == null) {
+                        String targetUUID = PlayerInventoryDataStorage.getPlayerUUIDFromData(targetName, false);
+                        if (targetUUID == null) {
                             MessageUtil.sendMessage(sender, Messages.TARGETS_DATABASE_DOESNT_EXIST.replace("%player%", targetName));
                             return;
                         }
-                        if (!DatabaseManager.playerInventoryDatabase.containsKey(UUID)) {
-                            DatabaseManager.loadPlayerInventory(targetName);
-                            DatabaseManager.playerInventoryDatabase.get(UUID).clearPage(GameMode.SURVIVAL);
-                            DatabaseManager.savePlayerInventory(targetName);
+                        if (!InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase().containsKey(targetUUID)) {
+                            InventoryPagesPlus.getDatabaseManager().loadPlayerInventory(targetName);
+                            InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(UUID.fromString(targetUUID)).clearPage(GameMode.SURVIVAL);
                             MessageUtil.sendMessage(sender, Messages.COMMAND_CLEAR_CLEAR_TARGET.replace("%player%", targetName));                        }
                     });
                 }
@@ -82,7 +80,7 @@ public class ClearCommand implements CommandExecutor, TabExecutor {
             }
             String playerUUID = player.getUniqueId().toString();
             GameMode playerGameMode = player.getGameMode();
-            PlayerInventoryData playerInventoryData = DatabaseManager.playerInventoryDatabase.get(playerUUID);
+            PlayerInventoryDatabase playerInventoryData = InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(UUID.fromString(playerUUID));
 
             playerInventoryData.clearPage(playerGameMode);
             clearHotbar(player);

@@ -36,7 +36,7 @@ public class BackupManager {
         DebugManager.debug("BACKUP (DATABASE: " + databaseType + ")", "Start creating backup files (for all database).");
 
         // Save database before backing up
-        DatabaseManager.updateAndSaveAllInventoriesToDatabase();
+        InventoryPagesPlus.getDatabaseManager().updateAndSaveAllInventoriesToDatabase();
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Settings.BACKUP_FILE_NAME_DATE_FORMAT);
         Date date = new Date();

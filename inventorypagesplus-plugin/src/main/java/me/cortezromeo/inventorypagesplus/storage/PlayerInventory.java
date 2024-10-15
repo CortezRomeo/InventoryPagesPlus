@@ -4,7 +4,6 @@ import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
 import me.cortezromeo.inventorypagesplus.Settings;
 import me.cortezromeo.inventorypagesplus.inventory.PlayerPageInventory;
 import me.cortezromeo.inventorypagesplus.language.Messages;
-import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.util.MessageUtil;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -17,17 +16,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class PlayerInventoryData {
+public class PlayerInventory implements PlayerInventoryDatabase {
     private Player player;
     private String playerName;
     private String playerUUID;
     private ItemStack prevItem, nextItem, noPageItem;
-    private Integer page = 0, maxPage = 1, prevItemPos, nextItemPos;
+    private Integer currentPage = 0, maxPage = 1, prevItemPos, nextItemPos;
     private Boolean hasUsedCreative = false;
     private HashMap<Integer, ArrayList<ItemStack>> items = new HashMap<>();
     private ArrayList<ItemStack> creativeItems = new ArrayList<>(27);
 
-    PlayerInventoryData(Player player, String playerName, String playerUUID, int maxPage, HashMap<Integer, ArrayList<ItemStack>> items, ArrayList<ItemStack> creativeItems, ItemStack prevItem, Integer prevPos, ItemStack nextItem, Integer nextPos, ItemStack noPageItem) {
+    PlayerInventory(Player player, String playerName, String playerUUID, int maxPage, HashMap<Integer, ArrayList<ItemStack>> items, ArrayList<ItemStack> creativeItems, ItemStack prevItem, Integer prevPos, ItemStack nextItem, Integer nextPos, ItemStack noPageItem) {
         this.player = player;
         this.playerName = playerName;
         this.playerUUID = playerUUID;
@@ -61,7 +60,7 @@ public class PlayerInventoryData {
             for (int i = 0; i < 27; i++) {
                 ItemStack item = player.getInventory().getItem(i + 9);
                 if (item != null) {
-                    if (this.storeOrDropItem(storeItemStackType.give, item, player.getGameMode())) {
+                    if (this.storeOrDropItem(item, player.getGameMode())) {
                         droppedItem = true;
                     }
                 }
@@ -71,56 +70,59 @@ public class PlayerInventoryData {
         }
     }
 
+    @Override
+    public Player getPlayer() {
+        return player;
+    }
+
+    @Override
     public String getPlayerName() {
         return playerName;
     }
 
+    @Override
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
     }
 
+    @Override
     public String getPlayerUUID() {
         return playerUUID;
     }
 
+    @Override
     public void setPlayerUUID(String playerUUID) {
         this.playerUUID = playerUUID;
     }
 
+    @Override
     public int getMaxPage() {
         return this.maxPage;
     }
 
+    @Override
     public void setMaxPage(int number) {
         if (number < 0)
             number = 0;
         this.maxPage = number;
 
-        for (int page = 0; page < maxPage + 1; page++)
-            if (!pageExists(page))
-                createPage(page);
-
         saveCurrentPage();
         if (player != null)
             showPage(player.getGameMode());
-        DebugManager.debug("(database) MAX PAGE", playerName + "'s max page now is " + number + ".");
     }
 
+    @Override
     public void addMaxPage(int number) {
         if (number < 0)
             number = 0;
         this.maxPage = this.maxPage + number;
 
-        for (int page = 0; page < maxPage + 1; page++)
-            if (!pageExists(page))
-                createPage(page);
-
         saveCurrentPage();
         if (player != null)
             showPage(player.getGameMode());
-        DebugManager.debug("(database) MAX PAGE", playerName + " has been added " + number + " more pages.");
     }
 
+    @Override
     public void removeMaxPage(int number) {
         if (this.maxPage - number < 0) {
             number = this.maxPage;
@@ -130,13 +132,14 @@ public class PlayerInventoryData {
         saveCurrentPage();
         if (player != null)
             showPage(player.getGameMode());
-        DebugManager.debug("(database) MAX PAGE", playerName + " has been removed " + number + " pages.");
     }
 
+    @Override
     public int getNextItemPos() {
         return this.nextItemPos;
     }
 
+    @Override
     public void setNextItemPos(int number) {
         if (number < 0)
             number = 0;
@@ -153,10 +156,12 @@ public class PlayerInventoryData {
         this.nextItemPos = number;
     }
 
+    @Override
     public int getPrevItemPos() {
         return this.prevItemPos;
     }
 
+    @Override
     public void setPrevItemPos(int number) {
         if (number < 0)
             number = 0;
@@ -174,6 +179,7 @@ public class PlayerInventoryData {
         this.prevItemPos = number;
     }
 
+    @Override
     public void saveCurrentPage() {
         if (player == null)
             return;
@@ -184,7 +190,7 @@ public class PlayerInventoryData {
                     pageItems.add(this.player.getInventory().getItem(slotNumber + 9));
                 }
             }
-            this.items.put(this.page, pageItems);
+            this.items.put(this.currentPage, pageItems);
         } else {
             for (int slotNumber = 0; slotNumber < 27; slotNumber++) {
                 creativeItems.set(slotNumber, this.player.getInventory().getItem(slotNumber + 9));
@@ -193,11 +199,13 @@ public class PlayerInventoryData {
         }
     }
 
+    @Override
     public void clearPage(GameMode gm) {
-        clearPage(this.page, gm);
+        clearPage(this.currentPage, gm);
     }
 
-    void clearPage(int page, GameMode gm) {
+    @Override
+    public void clearPage(int page, GameMode gm) {
         if (gm != GameMode.CREATIVE) {
             ArrayList<ItemStack> pageItems = new ArrayList<>(25);
             for (int i = 0; i < 25; i++) {
@@ -215,6 +223,7 @@ public class PlayerInventoryData {
         }
     }
 
+    @Override
     public void clearAllPages(GameMode gm) {
         if (gm != GameMode.CREATIVE) {
             for (int page = 0; page < this.maxPage + 1; page++) {
@@ -229,11 +238,13 @@ public class PlayerInventoryData {
         }
     }
 
+    @Override
     public void dropPage(GameMode gm) {
-        dropPage(this.page, gm);
+        dropPage(this.currentPage, gm);
     }
 
-    void dropPage(int page, GameMode gm) {
+    @Override
+    public void dropPage(int page, GameMode gm) {
         if (gm != GameMode.CREATIVE) {
             for (int slot = 0; slot < 25; slot++) {
                 ItemStack item = this.getItems(page).get(slot);
@@ -259,6 +270,7 @@ public class PlayerInventoryData {
         }
     }
 
+    @Override
     public void dropAllPages(GameMode gm) {
         if (gm != GameMode.CREATIVE) {
             for (int page = 0; page < this.maxPage + 1; page++) {
@@ -269,26 +281,30 @@ public class PlayerInventoryData {
         }
     }
 
-    void showPage() {
-        this.showPage(this.page);
+    @Override
+    public void showPage() {
+        this.showPage(this.currentPage);
     }
 
-    void showPage(Integer page) {
+    @Override
+    public void showPage(Integer page) {
         showPage(page, GameMode.SURVIVAL);
     }
 
+    @Override
     public void showPage(GameMode gm) {
-        showPage(this.page, gm);
+        showPage(this.currentPage, gm);
     }
 
-    void showPage(Integer page, GameMode gm) {
+    @Override
+    public void showPage(Integer page, GameMode gm) {
         if (!pageExists(page))
             createPage(page);
 
         if (page > maxPage) {
-            this.page = maxPage;
+            this.currentPage = maxPage;
         } else {
-            this.page = page;
+            this.currentPage = page;
         }
         //player.sendMessage("GameMode: " + gm);
         if (gm != GameMode.CREATIVE) {
@@ -297,14 +313,14 @@ public class PlayerInventoryData {
             for (int slotNumber = 0; slotNumber < 27; slotNumber++) {
                 int slotNumberClone = slotNumber;
                 if (slotNumber == prevItemPos) {
-                    if (this.page == 0) {
+                    if (this.currentPage == 0) {
                         this.player.getInventory().setItem(slotNumber + 9, addPageNums(noPageItem, false));
                     } else {
                         this.player.getInventory().setItem(slotNumber + 9, addPageNums(prevItem, false));
                     }
                     foundPrev = true;
                 } else if (slotNumber == nextItemPos) {
-                    if (this.page == maxPage) {
+                    if (this.currentPage == maxPage) {
                         this.player.getInventory().setItem(slotNumber + 9, addPageNums(noPageItem, false));
                     } else {
                         this.player.getInventory().setItem(slotNumber + 9, addPageNums(nextItem, true));
@@ -317,7 +333,7 @@ public class PlayerInventoryData {
                     if (foundNext) {
                         slotNumberClone--;
                     }
-                    ItemStack itemStack = InventoryPagesPlus.nms.getItemStack(this.getItems(this.page).get(slotNumberClone));
+                    ItemStack itemStack = InventoryPagesPlus.nms.getItemStack(this.getItems(this.currentPage).get(slotNumberClone));
                     if (itemStack != null) {
                         if (InventoryPagesPlus.nms.getCustomData(itemStack).equals(PlayerPageInventory.itemCustomData)) {
                             itemStack = null;
@@ -342,7 +358,7 @@ public class PlayerInventoryData {
     ItemStack addPageNums(ItemStack item, boolean nextPage) {
         ItemStack modItem = new ItemStack(item);
         ItemMeta itemMeta = modItem.getItemMeta();
-        int currentPageUser = page + 1;
+        int currentPageUser = currentPage + 1;
 
         if (itemMeta == null)
             return item;
@@ -355,7 +371,7 @@ public class PlayerInventoryData {
         if (itemMeta.getLore() != null) {
             List<String> itemLore = itemMeta.getLore();
             itemLore.replaceAll(string -> string
-                    .replace("%usedSlots%", (nextPage ? String.valueOf(getUsedSlot(page + 1)) : String.valueOf(getUsedSlot(page - 1))))
+                    .replace("%usedSlots%", (nextPage ? String.valueOf(getUsedSlot(currentPage + 1)) : String.valueOf(getUsedSlot(currentPage - 1))))
                     .replace("%currentPage%", String.valueOf(currentPageUser))
                     .replace("%maxPage%", String.valueOf(maxPage + 1)));
             itemMeta.setLore(itemLore);
@@ -365,7 +381,8 @@ public class PlayerInventoryData {
         return modItem;
     }
 
-    int getUsedSlot(int page) {
+    @Override
+    public int getUsedSlot(int page) {
         if (!getItems().containsKey(page))
             return 0;
 
@@ -378,19 +395,21 @@ public class PlayerInventoryData {
         return usedSlot;
     }
 
+    @Override
     public void prevPage() {
-        if (this.page > 0) {
+        if (this.currentPage > 0) {
             this.saveCurrentPage();
-            this.page = this.page - 1;
+            this.currentPage = this.currentPage - 1;
             this.showPage();
             this.saveCurrentPage();
         }
     }
 
+    @Override
     public void nextPage() {
-        if (this.page < maxPage) {
+        if (this.currentPage < maxPage) {
             this.saveCurrentPage();
-            this.page = this.page + 1;
+            this.currentPage = this.currentPage + 1;
             this.showPage();
             this.saveCurrentPage();
         }
@@ -400,7 +419,8 @@ public class PlayerInventoryData {
         return items.containsKey(page);
     }
 
-    void createPage(Integer page) {
+    @Override
+    public void createPage(Integer page) {
         ArrayList<ItemStack> pageItems = new ArrayList<ItemStack>(25);
         for (int i = 0; i < 25; i++) {
             pageItems.add(null);
@@ -408,10 +428,12 @@ public class PlayerInventoryData {
         this.items.put(page, pageItems);
     }
 
+    @Override
     public HashMap<Integer, ArrayList<ItemStack>> getItems() {
         return this.items;
     }
 
+    @Override
     public ArrayList<ItemStack> getItems(int page) {
         if (!pageExists(page)) {
             createPage(page);
@@ -419,31 +441,38 @@ public class PlayerInventoryData {
         return items.get(page);
     }
 
-    void setItems(HashMap<Integer, ArrayList<ItemStack>> items) {
+    @Override
+    public void setItems(HashMap<Integer, ArrayList<ItemStack>> items) {
         this.items = items;
     }
 
-    ArrayList<ItemStack> getCreativeItems() {
+    @Override
+    public ArrayList<ItemStack> getCreativeItems() {
         return this.creativeItems;
     }
 
-    void setCreativeItems(ArrayList<ItemStack> creativeItems) {
+    @Override
+    public void setCreativeItems(ArrayList<ItemStack> creativeItems) {
         this.creativeItems = creativeItems;
     }
 
-    public Integer getPage() {
-        return this.page;
+    @Override
+    public int getCurrentPage() {
+        return this.currentPage;
     }
 
-    void setPage(Integer page) {
-        this.page = page;
+    @Override
+    public void setCurrentPage(Integer page) {
+        this.currentPage = page;
     }
 
-    Boolean hasUsedCreative() {
+    @Override
+    public boolean hasUsedCreative() {
         return this.hasUsedCreative;
     }
 
-    void setUsedCreative(Boolean hasUsedCreative) {
+    @Override
+    public void setUsedCreative(Boolean hasUsedCreative) {
         this.hasUsedCreative = hasUsedCreative;
     }
 
@@ -457,7 +486,8 @@ public class PlayerInventoryData {
     }
 
     // returns true if dropped
-    public boolean storeOrDropItem(storeItemStackType storeItemStackType, ItemStack itemStack, GameMode gameMode) {
+    @Override
+    public boolean storeOrDropItem(ItemStack itemStack, GameMode gameMode) {
         for (int hotBarSlot = 0; hotBarSlot <= 8; hotBarSlot++) {
             ItemStack itemFromSlot = player.getInventory().getItem(hotBarSlot);
             if (itemFromSlot == null) {
@@ -476,14 +506,14 @@ public class PlayerInventoryData {
         }
         if (gameMode != GameMode.CREATIVE) {
             for (int page = 0; page < maxPage + 1; page++) {
-                if (page == this.page)
+                if (page == this.currentPage)
                     saveCurrentPage();
                 ArrayList<ItemStack> pageItems = getItems(page);
                 for (int slotNumber = 0; slotNumber < 24; slotNumber++) {
                     if (pageItems.get(slotNumber) == null) {
                         pageItems.set(slotNumber, itemStack);
                         this.items.put(page, pageItems);
-                        if (page == this.page)
+                        if (page == this.currentPage)
                             showPage();
                         if (Settings.ADVANCED_PICK_UP_SETTINGS_ACTIONBAR_ENABLED) {
                             String actionBar = Settings.ADVANCED_PICK_UP_SETTINGS_ACTIONBAR_TEXT;
@@ -502,7 +532,7 @@ public class PlayerInventoryData {
                                 itemFromSlot.setAmount(amountCombined);
                                 pageItems.set(slotNumber, itemFromSlot);
                                 this.items.put(page, pageItems);
-                                if (page == this.page)
+                                if (page == this.currentPage)
                                     showPage();
                                 if (Settings.ADVANCED_PICK_UP_SETTINGS_ACTIONBAR_ENABLED) {
                                     String actionBar = Settings.ADVANCED_PICK_UP_SETTINGS_ACTIONBAR_TEXT;
@@ -522,7 +552,7 @@ public class PlayerInventoryData {
             return true;
         } else {
             if (!Settings.INVENTORY_SETTINGS_USE_CREATIVE_INVENTORY)
-                return storeOrDropItem(storeItemStackType, itemStack, GameMode.SURVIVAL);
+                return storeOrDropItem(itemStack, GameMode.SURVIVAL);
             int nextFreeSpace = nextCreativeFreeSpace();
             if (nextFreeSpace != -1) {
                 this.creativeItems.set(nextFreeSpace, itemStack);
@@ -533,10 +563,5 @@ public class PlayerInventoryData {
             }
         }
 
-    }
-
-    public enum storeItemStackType {
-        pickup,
-        give
     }
 }

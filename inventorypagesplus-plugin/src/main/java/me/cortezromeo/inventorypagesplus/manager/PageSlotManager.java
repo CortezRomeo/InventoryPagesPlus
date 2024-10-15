@@ -4,7 +4,7 @@ import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
 import me.cortezromeo.inventorypagesplus.Settings;
 import me.cortezromeo.inventorypagesplus.inventory.PlayerPageInventory;
 import me.cortezromeo.inventorypagesplus.language.Messages;
-import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryData;
+import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryDatabase;
 import me.cortezromeo.inventorypagesplus.util.MessageUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -13,8 +13,8 @@ import org.jetbrains.annotations.NotNull;
 public class PageSlotManager {
 
     public static boolean setNextPageSlot(@NotNull Player player, int slot) {
-        DatabaseManager.updateInvToHashMap(player.getName());
-        PlayerInventoryData playerInventoryData = DatabaseManager.playerInventoryDatabase.get(player.getUniqueId().toString());
+        InventoryPagesPlus.getDatabaseManager().saveCurrentPage(player.getName());
+        PlayerInventoryDatabase playerInventoryData = InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(player.getUniqueId());
 
         if (slot < 0 || slot > 26) {
             MessageUtil.sendMessage(player, Messages.COMMAND_SETPAGESLOT_SLOT_RANGE_ERROR);
@@ -34,14 +34,14 @@ public class PageSlotManager {
         }
 
         playerInventoryData.setNextItemPos(slot);
-        DatabaseManager.savePlayerInventory(player.getName());
+        InventoryPagesPlus.getDatabaseManager().saveCurrentPage(player.getName());
         playerInventoryData.showPage(player.getGameMode());
         return true;
     }
 
     public static boolean setPrevPageSlot(@NotNull Player player, int slot) {
-        DatabaseManager.updateInvToHashMap(player.getName());
-        PlayerInventoryData playerInventoryData = DatabaseManager.playerInventoryDatabase.get(player.getUniqueId().toString());
+        InventoryPagesPlus.getDatabaseManager().saveCurrentPage(player.getName());
+        PlayerInventoryDatabase playerInventoryData = InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(player.getUniqueId());
 
         if (slot < 0 || slot > 26) {
             MessageUtil.sendMessage(player, Messages.COMMAND_SETPAGESLOT_SLOT_RANGE_ERROR);
@@ -61,14 +61,14 @@ public class PageSlotManager {
         }
 
         playerInventoryData.setPrevItemPos(slot);
-        DatabaseManager.savePlayerInventory(player.getName());
+        InventoryPagesPlus.getDatabaseManager().saveCurrentPage(player.getName());
         playerInventoryData.showPage(player.getGameMode());
         return true;
     }
 
     public static boolean resetPageSlot(@NotNull Player player) {
-        DatabaseManager.updateInvToHashMap(player.getName());
-        PlayerInventoryData playerInventoryData = DatabaseManager.playerInventoryDatabase.get(player.getUniqueId().toString());
+        InventoryPagesPlus.getDatabaseManager().saveCurrentPage(player.getName());
+        PlayerInventoryDatabase playerInventoryData = InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(player.getUniqueId());
         int defaultPrevItemSlot = Settings.INVENTORY_SETTINGS_PREV_ITEM_POS_DEFAULT;
         int defaultNextItemSlot = Settings.INVENTORY_SETTINGS_NEXT_ITEM_POS_DEFAULT;
 
@@ -87,7 +87,7 @@ public class PageSlotManager {
 
         playerInventoryData.setNextItemPos(defaultNextItemSlot);
         playerInventoryData.setPrevItemPos(defaultPrevItemSlot);
-        DatabaseManager.savePlayerInventory(player.getName());
+        InventoryPagesPlus.getDatabaseManager().saveCurrentPage(player.getName());
         playerInventoryData.showPage(player.getGameMode());
         return true;
     }

@@ -3,7 +3,6 @@ package me.cortezromeo.inventorypagesplus.storage;
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
 import me.cortezromeo.inventorypagesplus.Settings;
 import me.cortezromeo.inventorypagesplus.inventory.PlayerPageInventory;
-import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.util.FileUtil;
 import me.cortezromeo.inventorypagesplus.util.StringUtil;
@@ -38,7 +37,7 @@ public class PlayerInventoryDataYAMLStorage implements PlayerInventoryStorage {
         return file;
     }
 
-    public PlayerInventoryData fromFile(File file, String playerName, String playerUUID) {
+    public PlayerInventoryDatabase fromFile(File file, String playerName, String playerUUID) {
         YamlConfiguration storage = YamlConfiguration.loadConfiguration(file);
 
         HashMap<Integer, ArrayList<ItemStack>> pageItemHashMap = new HashMap<>();
@@ -46,7 +45,7 @@ public class PlayerInventoryDataYAMLStorage implements PlayerInventoryStorage {
         if (maxPageDefault < 0)
             maxPageDefault = 0;
 
-        PlayerInventoryData data = new PlayerInventoryData(Bukkit.getPlayer(playerName), playerName, playerUUID, maxPageDefault,null, null, PlayerPageInventory.prevItem, PlayerPageInventory.prevPos, PlayerPageInventory.nextItem, PlayerPageInventory.nextPos, PlayerPageInventory.noPageItem);
+        PlayerInventoryDatabase data = new PlayerInventory(Bukkit.getPlayer(playerName), playerName, playerUUID, maxPageDefault,null, null, PlayerPageInventory.prevItem, PlayerPageInventory.prevPos, PlayerPageInventory.nextItem, PlayerPageInventory.nextPos, PlayerPageInventory.noPageItem);
 
         if (storage.getString("name") == null) {
             return data;
@@ -96,7 +95,7 @@ public class PlayerInventoryDataYAMLStorage implements PlayerInventoryStorage {
             }
 
             if (Settings.INVENTORY_SETTINGS_USE_SAVED_CURRENT_PAGE)
-                data.setPage(storage.getInt("currentPage"));
+                data.setCurrentPage(storage.getInt("currentPage"));
 
             if (!Settings.INVENTORY_SETTINGS_FOCUS_USING_DEFAULT_ITEM_POS) {
                 data.setPrevItemPos(storage.getInt("prevItemPos"));
@@ -118,8 +117,8 @@ public class PlayerInventoryDataYAMLStorage implements PlayerInventoryStorage {
                 return UUID.nameUUIDFromBytes(offlinePlayerString.getBytes(StandardCharsets.UTF_8)).toString();
             }
         }
-        if (DatabaseManager.tempPlayerUUID.containsKey(playerName))
-            return DatabaseManager.tempPlayerUUID.get(playerName);
+        if (InventoryPagesPlus.getDatabaseManager().getTempPlayerUUID().containsKey(playerName))
+            return InventoryPagesPlus.getDatabaseManager().getTempPlayerUUID().get(playerName);
 
         String path = InventoryPagesPlus.plugin.getDataFolder() + "/database/" + playerName.length() + "/";
         File playerDatabaseFolder = new File(path);
@@ -160,7 +159,7 @@ public class PlayerInventoryDataYAMLStorage implements PlayerInventoryStorage {
     }
 
     @Override
-    public PlayerInventoryData getData(String playerName) {
+    public PlayerInventoryDatabase getData(String playerName) {
         String playerUUID = getUUIDFromData(playerName, true);
         File file = getFile(playerName, playerUUID);
         return fromFile(file, playerName, playerUUID);
@@ -172,15 +171,15 @@ public class PlayerInventoryDataYAMLStorage implements PlayerInventoryStorage {
     }
 
     @Override
-    public void saveData(PlayerInventoryData data) {
+    public void saveData(PlayerInventoryDatabase data) {
         File playerFile = getFile(data.getPlayerName(), data.getPlayerUUID());
         FileConfiguration playerDataCfg = YamlConfiguration.loadConfiguration(playerFile);
-        PlayerInventoryData playerInventoryData = DatabaseManager.playerInventoryDatabase.get(data.getPlayerUUID());
+        PlayerInventoryDatabase playerInventoryData = InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(UUID.fromString(data.getPlayerUUID()));
 
         playerDataCfg.set("name", playerInventoryData.getPlayerName());
         playerDataCfg.set("uuid", playerInventoryData.getPlayerUUID());
         playerDataCfg.set("maxPage", playerInventoryData.getMaxPage());
-        playerDataCfg.set("currentPage", playerInventoryData.getPage());
+        playerDataCfg.set("currentPage", playerInventoryData.getCurrentPage());
         playerDataCfg.set("prevItemPos", playerInventoryData.getPrevItemPos());
         playerDataCfg.set("nextItemPos", playerInventoryData.getNextItemPos());
 
@@ -197,9 +196,9 @@ public class PlayerInventoryDataYAMLStorage implements PlayerInventoryStorage {
         }
 
         // save creative items
-        if (DatabaseManager.playerInventoryDatabase.get(data.getPlayerUUID()).hasUsedCreative()) {
+        if (InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(UUID.fromString(data.getPlayerUUID())).hasUsedCreative()) {
             for (int slotNumber = 0; slotNumber < 27; slotNumber++) {
-                if (DatabaseManager.playerInventoryDatabase.get(data.getPlayerUUID()).getCreativeItems().get(slotNumber) != null) {
+                if (InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(UUID.fromString(data.getPlayerUUID())).getCreativeItems().get(slotNumber) != null) {
                     playerDataCfg.set("items.creative.0." + slotNumber, StringUtil.toBase64(playerInventoryData.getCreativeItems().get(slotNumber)));
                 } else {
                     playerDataCfg.set("items.creative.0." + slotNumber, null);

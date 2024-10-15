@@ -2,10 +2,9 @@ package me.cortezromeo.inventorypagesplus.command;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
 import me.cortezromeo.inventorypagesplus.language.Messages;
-import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.manager.PageSlotManager;
-import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryData;
+import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryDatabase;
 import me.cortezromeo.inventorypagesplus.util.MessageUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -36,7 +35,7 @@ public class SetPageSlotCommand implements CommandExecutor, TabExecutor {
                 return false;
             }
 
-            PlayerInventoryData playerInventoryData = DatabaseManager.playerInventoryDatabase.get(player.getUniqueId().toString());
+            PlayerInventoryDatabase playerInventoryData = InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(player.getUniqueId());
 
             if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("reset")) {

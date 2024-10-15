@@ -58,11 +58,11 @@ public class PlayerInventoryDataStorage {
         return PlayerInventoryDataStorage.STORAGE.getUUIDFromData(playerName, naturalCheck);
     }
 
-    public static PlayerInventoryData getPlayerInventoryData(String playerName) {
+    public static PlayerInventoryDatabase getPlayerInventoryData(String playerName) {
         return PlayerInventoryDataStorage.STORAGE.getData(playerName);
     }
 
-    public static void savePlayerInventoryData(PlayerInventoryData data) {
+    public static void savePlayerInventoryData(PlayerInventoryDatabase data) {
         PlayerInventoryDataStorage.STORAGE.saveData(data);
     }
 

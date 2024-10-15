@@ -1,9 +1,11 @@
 package me.cortezromeo.inventorypagesplus.inventory.inventorysee;
 
+import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
 import me.cortezromeo.inventorypagesplus.inventory.CustomInventoryBase;
-import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
-import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryData;
+import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryDatabase;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 public abstract class InventorySee extends CustomInventoryBase {
 
@@ -15,8 +17,8 @@ public abstract class InventorySee extends CustomInventoryBase {
         super(owner);
     }
 
-    public PlayerInventoryData getTargetInventoryDatabase() {
-        return DatabaseManager.playerInventoryDatabase.get(targetUUID);
+    public PlayerInventoryDatabase getTargetInventoryDatabase() {
+        return InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(UUID.fromString(targetUUID));
     }
 
     public String getTargetName() {

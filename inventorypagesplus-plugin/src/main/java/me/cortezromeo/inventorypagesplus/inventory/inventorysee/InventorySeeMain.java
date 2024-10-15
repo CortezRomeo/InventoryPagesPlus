@@ -3,7 +3,6 @@ package me.cortezromeo.inventorypagesplus.inventory.inventorysee;
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
 import me.cortezromeo.inventorypagesplus.file.inventory.InvseeInventoryFile;
 import me.cortezromeo.inventorypagesplus.inventory.PlayerPageInventory;
-import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.util.ItemUtil;
 import org.bukkit.Bukkit;
@@ -232,7 +231,7 @@ public class InventorySeeMain extends InventorySee {
         for (int itemLore = 0; itemLore < itemLores.size(); itemLore++) {
             String lore = itemLores.get(itemLore).replace("%player%", getTargetInventoryDatabase().getPlayerName());
             lore = lore.replace("%totalpage%", String.valueOf(getTargetInventoryDatabase().getMaxPage()))
-                            .replace("%currentviewingpage%", String.valueOf(getTargetInventoryDatabase().getPage()))
+                            .replace("%currentviewingpage%", String.valueOf(getTargetInventoryDatabase().getCurrentPage()))
                             .replace("%nextpageslotnumber%", String.valueOf(getTargetInventoryDatabase().getNextItemPos()))
                             .replace("%previouspageslotnumber%", String.valueOf(getTargetInventoryDatabase().getPrevItemPos()));
             itemLores.set(itemLore, lore);
@@ -243,7 +242,7 @@ public class InventorySeeMain extends InventorySee {
     }
 
     private void addTargetItems() {
-        DatabaseManager.updateInvToHashMapUUID(getTargetInventoryDatabase().getPlayerUUID());
+        InventoryPagesPlus.getDatabaseManager().saveCurrentPage(UUID.fromString(getTargetInventoryDatabase().getPlayerUUID()));
         // get items from page
         boolean foundPrevItem = false;
         boolean foundNextItem = false;
@@ -258,7 +257,7 @@ public class InventorySeeMain extends InventorySee {
                     slotClone--;
                 if (foundNextItem)
                     slotClone--;
-                inventory.setItem(slot, getTargetInventoryDatabase().getItems().get(getPage()).get(slotClone));
+                inventory.setItem(slot, getTargetInventoryDatabase().getItems(getPage()).get(slotClone));
             }
         }
 

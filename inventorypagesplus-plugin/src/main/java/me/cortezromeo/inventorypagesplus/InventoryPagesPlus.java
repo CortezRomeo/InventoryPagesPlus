@@ -34,11 +34,13 @@ public final class InventoryPagesPlus extends JavaPlugin {
     public static VersionSupport nms;
     public static DatabaseType databaseType;
     private static boolean papiSupport = false;
+    private static DatabaseManager databaseManager;
 
     @Override
     public void onLoad() {
         plugin = this;
         nms = new CrossVersionSupport(plugin);
+        databaseManager = new DatabaseManager();
     }
 
     @Override
@@ -74,7 +76,7 @@ public final class InventoryPagesPlus extends JavaPlugin {
 
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
             try {
-                DatabaseManager.loadPlayerInventory(player.getName());
+                getDatabaseManager().loadPlayerInventory(player.getName());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -229,6 +231,10 @@ public final class InventoryPagesPlus extends JavaPlugin {
         }
     }
 
+    public static DatabaseManager getDatabaseManager() {
+        return databaseManager;
+    }
+
     public static boolean isPapiSupport() {
         return papiSupport;
     }
@@ -237,10 +243,10 @@ public final class InventoryPagesPlus extends JavaPlugin {
     public void onDisable() {
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
             String playerUUID = player.getUniqueId().toString();
-            if (DatabaseManager.playerInventoryDatabase.containsKey(playerUUID)) {
+            if (getDatabaseManager().getPlayerInventoryDatabase().containsKey(playerUUID)) {
                 // update inventories to hashmap and save to file
-                DatabaseManager.savePlayerInventory(player.getName());
-                DatabaseManager.clearAndRemoveCrashedPlayer(player.getName());
+                getDatabaseManager().savePlayerInventory(player.getName());
+                getDatabaseManager().clearAndRemoveCrashedPlayer(player.getName());
             }
         }
         MessageUtil.log("&f--------------------------------");
