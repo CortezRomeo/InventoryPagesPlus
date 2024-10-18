@@ -22,8 +22,8 @@ import java.util.UUID;
 
 public class InventorySeeMain extends InventorySee {
 
-    public static ItemStack borderItem, offlinePlayerItem, nextItem, prevItem, noPageItem, otherItemsInventoryOfflineItem, otherItemsInventoryOnlineItem, infoItem, closeItem;
-    public static int nextItemSlot, prevItemSlot, otherItemsInventoryOfflineItemSlot, otherItemsInventoryOnlineItemSlot, infoItemSlot, closeItemSlot;
+    public static ItemStack borderItem, offlinePlayerItem, nextItem, prevItem, noPageItem, otherItemsInventoryItem, infoItem, closeItem;
+    public static int nextItemSlot, prevItemSlot, otherItemsInventoryItemSlot, infoItemSlot, closeItemSlot;
     private BukkitTask bukkitRunnable;
 
     public InventorySeeMain(Player owner, String targetName, String targetUUID, int page) {
@@ -47,14 +47,14 @@ public class InventorySeeMain extends InventorySee {
                     invseeInvFile.getString("items.prev.value"),
                     (short) invseeInvFile.getInt("items.prev.data"),
                     invseeInvFile.getString("items.prev.name"),
-                    invseeInvFile.getStringList("items.prev.lore")), "previtem");
+                    invseeInvFile.getStringList("items.prev.lore")), invseeInvFile.getString("items.prev.direct"));
             prevItemSlot = invseeInvFile.getInt("items.prev.slot");
 
             nextItem = InventoryPagesPlus.nms.addCustomData(ItemUtil.getItem(invseeInvFile.getString("items.next.type"),
                     invseeInvFile.getString("items.next.value"),
                     (short) invseeInvFile.getInt("items.next.data"),
                     invseeInvFile.getString("items.next.name"),
-                    invseeInvFile.getStringList("items.next.lore")), "nextitem");
+                    invseeInvFile.getStringList("items.next.lore")), invseeInvFile.getString("items.next.direct"));
             nextItemSlot = invseeInvFile.getInt("items.next.slot");
 
             noPageItem = ItemUtil.getItem(invseeInvFile.getString("items.noPage.type"),
@@ -69,19 +69,12 @@ public class InventorySeeMain extends InventorySee {
                     invseeInvFile.getString("items.offlinePlayer.name"),
                     invseeInvFile.getStringList("items.offlinePlayer.lore"));
 
-            otherItemsInventoryOfflineItem = ItemUtil.getItem(invseeInvFile.getString("items.otherItemsInventory.offline.type"),
-                    invseeInvFile.getString("items.otherItemsInventory.offline.value"),
-                    (short) invseeInvFile.getInt("items.otherItemsInventory.offline.data"),
-                    invseeInvFile.getString("items.otherItemsInventory.offline.name"),
-                    invseeInvFile.getStringList("items.otherItemsInventory.offline.lore"));
-            otherItemsInventoryOfflineItemSlot = invseeInvFile.getInt("items.otherItemsInventory.offline.slot");
-
-            otherItemsInventoryOnlineItem = InventoryPagesPlus.nms.addCustomData(ItemUtil.getItem(invseeInvFile.getString("items.otherItemsInventory.online.type"),
-                    invseeInvFile.getString("items.otherItemsInventory.online.value"),
-                    (short) invseeInvFile.getInt("items.otherItemsInventory.online.data"),
-                    invseeInvFile.getString("items.otherItemsInventory.online.name"),
-                    invseeInvFile.getStringList("items.otherItemsInventory.online.lore")), "otheritemsitem");
-            otherItemsInventoryOnlineItemSlot = invseeInvFile.getInt("items.otherItemsInventory.online.slot");
+            otherItemsInventoryItem = InventoryPagesPlus.nms.addCustomData(ItemUtil.getItem(invseeInvFile.getString("items.otherItemsInventory.type"),
+                    invseeInvFile.getString("items.otherItemsInventory.value"),
+                    (short) invseeInvFile.getInt("items.otherItemsInventory.data"),
+                    invseeInvFile.getString("items.otherItemsInventory.name"),
+                    invseeInvFile.getStringList("items.otherItemsInventory.lore")), invseeInvFile.getString("items.otherItemsInventory.direct"));
+            otherItemsInventoryItemSlot = invseeInvFile.getInt("items.otherItemsInventory.slot");
 
             infoItem = ItemUtil.getItem(invseeInvFile.getString("items.info.type"),
                     invseeInvFile.getString("items.info.value"),
@@ -94,7 +87,7 @@ public class InventorySeeMain extends InventorySee {
                     invseeInvFile.getString("items.close.value"),
                     (short) invseeInvFile.getInt("items.close.data"),
                     invseeInvFile.getString("items.close.name"),
-                    invseeInvFile.getStringList("items.close.lore")), "close");
+                    invseeInvFile.getStringList("items.close.lore")), invseeInvFile.getString("items.close.direct"));
             closeItemSlot = invseeInvFile.getInt("items.close.slot");
 
             DebugManager.debug("LOADING INVENTORIES (InventorySeeMain)", "Completed with no issues.");
@@ -133,7 +126,7 @@ public class InventorySeeMain extends InventorySee {
 
     @Override
     public int getSlots() {
-        return 54;
+        return 6 * 9;
     }
 
     @Override
@@ -150,22 +143,21 @@ public class InventorySeeMain extends InventorySee {
 
         if (event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR) {
             ItemStack clickedItem = event.getCurrentItem();
-            if (InventoryPagesPlus.nms.getCustomData(clickedItem).equals("nextitem")) {
+            if (InventoryPagesPlus.nms.getCustomData(clickedItem).equals("next")) {
                 addPage(1);
                 setMenuItems();
                 open();
+                return;
             }
-            if (InventoryPagesPlus.nms.getCustomData(clickedItem).equals("previtem")) {
+            if (InventoryPagesPlus.nms.getCustomData(clickedItem).equals("prev")) {
                 removePage(1);
                 setMenuItems();
                 open();
-            } if (InventoryPagesPlus.nms.getCustomData(clickedItem).equals("otheritemsitem")) {
-                new InventorySeeOtherItems(getOwner(), getTargetName(), getTargetUUID(), getPage()).open();
+                return;
             }
-             if (InventoryPagesPlus.nms.getCustomData(clickedItem).equals("close")) {
-                 getOwner().closeInventory();
-             }
         }
+
+        super.handleMenu(event);
     }
 
     @Override
@@ -185,8 +177,9 @@ public class InventorySeeMain extends InventorySee {
             inventory.setItem(nextItemSlot, getPageItemStack(nextItem, true));
         }
 
-        inventory.setItem(infoItemSlot, getClickableItemStack(infoItem));
-        inventory.setItem(closeItemSlot, getClickableItemStack(closeItem));
+        inventory.setItem(otherItemsInventoryItemSlot, addPlaceholders(otherItemsInventoryItem));
+        inventory.setItem(infoItemSlot, addPlaceholders(infoItem));
+        inventory.setItem(closeItemSlot, addPlaceholders(closeItem));
     }
 
     private @NotNull ItemStack getPageItemStack(ItemStack itemStack, boolean nextPage) {
@@ -222,25 +215,6 @@ public class InventorySeeMain extends InventorySee {
         return usedSlot;
     }
 
-    private @NotNull ItemStack getClickableItemStack(ItemStack itemStack) {
-        ItemStack modItem = new ItemStack(itemStack);
-        ItemMeta itemMeta = modItem.getItemMeta();
-        itemMeta.setDisplayName(modItem.getItemMeta().getDisplayName().replace("%player%", getTargetInventoryDatabase().getPlayerName()));
-
-        List<String> itemLores = modItem.getItemMeta().getLore();
-        for (int itemLore = 0; itemLore < itemLores.size(); itemLore++) {
-            String lore = itemLores.get(itemLore).replace("%player%", getTargetInventoryDatabase().getPlayerName());
-            lore = lore.replace("%totalpage%", String.valueOf(getTargetInventoryDatabase().getMaxPage()))
-                            .replace("%currentviewingpage%", String.valueOf(getTargetInventoryDatabase().getCurrentPage()))
-                            .replace("%nextpageslotnumber%", String.valueOf(getTargetInventoryDatabase().getNextItemPos()))
-                            .replace("%previouspageslotnumber%", String.valueOf(getTargetInventoryDatabase().getPrevItemPos()));
-            itemLores.set(itemLore, lore);
-        }
-        itemMeta.setLore(itemLores);
-        modItem.setItemMeta(itemMeta);
-        return modItem;
-    }
-
     private void addTargetItems() {
         InventoryPagesPlus.getDatabaseManager().saveCurrentPage(UUID.fromString(getTargetInventoryDatabase().getPlayerUUID()));
         // get items from page
@@ -266,12 +240,7 @@ public class InventorySeeMain extends InventorySee {
             for (int slot = 0; slot < 9; slot++) {
                 inventory.setItem(27 + slot, Bukkit.getPlayer(UUID.fromString(getTargetUUID())).getInventory().getItem(slot));
             }
-            inventory.setItem(otherItemsInventoryOnlineItemSlot, getClickableItemStack(otherItemsInventoryOnlineItem));
-        } else {
-            for (int slot = 27; slot < 36; slot++) {
-                inventory.setItem(slot, offlinePlayerItem);
-            }
-            inventory.setItem(otherItemsInventoryOfflineItemSlot, getClickableItemStack(otherItemsInventoryOfflineItem));
+            inventory.setItem(otherItemsInventoryItemSlot, addPlaceholders(otherItemsInventoryItem));
         }
     }
 }

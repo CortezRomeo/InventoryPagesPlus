@@ -26,6 +26,14 @@
 #      + How to use custom head:
 #          Step 1: Get into the website https://minecraft-heads.com/custom-heads/ and get whatever head you want
 #          Step 2: Scroll down to the 'For Developers:' part, copy the 'Value' section and then paste it into 'value:'
+#  * All directs:
+#    + close: Close the inventory
+#    + otherItemsInventory: Open invsee other items inventory
+#    + invseeMainInventory: Open main invsee inventory
+#    + creativeInventory: Open creative invsee inventory
+#    + enderChestInventory: Open ender chest inventory
+#    + next: Switch to next page
+#    + prev: Switch back to previous page
 
 title: '&0%player%''s inventory'
 items:
@@ -40,43 +48,31 @@ items:
     type: MATERIAL
     value: RED_STAINED_GLASS_PANE
     data: 0
-    name: '&cUnknown item'
+    name: '&#fc3103Unknown item'
     lore:
-      - ''
-      - '&fCannot view this item because player is offline.'
+      - '&#fc3103Cannot view this item because player is offline.'
   close:
+    direct: close
     type: customhead
     value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmViNTg4YjIxYTZmOThhZDFmZjRlMDg1YzU1MmRjYjA1MGVmYzljYWI0MjdmNDYwNDhmMThmYzgwMzQ3NWY3In19fQ==
     data: 0
-    name: '&cClose'
+    name: '&#fc3103Close'
     lore:
-      - '&eClick to close.'
+      - '&#FFCC00Click to close.'
     slot: 49
   otherItemsInventory:
-    online:
-      type: customhead
-      value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDQ2NzUxNThjMDc2N2VlNTA4YzUyZDUyNDI2Y2VmM2EyYzJiMjliN2U0ODdjOTI5NTNhMzgyM2Y1NjFkMDZhZiJ9fX0=
-      data: 0
-      name: '&fView &b%player%''s&f other items'
-      slot: 48
-      lore:
-        - ''
-        - '&fThis includes &b%player%''s&f armor, creative items, and'
-        - '&fitems in second hand.'
-        - ''
-        - '&eClick here to view.'
-    offline:
-      type: MATERIAL
-      value: RED_STAINED_GLASS_PANE
-      data: 0
-      name: '&c&mView %player%''s other items'
-      slot: 48
-      lore:
-        - ''
-        - '&fThis includes &b%player%''s&f armor, creative items, and'
-        - '&fitems in second hand.'
-        - ''
-        - '&eCannot view because player is offline!'
+    direct: otherItemsInventory
+    type: customhead
+    value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDQ2NzUxNThjMDc2N2VlNTA4YzUyZDUyNDI2Y2VmM2EyYzJiMjliN2U0ODdjOTI5NTNhMzgyM2Y1NjFkMDZhZiJ9fX0=
+    data: 0
+    name: '&fView &b%player%''s&f other items'
+    slot: 48
+    lore:
+      - ''
+      - '&fThis includes &b%player%''s&f armor, creative items, and'
+      - '&fitems in second hand.'
+      - ''
+      - '&#FFCC00Click here to view.'
   info:
     type: MATERIAL
     value: BOOK
@@ -85,12 +81,13 @@ items:
     slot: 50
     lore:
       - ''
-      - '&fTotal page: &#55ff00%totalpage%'
+      - '&fTotal pages: &#55ff00%totalpages%'
       - '&fPlayer''s current viewing page: &#55ff00%currentviewingpage%'
       - '&fNext page item slot number: &#55ff00%nextpageslotnumber%'
       - '&fPrevious page item slot number: &#55ff00%previouspageslotnumber%'
       - ''
   prev:
+    direct: prev
     type: customhead
     value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmQ2OWUwNmU1ZGFkZmQ4NGU1ZjNkMWMyMTA2M2YyNTUzYjJmYTk0NWVlMWQ0ZDcxNTJmZGM1NDI1YmMxMmE5In19fQ==
     data: 0
@@ -103,6 +100,7 @@ items:
       - ''
       - '&#FFCC00Left-Click to switch to previous page.'
   next:
+    direct: next
     type: customhead
     value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTliZjMyOTJlMTI2YTEwNWI1NGViYTcxM2FhMWIxNTJkNTQxYTFkODkzODgyOWM1NjM2NGQxNzhlZDIyYmYifX19
     data: 0

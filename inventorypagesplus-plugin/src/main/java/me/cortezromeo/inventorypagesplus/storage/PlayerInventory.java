@@ -201,7 +201,16 @@ public class PlayerInventory implements PlayerInventoryDatabase {
 
     @Override
     public void clearPage(GameMode gm) {
+        if (player != null) {
+            player.getInventory().setItemInOffHand(null);
+            player.getInventory().setHelmet(null);
+            player.getInventory().setChestplate(null);
+            player.getInventory().setLeggings(null);
+            player.getInventory().setBoots(null);
+            player.updateInventory();
+        }
         clearPage(this.currentPage, gm);
+
     }
 
     @Override
@@ -226,6 +235,14 @@ public class PlayerInventory implements PlayerInventoryDatabase {
     @Override
     public void clearAllPages(GameMode gm) {
         if (gm != GameMode.CREATIVE) {
+            if (player != null) {
+                player.getInventory().setItemInOffHand(null);
+                player.getInventory().setHelmet(null);
+                player.getInventory().setChestplate(null);
+                player.getInventory().setLeggings(null);
+                player.getInventory().setBoots(null);
+                player.updateInventory();
+            }
             for (int page = 0; page < this.maxPage + 1; page++) {
                 clearPage(page, gm);
             }
@@ -388,6 +405,17 @@ public class PlayerInventory implements PlayerInventoryDatabase {
 
         int usedSlot = 0;
         for (ItemStack itemStack : getItems(page)) {
+            if (itemStack != null)
+                usedSlot = usedSlot + 1;
+        }
+
+        return usedSlot;
+    }
+
+    @Override
+    public int getUsedSlotCreative() {
+        int usedSlot = 0;
+        for (ItemStack itemStack : getCreativeItems()) {
             if (itemStack != null)
                 usedSlot = usedSlot + 1;
         }

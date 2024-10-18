@@ -98,6 +98,9 @@ public class CrossVersionSupport extends VersionSupport {
         if (itemStack == null)
             return null;
 
+        if (itemStack.getType() == Material.AIR)
+            return null;
+
         NBTItem nbtItem = new NBTItem(itemStack);
         nbtItem.setString(NBT_KEY + ".customdata", data);
         return nbtItem.getItem();
@@ -106,6 +109,9 @@ public class CrossVersionSupport extends VersionSupport {
     @Override
     public String getCustomData(ItemStack itemStack) {
         if (itemStack == null)
+            return null;
+
+        if (itemStack.getType() == Material.AIR)
             return null;
 
         NBTItem nbtItem = new NBTItem(itemStack);

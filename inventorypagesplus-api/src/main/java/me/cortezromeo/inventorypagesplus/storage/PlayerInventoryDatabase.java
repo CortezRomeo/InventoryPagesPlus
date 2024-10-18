@@ -81,6 +81,8 @@ public interface PlayerInventoryDatabase {
 
     boolean storeOrDropItem(ItemStack itemStack, GameMode gameMode);
 
+    int getUsedSlotCreative();
+
     void prevPage();
 
     void nextPage();

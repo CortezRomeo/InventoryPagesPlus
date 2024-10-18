@@ -2,6 +2,7 @@ package me.cortezromeo.inventorypagesplus.manager;
 
 import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryDatabase;
 
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -16,6 +17,8 @@ public interface InventoryPagesPlusDataManager {
     PlayerInventoryDatabase getPlayerInventoryDatabase(UUID UUID);
 
     void loadPlayerInventory(String playerName);
+
+    HashMap<String, String> getTempPlayerUUID();
 
     void updateAndSaveAllInventoriesToDatabase();
 

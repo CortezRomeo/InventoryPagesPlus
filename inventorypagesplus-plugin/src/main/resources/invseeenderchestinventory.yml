@@ -33,8 +33,7 @@
 #    + creativeInventory: Open creative invsee inventory
 #    + enderChestInventory: Open ender chest inventory
 
-title: '&0%player%''s inventory &#03cefc[Other items]'
-rows: 6
+title: '&0%player%''s inventory &#03cefc[Ender chest]'
 items:
   border:
     type: MATERIAL
@@ -43,13 +42,6 @@ items:
     name: ''
     lore:
       - ''
-  offlinePlayer:
-    type: MATERIAL
-    value: RED_STAINED_GLASS_PANE
-    data: 0
-    name: '&#fc3103Unknown item'
-    lore:
-      - '&#fc3103Cannot view this item because player is offline.'
   close:
     direct: close
     type: customhead
@@ -58,55 +50,27 @@ items:
     name: '&#fc3103Close'
     lore:
       - '&#FFCC00Click to close.'
-    slot: 49
-  invseeMainInventory:
-    direct: invseeMainInventory
+    slot: 40
+  otherItemsInventory:
+    direct: otherItemsInventory
     type: customhead
-    value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2MxYjJmNTkyY2ZjOGQzNzJkY2Y1ZmQ0NGVlZDY5ZGRkYzY0NjAxZDc4NDZkNzI2MTlmNzA1MTFkODA0M2E4OSJ9fX0=
+    value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDQ2NzUxNThjMDc2N2VlNTA4YzUyZDUyNDI2Y2VmM2EyYzJiMjliN2U0ODdjOTI5NTNhMzgyM2Y1NjFkMDZhZiJ9fX0=
     data: 0
-    name: '&bInventory pages'
+    name: '&fView &b%player%''s&f other items'
+    slot: 39
     lore:
       - ''
-      - '&fTotal pages: &#55ff00%totalpages%'
-      - '&fPlayer''s current viewing page: &#55ff00%currentviewingpage%'
-      - '&fNext page item slot number: &#55ff00%nextpageslotnumber%'
-      - '&fPrevious page item slot number: &#55ff00%previouspageslotnumber%'
+      - '&fThis includes &b%player%''s&f armor, creative items, and'
+      - '&fitems in second hand.'
       - ''
       - '&#FFCC00Click here to view.'
-    slot: 23
-  creativeInventory:
-    direct: creativeInventory
-    type: customhead
-    value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmVkNjY0M2NhYjhiYmY1OTU0MzQ4ZWRkN2NkZTZiOTgwNjIzMWVkMWMwNzIyN2U1ZGU2Mjg5NWUwZmFjZjE1YSJ9fX0=
+  info:
+    type: MATERIAL
+    value: BOOK
     data: 0
-    name: '&eCreative inventory'
-    lore:
-      - ''
-      - '&fSlots: &#aaffaa%creativeusedslots%&7/&#55ff0025'
-      - ''
-      - '&#FFCC00Click here to view.'
-    slot: 24
-  enderChestInventory:
-    direct: enderChestInventory
-    type: customhead
-    value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTg4MTQ5ZTU2Y2RlMDJlZWU2MjA5ODI4ODRiODkzNjM0NzU2YmU5MTQxZjJlMjc3N2I1MWNiMGE2NmMzMWRjZSJ9fX0=
-    data: 0
-    name: '&#c203fcEnder chest'
+    name: '&e%player%''s &fender chest'
+    slot: 41
     lore:
       - ''
       - '&fSlots: &#aaffaa%enderchestusedslots%&7/&#55ff0025'
       - ''
-      - '&#FFCC00Click here to view.'
-    slot: 25
-  headItem:
-    slot: 11
-  playerChestItem:
-    slot: 20
-  playerPantsItem:
-    slot: 29
-  playerBootsItem:
-    slot: 38
-  playerItemInMainHand:
-    slot: 19
-  playerItemInSecondHand:
-    slot: 21

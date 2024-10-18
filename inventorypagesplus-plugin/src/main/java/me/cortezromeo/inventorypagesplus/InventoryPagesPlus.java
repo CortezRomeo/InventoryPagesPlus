@@ -3,10 +3,10 @@
   import com.tchristofferson.configupdater.ConfigUpdater;
   import me.cortezromeo.inventorypagesplus.command.*;
   import me.cortezromeo.inventorypagesplus.enums.DatabaseType;
-  import me.cortezromeo.inventorypagesplus.file.inventory.InvseeInventoryFile;
-  import me.cortezromeo.inventorypagesplus.file.inventory.InvseeOtherItemsInventoryFile;
-  import me.cortezromeo.inventorypagesplus.file.inventory.PlayerInventoryFile;
+  import me.cortezromeo.inventorypagesplus.file.inventory.*;
   import me.cortezromeo.inventorypagesplus.inventory.PlayerPageInventory;
+  import me.cortezromeo.inventorypagesplus.inventory.inventorysee.InventorySeeCreative;
+  import me.cortezromeo.inventorypagesplus.inventory.inventorysee.InventorySeeEnderChest;
   import me.cortezromeo.inventorypagesplus.inventory.inventorysee.InventorySeeMain;
   import me.cortezromeo.inventorypagesplus.inventory.inventorysee.InventorySeeOtherItems;
   import me.cortezromeo.inventorypagesplus.language.English;
@@ -16,6 +16,7 @@
   import me.cortezromeo.inventorypagesplus.manager.AutoSaveManager;
   import me.cortezromeo.inventorypagesplus.manager.DatabaseManager;
   import me.cortezromeo.inventorypagesplus.manager.DebugManager;
+  import me.cortezromeo.inventorypagesplus.manager.InventoryPagesPlusDataManager;
   import me.cortezromeo.inventorypagesplus.server.VersionSupport;
   import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryDataStorage;
   import me.cortezromeo.inventorypagesplus.support.PAPISupport;
@@ -34,7 +35,7 @@ public final class InventoryPagesPlus extends JavaPlugin {
     public static VersionSupport nms;
     public static DatabaseType databaseType;
     private static boolean papiSupport = false;
-    private static DatabaseManager databaseManager;
+    private static InventoryPagesPlusDataManager databaseManager;
 
     @Override
     public void onLoad() {
@@ -164,6 +165,32 @@ public final class InventoryPagesPlus extends JavaPlugin {
         }
         InvseeOtherItemsInventoryFile.reload();
         DebugManager.debug("LOADING FILE", "Loaded invseeotheritemsinventory.yml.");
+
+        // inventories/invseecreativeinventory.yml
+        String invseeCreativeInventoryFileName = "invseecreativeinventory.yml";
+        InvseeCreativeInventoryFile.setup();
+        InvseeCreativeInventoryFile.saveDefault();
+        File invseeCreativeInventoryFile = new File(getDataFolder() + "/inventories/invseecreativeinventory.yml");
+        try {
+            ConfigUpdater.update(this, invseeCreativeInventoryFileName, invseeCreativeInventoryFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        InvseeCreativeInventoryFile.reload();
+        DebugManager.debug("LOADING FILE", "Loaded invseecreativeinventory.yml.");
+
+        // inventories/invseeenderchestinventory.yml
+        String invseeEnderChestInventoryFileName = "invseeenderchestinventory.yml";
+        InvseeEnderChestInventoryFile.setup();
+        InvseeEnderChestInventoryFile.saveDefault();
+        File invseeEnderChestInventoryFile = new File(getDataFolder() + "/inventories/invseeenderchestinventory.yml");
+        try {
+            ConfigUpdater.update(this, invseeEnderChestInventoryFileName, invseeEnderChestInventoryFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        InvseeEnderChestInventoryFile.reload();
+        DebugManager.debug("LOADING FILE", "Loaded invseeenderchestinventory.yml.");
     }
 
     public void initLanguages() {
@@ -197,6 +224,8 @@ public final class InventoryPagesPlus extends JavaPlugin {
     public void initInventories() {
         InventorySeeMain.setupItems();
         InventorySeeOtherItems.setupItems();
+        InventorySeeCreative.setupItems();
+        InventorySeeEnderChest.setupItems();
         PlayerPageInventory.setupItems();
 /*        InvseeInventoryMain.setupItems();
         InvseeOtherItemsInventory.setupItems();*/
@@ -231,7 +260,7 @@ public final class InventoryPagesPlus extends JavaPlugin {
         }
     }
 
-    public static DatabaseManager getDatabaseManager() {
+    public static InventoryPagesPlusDataManager getDatabaseManager() {
         return databaseManager;
     }
 

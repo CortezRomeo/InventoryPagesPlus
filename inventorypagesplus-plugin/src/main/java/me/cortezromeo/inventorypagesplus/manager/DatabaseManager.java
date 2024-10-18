@@ -78,6 +78,7 @@ public class DatabaseManager implements InventoryPagesPlusDataManager {
         DebugManager.debug("LOADING DATABASE PLAYER (" + playerName + ")", "Completed with no issues. &b&l(" + (System.currentTimeMillis() - time + "ms)"));
     }
 
+    @Override
     public HashMap<String, String> getTempPlayerUUID() {
         return tempPlayerUUID;
     }

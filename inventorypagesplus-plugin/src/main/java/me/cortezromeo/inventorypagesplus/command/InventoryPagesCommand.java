@@ -5,6 +5,8 @@ import me.cortezromeo.inventorypagesplus.Settings;
 import me.cortezromeo.inventorypagesplus.file.inventory.InvseeInventoryFile;
 import me.cortezromeo.inventorypagesplus.file.inventory.InvseeOtherItemsInventoryFile;
 import me.cortezromeo.inventorypagesplus.file.inventory.PlayerInventoryFile;
+import me.cortezromeo.inventorypagesplus.inventory.inventorysee.InventorySeeCreative;
+import me.cortezromeo.inventorypagesplus.inventory.inventorysee.InventorySeeEnderChest;
 import me.cortezromeo.inventorypagesplus.inventory.inventorysee.InventorySeeMain;
 import me.cortezromeo.inventorypagesplus.inventory.inventorysee.InventorySeeOtherItems;
 import me.cortezromeo.inventorypagesplus.language.English;
@@ -54,6 +56,8 @@ public class InventoryPagesCommand implements CommandExecutor, TabExecutor {
                 InvseeOtherItemsInventoryFile.reload();
                 InventorySeeMain.setupItems();
                 InventorySeeOtherItems.setupItems();
+                InventorySeeCreative.setupItems();
+                InventorySeeEnderChest.setupItems();
                 if (AutoSaveManager.isAutoSaveEnabled() && !Settings.AUTO_SAVE_ENABLED)
                     AutoSaveManager.stopAutoSave();
                 else
