@@ -30,7 +30,7 @@ public class ClearAllCommand implements CommandExecutor, TabExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 1) {
             if (sender instanceof Player) {
-                if (!sender.hasPermission("inventorypagesplus.clearall.others")) {
+                if (!sender.hasPermission("inventorypagesplus.clearall.others") && !sender.hasPermission("inventorypagesplus.admin")) {
                     MessageUtil.sendMessage(((Player) sender), Messages.NO_PERMISSION);
                     return false;
                 }
@@ -74,7 +74,7 @@ public class ClearAllCommand implements CommandExecutor, TabExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            if (!player.hasPermission("inventorypagesplus.clearall")) {
+            if (!player.hasPermission("inventorypagesplus.clearall") && !sender.hasPermission("inventorypagesplus.admin")) {
                 MessageUtil.sendMessage(player, Messages.NO_PERMISSION);
                 return false;
             }
@@ -106,7 +106,7 @@ public class ClearAllCommand implements CommandExecutor, TabExecutor {
         List<String> commands = new ArrayList<>();
 
         if (args.length == 1) {
-            if (sender.hasPermission("inventorypagesplus.clearall.others"))
+            if (sender.hasPermission("inventorypagesplus.clearall.others") && !sender.hasPermission("inventorypagesplus.admin"))
                 for (Player player : Bukkit.getOnlinePlayers())
                     commands.add(player.getName());
             StringUtil.copyPartialMatches(args[0], commands, completions);

@@ -73,15 +73,19 @@ public class PageSlotManager {
         int defaultNextItemSlot = Settings.INVENTORY_SETTINGS_NEXT_ITEM_POS_DEFAULT;
 
         if (getItem(player, 9 + defaultNextItemSlot) != null) {
-            if (!InventoryPagesPlus.nms.getCustomData(getItem(player, 9 + defaultNextItemSlot)).equals(PlayerPageInventory.itemCustomData)) {
-                MessageUtil.sendMessage(player, Messages.COMMAND_SETPAGESLOT_EMPTY_SLOT_REQUEST.replace("%slotNumber%", String.valueOf(defaultNextItemSlot)));
-                return false;
+            if (!InventoryPagesPlus.nms.getCustomData(getItem(player, 9 + defaultNextItemSlot)).equals("inventorypagespluspageitems")) {
+                if (!InventoryPagesPlus.nms.getCustomData(getItem(player, 9 + defaultNextItemSlot)).equals(PlayerPageInventory.itemCustomData)) {
+                    MessageUtil.sendMessage(player, Messages.COMMAND_SETPAGESLOT_EMPTY_SLOT_REQUEST.replace("%slotNumber%", String.valueOf(defaultNextItemSlot)));
+                    return false;
+                }
             }
         }
         if (getItem(player, 9 + defaultPrevItemSlot) != null) {
-            if (!InventoryPagesPlus.nms.getCustomData(getItem(player, 9 + defaultPrevItemSlot)).equals(PlayerPageInventory.itemCustomData)) {
-                MessageUtil.sendMessage(player, Messages.COMMAND_SETPAGESLOT_EMPTY_SLOT_REQUEST.replace("%slotNumber%", String.valueOf(defaultPrevItemSlot)));
-                return false;
+            if (!InventoryPagesPlus.nms.getCustomData(getItem(player, 9 + defaultPrevItemSlot)).equals("inventorypagespluspageitems")) {
+                if (!InventoryPagesPlus.nms.getCustomData(getItem(player, 9 + defaultPrevItemSlot)).equals(PlayerPageInventory.itemCustomData)) {
+                    MessageUtil.sendMessage(player, Messages.COMMAND_SETPAGESLOT_EMPTY_SLOT_REQUEST.replace("%slotNumber%", String.valueOf(defaultPrevItemSlot)));
+                    return false;
+                }
             }
         }
 

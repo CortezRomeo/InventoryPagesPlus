@@ -30,7 +30,7 @@ public class SetPageSlotCommand implements CommandExecutor, TabExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            if (!player.hasPermission("inventorypagesplus.setpageslot")) {
+            if (!player.hasPermission("inventorypagesplus.setpageslot") && !sender.hasPermission("inventorypagesplus.admin")) {
                 MessageUtil.sendMessage(player, Messages.NO_PERMISSION);
                 return false;
             }
@@ -80,7 +80,7 @@ public class SetPageSlotCommand implements CommandExecutor, TabExecutor {
         List<String> commands = new ArrayList<>();
 
         if (args.length == 1) {
-            if (sender.hasPermission("inventorypagesplus.setpageslot")) {
+            if (sender.hasPermission("inventorypagesplus.setpageslot") && !sender.hasPermission("inventorypagesplus.admin")) {
                 commands.add("reset");
                 commands.add("nextpage");
                 commands.add("prevpage");

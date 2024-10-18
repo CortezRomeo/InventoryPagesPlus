@@ -24,7 +24,7 @@ public class InvseeCommand implements CommandExecutor {
         }
         Player player = (Player) sender;
 
-        if (!player.hasPermission("inventorypagesplus.invsee")) {
+        if (!player.hasPermission("inventorypagesplus.invsee") && !sender.hasPermission("inventorypagesplus.admin")) {
             MessageUtil.sendMessage(player, Messages.NO_PERMISSION);
             return false;
         }
