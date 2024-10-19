@@ -27,6 +27,8 @@ messages:
   items-dropped: '%prefix%&#fc3103Quá nhiều item! Một số item đã bị rớt ra trong quá trình chuyển đổi.'
   invalid-number: '%prefix%&#fc3103Số không hợp lệ.'
   invalid-name: '%prefix%&#fc3103Người chơi &e%player%&#fc3103 không tồn tại.'
+  get-player-data: '%prefix%&fĐang lấy dữ liệu của &e%player%...'
+  targets-database-doesnt-exist: '%prefix%&#fc3103Dữ liệu của &e%player%&#fc3103 không tồn tại.'
   no-page-message: ''
   commands:
     inventorypagesplus:
@@ -47,8 +49,8 @@ messages:
         start: '%prefix%&fBắt đầu quá trình backup dữ liệu...'
         complete: '%prefix%&fBackup thành công từ %databaseType%! File backup sẽ nằm trong thư mục &bbackup&f và có tên &b%fileName%&f.'
       set-max-page: '%prefix%&fĐã set số trang tối đa của &e%player% &fthành &e%number%&f.'
-      add-max-page: '%prefix%&fĐã thêm &e%number% trang tối đa cho &e%player%&f.'
-      remove-max-page: '%prefix%&fĐã trừ &e%number% trang tối đa của &e%player%&f.'
+      add-max-page: '%prefix%&fĐã thêm &e%number%&f trang tối đa cho &e%player%&f.'
+      remove-max-page: '%prefix%&fĐã trừ &e%number%&f trang tối đa của &e%player%&f.'
     setpageslot:
       messages:
         - ' '
@@ -87,4 +89,4 @@ messages:
       clear-targets-message: '%prefix%&fVật phẩm ở trang hiện tại của bạn vừa bị xóa bởi &e%player%&f.'
       clear-all: '%prefix%&fXóa vật phẩm ở tất cả trang thành công!'
       clear-all-target: '%prefix%&fXóa vật phẩm ở tất cả trang của &e%player%&f thành công.'
-      clear-all-targets-messages: '%prefix%&fVật phẩm ở tất cả trang của bạn vừa bị xóa bởi &e%player%&f.'
+      clear-all-targets-message: '%prefix%&fVật phẩm ở tất cả trang của bạn vừa bị xóa bởi &e%player%&f.'

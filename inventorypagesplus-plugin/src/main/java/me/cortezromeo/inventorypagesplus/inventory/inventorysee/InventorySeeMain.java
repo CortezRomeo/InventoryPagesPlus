@@ -241,6 +241,10 @@ public class InventorySeeMain extends InventorySee {
                 inventory.setItem(27 + slot, Bukkit.getPlayer(UUID.fromString(getTargetUUID())).getInventory().getItem(slot));
             }
             inventory.setItem(otherItemsInventoryItemSlot, addPlaceholders(otherItemsInventoryItem));
+        } else {
+            for (int slot = 0; slot < 9; slot++) {
+                inventory.setItem(27 + slot, offlinePlayerItem);
+            }
         }
     }
 }

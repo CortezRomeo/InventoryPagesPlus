@@ -27,7 +27,6 @@ messages:
   invalid-name: '%prefix%&#fc3103Player &e%player%&#fc3103 is not online.'
   get-player-data: '%prefix%&fGetting &e%player%''s&f database...'
   targets-database-doesnt-exist: '%prefix%&#fc3103Database of &e%player%&#fc3103 does not exist.'
-  loading: '%prefix%'
   no-page-message: ''
   commands:
     inventorypagesplus:
@@ -48,8 +47,8 @@ messages:
         start: '%prefix%&fBackup database...'
         complete: '%prefix%&fSuccessfully backed up database from %databaseType%! The backup database is in the folder &bbackup&f and named &b%fileName%'
       set-max-page: '%prefix%&e%player%''s max page&f is set to &e%number%&f.'
-      add-max-page: '%prefix%&fAdded &e%number% max page number&f to &e%player%&f.'
-      remove-max-page: '%prefix%&fRemoved &e%number% max page number&f from &e%player%&f.'
+      add-max-page: '%prefix%&fAdded &e%number%&f max page number&f to &e%player%&f.'
+      remove-max-page: '%prefix%&fRemoved &e%number%&f max page number&f from &e%player%&f.'
     setpageslot:
       messages:
         - ' '

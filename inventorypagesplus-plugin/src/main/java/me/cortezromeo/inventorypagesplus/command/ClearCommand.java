@@ -52,7 +52,7 @@ public class ClearCommand implements CommandExecutor, TabExecutor {
                 MessageUtil.sendMessage(sender, Messages.GET_PLAYER_DATA.replace("%player%", targetName));
                 if (InventoryPagesPlus.getDatabaseManager().getTempPlayerUUID().containsKey(targetName)) {
                     InventoryPagesPlus.getDatabaseManager().loadPlayerInventory(targetName);
-                    InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(InventoryPagesPlus.getDatabaseManager().getTempPlayerUUID().get(targetName)).clearPage(GameMode.SURVIVAL);
+                    InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(targetName).clearPage(GameMode.SURVIVAL);
                     MessageUtil.sendMessage(sender, Messages.COMMAND_CLEAR_CLEAR_TARGET.replace("%player%", targetName));
                 } else {
                     Bukkit.getScheduler().runTaskAsynchronously(InventoryPagesPlus.plugin, () -> {
@@ -63,8 +63,9 @@ public class ClearCommand implements CommandExecutor, TabExecutor {
                         }
                         if (!InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase().containsKey(targetUUID)) {
                             InventoryPagesPlus.getDatabaseManager().loadPlayerInventory(targetName);
-                            InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(UUID.fromString(targetUUID)).clearPage(GameMode.SURVIVAL);
-                            MessageUtil.sendMessage(sender, Messages.COMMAND_CLEAR_CLEAR_TARGET.replace("%player%", targetName));                        }
+                            InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(targetName).clearPage(GameMode.SURVIVAL);
+                            MessageUtil.sendMessage(sender, Messages.COMMAND_CLEAR_CLEAR_TARGET.replace("%player%", targetName));
+                        }
                     });
                 }
             }
@@ -108,7 +109,7 @@ public class ClearCommand implements CommandExecutor, TabExecutor {
         List<String> commands = new ArrayList<>();
 
         if (args.length == 1) {
-            if (sender.hasPermission("inventorypagesplus.clear.others") && !sender.hasPermission("inventorypagesplus.admin"))
+            if (sender.hasPermission("inventorypagesplus.clear.others") || sender.hasPermission("inventorypagesplus.admin"))
                 for (Player player : Bukkit.getOnlinePlayers())
                     commands.add(player.getName());
             StringUtil.copyPartialMatches(args[0], commands, completions);

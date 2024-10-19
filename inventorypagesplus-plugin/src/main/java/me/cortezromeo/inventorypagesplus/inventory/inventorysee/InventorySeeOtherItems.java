@@ -15,6 +15,8 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.UUID;
+
 public class InventorySeeOtherItems extends InventorySee {
 
     public static ItemStack borderItem, closeItem, offlinePlayerItem, invseeMainItem, creativeInventoryItem, enderChestItem;
@@ -139,7 +141,10 @@ public class InventorySeeOtherItems extends InventorySee {
         inventory.setItem(closeItemSlot, closeItem);
         inventory.setItem(invseeMainItemSlot, addPlaceholders(invseeMainItem));
         inventory.setItem(creativeInventoryItemSlot, addPlaceholders(creativeInventoryItem));
-        inventory.setItem(enderChestItemSlot, addPlaceholders(enderChestItem));
+        if (Bukkit.getPlayer(UUID.fromString(getTargetUUID())) != null) {
+            inventory.setItem(enderChestItemSlot, addPlaceholders(enderChestItem));
+        } else
+            inventory.setItem(enderChestItemSlot, addPlaceholders(offlinePlayerItem));
     }
 
     private void addTargetItems() {

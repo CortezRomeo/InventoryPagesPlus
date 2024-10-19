@@ -20,7 +20,7 @@ public class InvseeManager {
         if (target != null) {
             new InventorySeeMain(player, targetName, target.getUniqueId().toString(), 0).open();
         } else {
-            if (player.hasPermission("inventorypagesplus.invsee.offline") && !player.hasPermission("inventorypagesplus.admin")) {
+            if (player.hasPermission("inventorypagesplus.invsee.offline") && player.hasPermission("inventorypagesplus.admin")) {
                 MessageUtil.sendMessage(player, Messages.GET_PLAYER_DATA.replace("%player%", targetName));
 
                 if (InventoryPagesPlus.getDatabaseManager().getTempPlayerUUID().containsKey(targetName)) {

@@ -183,6 +183,7 @@ public class PlayerInventory implements PlayerInventoryDatabase {
     public void saveCurrentPage() {
         if (player == null)
             return;
+
         if (!Settings.INVENTORY_SETTINGS_USE_CREATIVE_INVENTORY || player.getGameMode() != GameMode.CREATIVE) {
             ArrayList<ItemStack> pageItems = new ArrayList<>(25);
             for (int slotNumber = 0; slotNumber < 27; slotNumber++) {
@@ -210,7 +211,6 @@ public class PlayerInventory implements PlayerInventoryDatabase {
             player.updateInventory();
         }
         clearPage(this.currentPage, gm);
-
     }
 
     @Override
@@ -315,6 +315,9 @@ public class PlayerInventory implements PlayerInventoryDatabase {
 
     @Override
     public void showPage(Integer page, GameMode gm) {
+        if (this.player == null)
+            return;
+
         if (!pageExists(page))
             createPage(page);
 
@@ -357,6 +360,7 @@ public class PlayerInventory implements PlayerInventoryDatabase {
                         }
                     }
                     this.player.getInventory().setItem(slotNumber + 9, itemStack);
+                    this.player.updateInventory();
                 }
             }
             //player.sendMessage("Showing Page: " + this.page);
@@ -368,6 +372,7 @@ public class PlayerInventory implements PlayerInventoryDatabase {
             this.hasUsedCreative = true;
             for (int i = 0; i < 27; i++) {
                 this.player.getInventory().setItem(i + 9, this.creativeItems.get(i));
+                this.player.updateInventory();
             }
         }
     }
@@ -516,6 +521,9 @@ public class PlayerInventory implements PlayerInventoryDatabase {
     // returns true if dropped
     @Override
     public boolean storeOrDropItem(ItemStack itemStack, GameMode gameMode) {
+        if (this.player == null)
+            return true;
+
         for (int hotBarSlot = 0; hotBarSlot <= 8; hotBarSlot++) {
             ItemStack itemFromSlot = player.getInventory().getItem(hotBarSlot);
             if (itemFromSlot == null) {

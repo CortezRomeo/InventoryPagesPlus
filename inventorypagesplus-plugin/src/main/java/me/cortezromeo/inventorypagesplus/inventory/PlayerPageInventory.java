@@ -44,7 +44,6 @@ public class PlayerPageInventory {
                 (short) playerInvCfg.getInt("items.noPage.data"),
                 playerInvCfg.getString("items.noPage.name"),
                 playerInvCfg.getStringList("items.noPage.lore")), itemCustomData);
-        noPageItem = InventoryPagesPlus.nms.addCustomData(noPageItem, "noPage");
         DebugManager.debug("LOADING INVENTORIES (PlayerPageInventory)", "Completed with no issues.");
     }
 
@@ -69,7 +68,7 @@ public class PlayerPageInventory {
             }
             if (item != null) {
                 if (item.getType() != Material.AIR) {
-                    if (InventoryPagesPlus.nms.getCustomData(item).equals("noPage")) {
+                    if (isSwitcherItem(item, PlayerPageInventory.noPageItem)) {
                         event.setCancelled(true);
                         MessageUtil.sendMessage(player, Messages.NO_PAGE_MESSAGES);
                         player.updateInventory();
@@ -86,6 +85,23 @@ public class PlayerPageInventory {
                 return true;
             }
             return player.getGameMode() != GameMode.CREATIVE;
+        }
+        return false;
+    }
+
+    private static boolean isSwitcherItem(ItemStack item, ItemStack switcherItem) {
+        if (item != null) {
+            if (item.getType() != null) {
+                if (item.getType().equals(switcherItem.getType())) {
+                    if (item.getItemMeta() != null) {
+                        if (item.getItemMeta().getDisplayName() != null) {
+                            if (item.getItemMeta().getDisplayName().equals(switcherItem.getItemMeta().getDisplayName())) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
         }
         return false;
     }

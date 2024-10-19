@@ -80,7 +80,7 @@ public class SetPageSlotCommand implements CommandExecutor, TabExecutor {
         List<String> commands = new ArrayList<>();
 
         if (args.length == 1) {
-            if (sender.hasPermission("inventorypagesplus.setpageslot") && !sender.hasPermission("inventorypagesplus.admin")) {
+            if (sender.hasPermission("inventorypagesplus.setpageslot") || sender.hasPermission("inventorypagesplus.admin")) {
                 commands.add("reset");
                 commands.add("nextpage");
                 commands.add("prevpage");
