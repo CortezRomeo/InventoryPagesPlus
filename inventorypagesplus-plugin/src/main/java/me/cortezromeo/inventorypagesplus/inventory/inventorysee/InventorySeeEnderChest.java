@@ -2,6 +2,7 @@ package me.cortezromeo.inventorypagesplus.inventory.inventorysee;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
 import me.cortezromeo.inventorypagesplus.file.inventory.InvseeCreativeInventoryFile;
+import me.cortezromeo.inventorypagesplus.file.inventory.InvseeEnderChestInventoryFile;
 import me.cortezromeo.inventorypagesplus.inventory.PlayerPageInventory;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import me.cortezromeo.inventorypagesplus.util.ItemUtil;
@@ -88,7 +89,7 @@ public class InventorySeeEnderChest extends InventorySee {
 
     @Override
     public String getMenuTitle() {
-        return InventoryPagesPlus.nms.addColor(InvseeCreativeInventoryFile.get().getString("title")
+        return InventoryPagesPlus.nms.addColor(InvseeEnderChestInventoryFile.get().getString("title")
                 .replace("%player%", getTargetInventoryDatabase().getPlayerName()));
     }
 
