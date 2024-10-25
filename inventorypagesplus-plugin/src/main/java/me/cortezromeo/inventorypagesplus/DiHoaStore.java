@@ -1,7 +1,6 @@
 package me.cortezromeo.inventorypagesplus;
 
 import me.cortezromeo.inventorypagesplus.util.MessageUtil;
-import org.bukkit.Bukkit;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -15,6 +14,7 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+// for selling plugin at dihoastore.net
 public class DiHoaStore {
     private static String productName = "InventoryPagesPlus";
 
@@ -32,25 +32,37 @@ public class DiHoaStore {
         MessageUtil.log("&f--------------------------------");
 
         if (DiHoaStore.KeyStatus(InventoryPagesPlus.plugin.getConfig().getString("license-key"))) {
-            if (!DiHoaStore.action(InventoryPagesPlus.plugin.getConfig().getString("license-key"), "enable")) {
+            if (DiHoaStore.action(InventoryPagesPlus.plugin.getConfig().getString("license-key"), "enable")) {
                 MessageUtil.log("&f--------------------------------");
-                MessageUtil.log("&4  _                                                      _");
-                MessageUtil.log("&4 (_)_ ____   __    _ __   __ _  __ _  ___  ___     _ __ | |_   _ ___");
-                MessageUtil.log("&4 | | '_ \\ \\ / /   | '_ \\ / _` |/ _` |/ _ \\/ __|   | '_ \\| | | | / __|");
-                MessageUtil.log("&4 | | | | \\ V /    | |_) | (_| | (_| |  __/\\__ \\   | |_) | | |_| \\__ \\");
-                MessageUtil.log("&4 |_|_| |_|\\_(_)   | .__/ \\__,_|\\__, |\\___||___/   | .__/|_|\\__,_|___/");
-                MessageUtil.log("&4                  |_|          |___/              |_|");
+                MessageUtil.log("&f  _                                                      _");
+                MessageUtil.log("&f (_)_ ____   __    _ __   __ _  __ _  ___  ___     _ __ | |_   _ ___");
+                MessageUtil.log("&f | | '_ \\ \\ / /   | '_ \\ / _` |/ _` |/ _ \\/ __|   | '_ \\| | | | / __|");
+                MessageUtil.log("&f | | | | \\ V /    | |_) | (_| | (_| |  __/\\__ \\   | |_) | | |_| \\__ \\");
+                MessageUtil.log("&f |_|_| |_|\\_(_)   | .__/ \\__,_|\\__, |\\___||___/   | .__/|_|\\__,_|___/");
+                MessageUtil.log("&f                  |_|          |___/              |_|");
                 MessageUtil.log("");
-                MessageUtil.log("       &eThiếu license key!");
-                MessageUtil.log("");
-                MessageUtil.log("&cVUI LÒNG GHI LICENSE KEY ĐÃ MUA TẠI DIHOASTORE.NET vào config.yml");
+                MessageUtil.log("       &2Xác minh license key thành công, cảm ơn bạn đã ủng hộ plugin!");
                 MessageUtil.log("");
                 MessageUtil.log("&f--------------------------------");
-                Bukkit.getServer().getPluginManager().disablePlugin(InventoryPagesPlus.plugin);
-                return false;
+                return true;
             }
+        } else {
+            MessageUtil.log("&f--------------------------------");
+            MessageUtil.log("&4  _                                                      _");
+            MessageUtil.log("&4 (_)_ ____   __    _ __   __ _  __ _  ___  ___     _ __ | |_   _ ___");
+            MessageUtil.log("&4 | | '_ \\ \\ / /   | '_ \\ / _` |/ _` |/ _ \\/ __|   | '_ \\| | | | / __|");
+            MessageUtil.log("&4 | | | | \\ V /    | |_) | (_| | (_| |  __/\\__ \\   | |_) | | |_| \\__ \\");
+            MessageUtil.log("&4 |_|_| |_|\\_(_)   | .__/ \\__,_|\\__, |\\___||___/   | .__/|_|\\__,_|___/");
+            MessageUtil.log("&4                  |_|          |___/              |_|");
+            MessageUtil.log("");
+            MessageUtil.log("       &eThiếu license key!");
+            MessageUtil.log("");
+            MessageUtil.log("&cVUI LÒNG GHI LICENSE KEY ĐÃ MUA TẠI DIHOASTORE.NET vào config.yml");
+            MessageUtil.log("");
+            MessageUtil.log("&f--------------------------------");
+            return false;
         }
-        return true;
+        return false;
     }
 
     public static boolean KeyStatus(String key) {
@@ -89,7 +101,7 @@ public class DiHoaStore {
             MessageUtil.log("&e[DIHOASTORE&f-&cInventoryPagesPlus&e] §fLooks like the product key is working. Please visit our website and go to purchased plugin then click to reset key then reload this plugin!");
             return false;
         } catch (IOException|org.json.simple.parser.ParseException e) {
-            MessageUtil.log("&e[DIHOASTORE&f-&cInventoryPagesPlus&e] License key đã hoạt dộng, nhưng có vẻ như nó đang được sử dụng trong một máy chủ khác. Nếu bạn đã mua và sử dụng plugin InventoryPagesPlus trên nhiều máy chủ, vui lòng liên hệ discord &bcortez_romeo&f để mình đưa bản custom xài được trên đa máy chủ. Nếu bạn sử dụng plugin cho rieng một máy chủ duy nhất, vui lòng vào &bhttps://dihoastore.net/account/index.php&f và nhấn vào nút &bRESET KEY&f để lấy key mới, sau đó để vào lại config.yml");
+            MessageUtil.log("&e[DIHOASTORE&f-&cInventoryPagesPlus&e] License key đã hoạt dộng, nhưng có vẻ như nó đang được sử dụng trong một máy chủ khác. Nếu bạn đã mua và sử dụng plugin InventoryPagesPlus trên nhiều máy chủ, vui lòng liên hệ discord &bcortez_romeo&e để mình đưa bản custom xài được trên đa máy chủ. Nếu bạn sử dụng plugin cho rieng một máy chủ duy nhất, vui lòng vào &bhttps://dihoastore.net/account/index.php&e và nhấn vào nút &bRESET KEY&e để lấy key mới, sau đó nhập key mới vào lại config.yml");
             return false;
         } catch (Exception e) {
             e.printStackTrace();
@@ -126,7 +138,7 @@ public class DiHoaStore {
             }
             return false;
         } catch (IOException|org.json.simple.parser.ParseException e) {
-            MessageUtil.log("&e[DIHOASTORE&f-&cInventoryPagesPlus&e] License key đã hoạt dộng, nhưng có vẻ như nó đang được sử dụng trong một máy chủ khác. Nếu bạn đã mua và sử dụng plugin InventoryPagesPlus trên nhiều máy chủ, vui lòng liên hệ discord &bcortez_romeo&f để mình đưa bản custom xài được trên đa máy chủ. Nếu bạn sử dụng plugin cho rieng một máy chủ duy nhất, vui lòng vào &bhttps://dihoastore.net/account/index.php&f và nhấn vào nút &bRESET KEY&f để lấy key mới, sau đó để vào lại config.yml");
+            MessageUtil.log("&e[DIHOASTORE&f-&cInventoryPagesPlus&e] License key đã hoạt dộng, nhưng có vẻ như nó đang được sử dụng trong một máy chủ khác. Nếu bạn đã mua và sử dụng plugin InventoryPagesPlus trên nhiều máy chủ, vui lòng liên hệ discord &bcortez_romeo&e để mình đưa bản custom xài được trên đa máy chủ. Nếu bạn sử dụng plugin cho rieng một máy chủ duy nhất, vui lòng vào &bhttps://dihoastore.net/account/index.php&e và nhấn vào nút &bRESET KEY&e để lấy key mới, sau đó nhập key mới vào lại config.yml");
             return false;
         }
     }

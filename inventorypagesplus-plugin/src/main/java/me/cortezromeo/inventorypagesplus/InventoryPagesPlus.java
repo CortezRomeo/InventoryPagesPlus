@@ -57,25 +57,29 @@ public final class InventoryPagesPlus extends JavaPlugin {
 
         AutoSaveManager.startAutoSave(Settings.AUTO_SAVE_SECONDS);
 
-        if (DiHoaStore.doDiHoa()) {
-            MessageUtil.log("&f--------------------------------");
-            MessageUtil.log("&2  _                                                      _");
-            MessageUtil.log("&2 (_)_ ____   __    _ __   __ _  __ _  ___  ___     _ __ | |_   _ ___");
-            MessageUtil.log("&2 | | '_ \\ \\ / /   | '_ \\ / _` |/ _` |/ _ \\/ __|   | '_ \\| | | | / __|");
-            MessageUtil.log("&2 | | | | \\ V /    | |_) | (_| | (_| |  __/\\__ \\   | |_) | | |_| \\__ \\");
-            MessageUtil.log("&2 |_|_| |_|\\_(_)   | .__/ \\__,_|\\__, |\\___||___/   | .__/|_|\\__,_|___/");
-            MessageUtil.log("&2                  |_|          |___/              |_|");
-            MessageUtil.log("");
-            MessageUtil.log("&fVersion: &b" + getDescription().getVersion());
-            MessageUtil.log("&fAuthor: Cortez_Romeo");
-            MessageUtil.log("");
-            MessageUtil.log("&fSupport:");
-            MessageUtil.log((papiSupport ? "&2[YES] &aPlaceholderAPI" : "&4[NO] &cPlaceholderAPI"));
-            MessageUtil.log("");
-            MessageUtil.log("&ePlugin is enabled successfully.");
-            MessageUtil.log("");
-            MessageUtil.log("&f--------------------------------");
-        }
+        // Check license key when the plugin is activated from dihoastore.net
+/*        if (!DiHoaStore.doDiHoa()) {
+            Bukkit.getServer().getPluginManager().disablePlugin(InventoryPagesPlus.plugin);
+            return;
+        }*/
+
+        MessageUtil.log("&f--------------------------------");
+        MessageUtil.log("&2  _                                                      _");
+        MessageUtil.log("&2 (_)_ ____   __    _ __   __ _  __ _  ___  ___     _ __ | |_   _ ___");
+        MessageUtil.log("&2 | | '_ \\ \\ / /   | '_ \\ / _` |/ _` |/ _ \\/ __|   | '_ \\| | | | / __|");
+        MessageUtil.log("&2 | | | | \\ V /    | |_) | (_| | (_| |  __/\\__ \\   | |_) | | |_| \\__ \\");
+        MessageUtil.log("&2 |_|_| |_|\\_(_)   | .__/ \\__,_|\\__, |\\___||___/   | .__/|_|\\__,_|___/");
+        MessageUtil.log("&2                  |_|          |___/              |_|");
+        MessageUtil.log("");
+        MessageUtil.log("&fVersion: &b" + getDescription().getVersion());
+        MessageUtil.log("&fAuthor: Cortez_Romeo");
+        MessageUtil.log("");
+        MessageUtil.log("&fSupport:");
+        MessageUtil.log((papiSupport ? "&2[YES] &aPlaceholderAPI" : "&4[NO] &cPlaceholderAPI"));
+        MessageUtil.log("");
+        MessageUtil.log("&ePlugin is enabled successfully.");
+        MessageUtil.log("");
+        MessageUtil.log("&f--------------------------------");
 
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
             try {

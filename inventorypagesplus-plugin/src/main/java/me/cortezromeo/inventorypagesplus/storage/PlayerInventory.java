@@ -555,7 +555,7 @@ public class PlayerInventory implements PlayerInventoryDatabase {
                             String actionBar = Settings.ADVANCED_PICK_UP_SETTINGS_ACTIONBAR_TEXT;
                             actionBar = actionBar.replace("%amount%", String.valueOf(itemStack.getAmount()));
                             actionBar = actionBar.replace("%itemName%", (itemStack.getItemMeta().hasDisplayName() ? itemStack.getItemMeta().getDisplayName() : itemStack.getType().name()));
-                            actionBar = actionBar.replace("%page%", String.valueOf(page));
+                            actionBar = actionBar.replace("%page%", String.valueOf(page + 1));
                             actionBar = actionBar.replace("%slotNumber%", String.valueOf(slotNumber));
                             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(InventoryPagesPlus.nms.addColor(actionBar)));
                         }
@@ -574,7 +574,7 @@ public class PlayerInventory implements PlayerInventoryDatabase {
                                     String actionBar = Settings.ADVANCED_PICK_UP_SETTINGS_ACTIONBAR_TEXT;
                                     actionBar = actionBar.replace("%amount%", String.valueOf(itemStack.getAmount()));
                                     actionBar = actionBar.replace("%itemName%", (itemStack.getItemMeta().hasDisplayName() ? itemStack.getItemMeta().getDisplayName() : itemStack.getType().name()));
-                                    actionBar = actionBar.replace("%page%", String.valueOf(page));
+                                    actionBar = actionBar.replace("%page%", String.valueOf(page + 1));
                                     actionBar = actionBar.replace("%slotNumber%", String.valueOf(slotNumber));
                                     player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(InventoryPagesPlus.nms.addColor(actionBar)));
                                 }
