@@ -1,6 +1,7 @@
 package me.cortezromeo.inventorypagesplus.manager;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
+import me.cortezromeo.inventorypagesplus.Settings;
 import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryDataStorage;
 import me.cortezromeo.inventorypagesplus.storage.PlayerInventoryDatabase;
 import org.bukkit.Bukkit;
@@ -104,6 +105,10 @@ public class DatabaseManager implements InventoryPagesPlusDataManager {
             if (hasCrashed(PlayerInventoryDataStorage.getPlayerUUIDFromData(playerName, true)) && Bukkit.getPlayer(playerName) != null) {
                 Player player = Bukkit.getPlayer(playerName);
                 for (int i = 0; i < 27; i++) {
+                    // This slot can not be loaded because it is considered as a skip slot
+                    if (!Settings.SKIP_SLOTS.isEmpty())
+                        if (Settings.SKIP_SLOTS.contains(i))
+                            continue;
                     player.getInventory().setItem(i + 9, null);
                 }
                 crashedData.set("crashed." + player.getUniqueId().toString(), null);

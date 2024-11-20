@@ -77,16 +77,25 @@ inventory-settings:
   # For example, at the time they leave the server they're in page 5, so when they rejoin, it will automatically show page 5.
   # If it false, then it always shows the first page when player join.
   use-saved-current-page: true
-  # If "keep-inventory" is true then whenever player die, their items will not drop.
-  # If it is false, then the players will neeed these permissions below to keep their items when they die.
+  # If "keep-inventory" is true then whenever players die, their items will not drop.
+  # If it is false, then the players will need these permissions below to keep their items when they die.
   # inventorypagesplus.keep.unopened - When the player dies, keep unopened pages, and drop items in the current opening page.
   # inventorypagesplus.keep.hotbar - When the player dies, Keep all items in the hotbar.
-  # inventorypagesplus.keep.all - Keep all items when player die.
+  # inventorypagesplus.keep.all - Keep all items when player dies.
   keep-inventory: true
   # If this is enabled, plugin will show creative inventory database whenever player's mode changes to creative.
   # Otherwise, plugin will only use survival inventory database for all game modes.
   # PLEASE don't use reload command, please restart server after changing this option.
   use-creative-inventory: true
+  # These slots below won't be saved and loaded.
+  # Player cannot use these slots for setting up the previous and next page items position.
+  # Please do not set the default previous and next page item position to any of these slots.
+  # Use this feature to support the plugin that use player inventory's slot to interact with its feature.
+  # For example: MMOInventory,...
+  #skip-slots:
+    #- 0
+    #- 1
+    #- 2
 
 # Automatically move items to the next page if player's current page is full.
 # However, Bukkit API does not let me execute the event when player's inventory is full.

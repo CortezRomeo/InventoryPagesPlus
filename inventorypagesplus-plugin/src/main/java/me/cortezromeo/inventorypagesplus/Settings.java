@@ -1,6 +1,10 @@
 package me.cortezromeo.inventorypagesplus;
 
+import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import org.bukkit.configuration.file.FileConfiguration;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Settings {
 
@@ -33,8 +37,10 @@ public class Settings {
     public static String ADVANCED_PICK_UP_SETTINGS_SOUND_NAME;
     public static double ADVANCED_PICK_UP_SETTINGS_SOUND_VOLUME;
     public static double ADVANCED_PICK_UP_SETTINGS_SOUND_PITCH;
+    public static List<Integer> SKIP_SLOTS = new ArrayList<>();
 
     public static void setupValue() {
+        DebugManager.debug("SETTINGS", "Loading settings from config yaml...");
         FileConfiguration configuration = InventoryPagesPlus.plugin.getConfig();
 
         DATABASE_TYPE = configuration.getString("database.type");
@@ -67,6 +73,14 @@ public class Settings {
         ADVANCED_PICK_UP_SETTINGS_SOUND_NAME = configuration.getString("advanced-pick-up-settings.sound.name");
         ADVANCED_PICK_UP_SETTINGS_SOUND_VOLUME = configuration.getDouble("advanced-pick-up-settings.sound.volume");
         ADVANCED_PICK_UP_SETTINGS_SOUND_PITCH = configuration.getDouble("advanced-pick-up-settings.sound.pitch");
+        for (String skipSlotNumber : configuration.getStringList("inventory-settings.skip-slots")) {
+            try {
+                SKIP_SLOTS.add(Integer.parseInt(skipSlotNumber));
+            } catch (Exception exception) {
+                DebugManager.debug("SETTINGS", "(inventory-settings.skip-slots) Skipped " + skipSlotNumber + " because it is not an integer!");
+            }
+        }
+        DebugManager.debug("SETTINGS", "Loaded settings from config yaml.");
     }
 
 }

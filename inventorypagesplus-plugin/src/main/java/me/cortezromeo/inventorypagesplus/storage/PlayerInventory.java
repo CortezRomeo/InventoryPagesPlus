@@ -58,6 +58,11 @@ public class PlayerInventory implements PlayerInventoryDatabase {
         if (player != null) {
             boolean droppedItem = false;
             for (int i = 0; i < 27; i++) {
+                // This slot can not be loaded because it is considered as a skip slot
+                if (!Settings.SKIP_SLOTS.isEmpty())
+                    if (Settings.SKIP_SLOTS.contains(i))
+                        continue;
+
                 ItemStack item = player.getInventory().getItem(i + 9);
                 if (item != null) {
                     if (this.storeOrDropItem(item, player.getGameMode())) {
@@ -331,6 +336,12 @@ public class PlayerInventory implements PlayerInventoryDatabase {
             boolean foundPrev = false;
             boolean foundNext = false;
             for (int slotNumber = 0; slotNumber < 27; slotNumber++) {
+
+                // This slot can not be loaded because it is considered as a skip slot
+                if (!Settings.SKIP_SLOTS.isEmpty())
+                    if (Settings.SKIP_SLOTS.contains(slotNumber))
+                        continue;
+
                 int slotNumberClone = slotNumber;
                 if (slotNumber == prevItemPos) {
                     if (this.currentPage == 0) {
@@ -370,8 +381,14 @@ public class PlayerInventory implements PlayerInventoryDatabase {
                 return;
             }
             this.hasUsedCreative = true;
-            for (int i = 0; i < 27; i++) {
-                this.player.getInventory().setItem(i + 9, this.creativeItems.get(i));
+            for (int slotNumber = 0; slotNumber < 27; slotNumber++) {
+
+                // This slot can not be loaded because it is considered as a skip slot
+                if (!Settings.SKIP_SLOTS.isEmpty())
+                    if (Settings.SKIP_SLOTS.contains(slotNumber))
+                        continue;
+
+                this.player.getInventory().setItem(slotNumber + 9, this.creativeItems.get(slotNumber));
                 this.player.updateInventory();
             }
         }

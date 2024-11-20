@@ -1,6 +1,7 @@
 package me.cortezromeo.inventorypagesplus.listener;
 
 import me.cortezromeo.inventorypagesplus.InventoryPagesPlus;
+import me.cortezromeo.inventorypagesplus.Settings;
 import me.cortezromeo.inventorypagesplus.manager.DebugManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -25,8 +26,12 @@ public class PlayerQuitListener implements Listener {
             });*/
             InventoryPagesPlus.getDatabaseManager().savePlayerInventory(player.getName());
 
-            for (int i = 9; i < 36; i++)
+            for (int i = 9; i < 36; i++) {
+                if (!Settings.SKIP_SLOTS.isEmpty())
+                    if (Settings.SKIP_SLOTS.contains(i - 9))
+                        continue;
                 player.getInventory().setItem(i, null);
+            }
         }
     }
 }
