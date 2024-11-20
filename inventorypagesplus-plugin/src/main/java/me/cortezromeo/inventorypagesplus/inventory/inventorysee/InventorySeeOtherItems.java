@@ -36,18 +36,21 @@ public class InventorySeeOtherItems extends InventorySee {
         borderItem = ItemUtil.getItem(invseeOtherItemsFile.getString("items.border.type"),
                 invseeOtherItemsFile.getString("items.border.value"),
                 (short) invseeOtherItemsFile.getInt("items.border.data"),
+                invseeOtherItemsFile.getInt("items.border.customModelData"),
                 invseeOtherItemsFile.getString("items.border.name"),
                 invseeOtherItemsFile.getStringList("items.border.lore"));
 
         offlinePlayerItem = ItemUtil.getItem(invseeOtherItemsFile.getString("items.offlinePlayer.type"),
                 invseeOtherItemsFile.getString("items.offlinePlayer.value"),
                 (short) invseeOtherItemsFile.getInt("items.offlinePlayer.data"),
+                invseeOtherItemsFile.getInt("items.offlinePlayer.customModelData"),
                 invseeOtherItemsFile.getString("items.offlinePlayer.name"),
                 invseeOtherItemsFile.getStringList("items.offlinePlayer.lore"));
 
         closeItem = InventoryPagesPlus.nms.addCustomData(ItemUtil.getItem(invseeOtherItemsFile.getString("items.close.type"),
                 invseeOtherItemsFile.getString("items.close.value"),
                 (short) invseeOtherItemsFile.getInt("items.close.data"),
+                invseeOtherItemsFile.getInt("items.close.customModelData"),
                 invseeOtherItemsFile.getString("items.close.name"),
                 invseeOtherItemsFile.getStringList("items.close.lore")), invseeOtherItemsFile.getString("items.close.direct"));
         closeItemSlot = invseeOtherItemsFile.getInt("items.close.slot");
@@ -55,6 +58,7 @@ public class InventorySeeOtherItems extends InventorySee {
         invseeMainItem = InventoryPagesPlus.nms.addCustomData(ItemUtil.getItem(invseeOtherItemsFile.getString("items.invseeMainInventory.type"),
                 invseeOtherItemsFile.getString("items.invseeMainInventory.value"),
                 (short) invseeOtherItemsFile.getInt("items.invseeMainInventory.data"),
+                invseeOtherItemsFile.getInt("items.invseeMainInventory.customModelData"),
                 invseeOtherItemsFile.getString("items.invseeMainInventory.name"),
                 invseeOtherItemsFile.getStringList("items.invseeMainInventory.lore")), invseeOtherItemsFile.getString("items.invseeMainInventory.direct"));
         invseeMainItemSlot = invseeOtherItemsFile.getInt("items.invseeMainInventory.slot");
@@ -62,6 +66,7 @@ public class InventorySeeOtherItems extends InventorySee {
         creativeInventoryItem = InventoryPagesPlus.nms.addCustomData(ItemUtil.getItem(invseeOtherItemsFile.getString("items.creativeInventory.type"),
                 invseeOtherItemsFile.getString("items.creativeInventory.value"),
                 (short) invseeOtherItemsFile.getInt("items.creativeInventory.data"),
+                invseeOtherItemsFile.getInt("items.creativeInventory.customModelData"),
                 invseeOtherItemsFile.getString("items.creativeInventory.name"),
                 invseeOtherItemsFile.getStringList("items.creativeInventory.lore")), invseeOtherItemsFile.getString("items.creativeInventory.direct"));
         creativeInventoryItemSlot = invseeOtherItemsFile.getInt("items.creativeInventory.slot");
@@ -69,6 +74,7 @@ public class InventorySeeOtherItems extends InventorySee {
         enderChestItem = InventoryPagesPlus.nms.addCustomData(ItemUtil.getItem(invseeOtherItemsFile.getString("items.enderChestInventory.type"),
                 invseeOtherItemsFile.getString("items.enderChestInventory.value"),
                 (short) invseeOtherItemsFile.getInt("items.enderChestInventory.data"),
+                invseeOtherItemsFile.getInt("items.enderChestInventory.customModelData"),
                 invseeOtherItemsFile.getString("items.enderChestInventory.name"),
                 invseeOtherItemsFile.getStringList("items.enderChestInventory.lore")), invseeOtherItemsFile.getString("items.enderChestInventory.direct"));
         enderChestItemSlot = invseeOtherItemsFile.getInt("items.enderChestInventory.slot");

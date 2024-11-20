@@ -12,6 +12,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
 import java.nio.charset.StandardCharsets;
@@ -42,11 +43,16 @@ public class CrossVersionSupport extends VersionSupport {
     }
 
     @Override
-    public ItemStack createItemStack(String material, int amount, short data) {
+    public ItemStack createItemStack(String material, int amount, short data, int customModelData) {
         return XMaterial.matchXMaterial(material + ":" + data)
                 .map(XMaterial::parseItem)
                 .map(item -> {
                     item.setAmount(amount);
+                    if (customModelData != 0) {
+                        ItemMeta itemMeta = item.getItemMeta();
+                        itemMeta.setCustomModelData(customModelData);
+                        item.setItemMeta(itemMeta);
+                    }
                     return item;
                 })
                 .orElseGet(() -> {

@@ -40,12 +40,14 @@ public class InventorySeeMain extends InventorySee {
             borderItem = ItemUtil.getItem(invseeInvFile.getString("items.border.type"),
                     invseeInvFile.getString("items.border.value"),
                     (short) invseeInvFile.getInt("items.border.data"),
+                    invseeInvFile.getInt("items.border.customModelData"),
                     invseeInvFile.getString("items.border.name"),
                     invseeInvFile.getStringList("items.border.lore"));
 
             prevItem = InventoryPagesPlus.nms.addCustomData(ItemUtil.getItem(invseeInvFile.getString("items.prev.type"),
                     invseeInvFile.getString("items.prev.value"),
                     (short) invseeInvFile.getInt("items.prev.data"),
+                    invseeInvFile.getInt("items.prev.customModelData"),
                     invseeInvFile.getString("items.prev.name"),
                     invseeInvFile.getStringList("items.prev.lore")), invseeInvFile.getString("items.prev.direct"));
             prevItemSlot = invseeInvFile.getInt("items.prev.slot");
@@ -53,6 +55,7 @@ public class InventorySeeMain extends InventorySee {
             nextItem = InventoryPagesPlus.nms.addCustomData(ItemUtil.getItem(invseeInvFile.getString("items.next.type"),
                     invseeInvFile.getString("items.next.value"),
                     (short) invseeInvFile.getInt("items.next.data"),
+                    invseeInvFile.getInt("items.next.customModelData"),
                     invseeInvFile.getString("items.next.name"),
                     invseeInvFile.getStringList("items.next.lore")), invseeInvFile.getString("items.next.direct"));
             nextItemSlot = invseeInvFile.getInt("items.next.slot");
@@ -60,18 +63,21 @@ public class InventorySeeMain extends InventorySee {
             noPageItem = ItemUtil.getItem(invseeInvFile.getString("items.noPage.type"),
                     invseeInvFile.getString("items.noPage.value"),
                     (short) invseeInvFile.getInt("items.noPage.data"),
+                    invseeInvFile.getInt("items.noPage.customModelData"),
                     invseeInvFile.getString("items.noPage.name"),
                     invseeInvFile.getStringList("items.noPage.lore"));
 
             offlinePlayerItem = ItemUtil.getItem(invseeInvFile.getString("items.offlinePlayer.type"),
                     invseeInvFile.getString("items.offlinePlayer.value"),
                     (short) invseeInvFile.getInt("items.offlinePlayer.data"),
+                    invseeInvFile.getInt("items.offlinePlayer.customModelData"),
                     invseeInvFile.getString("items.offlinePlayer.name"),
                     invseeInvFile.getStringList("items.offlinePlayer.lore"));
 
             otherItemsInventoryItem = InventoryPagesPlus.nms.addCustomData(ItemUtil.getItem(invseeInvFile.getString("items.otherItemsInventory.type"),
                     invseeInvFile.getString("items.otherItemsInventory.value"),
                     (short) invseeInvFile.getInt("items.otherItemsInventory.data"),
+                    invseeInvFile.getInt("items.otherItemsInventory.customModelData"),
                     invseeInvFile.getString("items.otherItemsInventory.name"),
                     invseeInvFile.getStringList("items.otherItemsInventory.lore")), invseeInvFile.getString("items.otherItemsInventory.direct"));
             otherItemsInventoryItemSlot = invseeInvFile.getInt("items.otherItemsInventory.slot");
@@ -79,6 +85,7 @@ public class InventorySeeMain extends InventorySee {
             infoItem = ItemUtil.getItem(invseeInvFile.getString("items.info.type"),
                     invseeInvFile.getString("items.info.value"),
                     (short) invseeInvFile.getInt("items.info.data"),
+                    invseeInvFile.getInt("items.info.customModelData"),
                     invseeInvFile.getString("items.info.name"),
                     invseeInvFile.getStringList("items.info.lore"));
             infoItemSlot = invseeInvFile.getInt("items.info.slot");
@@ -86,6 +93,7 @@ public class InventorySeeMain extends InventorySee {
             closeItem = InventoryPagesPlus.nms.addCustomData(ItemUtil.getItem(invseeInvFile.getString("items.close.type"),
                     invseeInvFile.getString("items.close.value"),
                     (short) invseeInvFile.getInt("items.close.data"),
+                    invseeInvFile.getInt("items.close.customModelData"),
                     invseeInvFile.getString("items.close.name"),
                     invseeInvFile.getStringList("items.close.lore")), invseeInvFile.getString("items.close.direct"));
             closeItemSlot = invseeInvFile.getInt("items.close.slot");

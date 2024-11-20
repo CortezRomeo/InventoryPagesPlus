@@ -26,6 +26,7 @@
 #      + How to use custom head:
 #          Step 1: Get into the website https://minecraft-heads.com/custom-heads/ and get whatever head you want
 #          Step 2: Scroll down to the 'For Developers:' part, copy the 'Value' section and then paste it into 'value:'
+#  * customModelData: If you are using server texture pack to make custom item display, this option is for you. Set to '0' if you don't use it.
 #  * Placeholders:
 #    + %currentPage%: Get the current page number
 #    + %maxPage%: Get the max page number
@@ -36,6 +37,7 @@ items:
     type: customhead
     value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmQ2OWUwNmU1ZGFkZmQ4NGU1ZjNkMWMyMTA2M2YyNTUzYjJmYTk0NWVlMWQ0ZDcxNTJmZGM1NDI1YmMxMmE5In19fQ==
     data: 0
+    customModelData: 0
     name: '&#55ff00Previous page (%previousPageNumber%)'
     #slot: Change this in config.yml (datatabase.prev-item-position-default)
     lore:
@@ -48,6 +50,7 @@ items:
     type: customhead
     value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTliZjMyOTJlMTI2YTEwNWI1NGViYTcxM2FhMWIxNTJkNTQxYTFkODkzODgyOWM1NjM2NGQxNzhlZDIyYmYifX19
     data: 0
+    customModelData: 0
     name: '&#55ff00Next page (%nextPageNumber%)'
     #slot: Change this in config.yml (datatabase.prev-item-position-default)
     lore:
@@ -60,6 +63,7 @@ items:
     type: customhead
     value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWRiNDUwZDg3MGU0YmY5Yjk3MjZlYWYzYTUwNjU1YmMyMjQ3NDk0MjgyYTZjMjdkMTE5OWNmMTQ4NmFmNTMwOCJ9fX0=
     data: 0
+    customModelData: 0
     name: '&#FF0000No pages'
     lore:
       - '&fPage %currentPage%/%maxPage%'

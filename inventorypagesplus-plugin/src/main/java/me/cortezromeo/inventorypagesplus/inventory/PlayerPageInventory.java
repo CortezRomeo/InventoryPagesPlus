@@ -28,6 +28,7 @@ public class PlayerPageInventory {
         prevItem = InventoryPagesPlus.nms.addCustomData(ItemUtil.getItem(playerInvCfg.getString("items.prev.type"),
                 playerInvCfg.getString("items.prev.value"),
                 (short) playerInvCfg.getInt("items.prev.data"),
+                playerInvCfg.getInt("items.prev.customModelData"),
                 playerInvCfg.getString("items.prev.name"),
                 playerInvCfg.getStringList("items.prev.lore")), itemCustomData);
         prevPos = Settings.INVENTORY_SETTINGS_PREV_ITEM_POS_DEFAULT;
@@ -35,6 +36,7 @@ public class PlayerPageInventory {
         nextItem = InventoryPagesPlus.nms.addCustomData(ItemUtil.getItem(playerInvCfg.getString("items.next.type"),
                 playerInvCfg.getString("items.next.value"),
                 (short) playerInvCfg.getInt("items.next.data"),
+                playerInvCfg.getInt("items.next.customModelData"),
                 playerInvCfg.getString("items.next.name"),
                 playerInvCfg.getStringList("items.next.lore")), itemCustomData);
         nextPos = Settings.INVENTORY_SETTINGS_NEXT_ITEM_POS_DEFAULT;
@@ -42,6 +44,7 @@ public class PlayerPageInventory {
         noPageItem = InventoryPagesPlus.nms.addCustomData(ItemUtil.getItem(playerInvCfg.getString("items.noPage.type"),
                 playerInvCfg.getString("items.noPage.value"),
                 (short) playerInvCfg.getInt("items.noPage.data"),
+                playerInvCfg.getInt("items.noPage.customModelData"),
                 playerInvCfg.getString("items.noPage.name"),
                 playerInvCfg.getStringList("items.noPage.lore")), itemCustomData);
         DebugManager.debug("LOADING INVENTORIES (PlayerPageInventory)", "Completed with no issues.");

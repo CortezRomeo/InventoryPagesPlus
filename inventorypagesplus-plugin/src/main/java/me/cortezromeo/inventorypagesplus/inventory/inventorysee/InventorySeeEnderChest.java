@@ -34,12 +34,14 @@ public class InventorySeeEnderChest extends InventorySee {
         borderItem = ItemUtil.getItem(invseeCreativeFile.getString("items.border.type"),
                 invseeCreativeFile.getString("items.border.value"),
                 (short) invseeCreativeFile.getInt("items.border.data"),
+                invseeCreativeFile.getInt("items.border.customModelData"),
                 invseeCreativeFile.getString("items.border.name"),
                 invseeCreativeFile.getStringList("items.border.lore"));
 
         closeItem = InventoryPagesPlus.nms.addCustomData(ItemUtil.getItem(invseeCreativeFile.getString("items.close.type"),
                 invseeCreativeFile.getString("items.close.value"),
                 (short) invseeCreativeFile.getInt("items.close.data"),
+                invseeCreativeFile.getInt("items.close.customModelData"),
                 invseeCreativeFile.getString("items.close.name"),
                 invseeCreativeFile.getStringList("items.close.lore")), invseeCreativeFile.getString("items.close.direct"));
         closeItemSlot = invseeCreativeFile.getInt("items.close.slot");
@@ -47,6 +49,7 @@ public class InventorySeeEnderChest extends InventorySee {
         otherItemsInventoryItem = InventoryPagesPlus.nms.addCustomData(ItemUtil.getItem(invseeCreativeFile.getString("items.otherItemsInventory.type"),
                 invseeCreativeFile.getString("items.otherItemsInventory.value"),
                 (short) invseeCreativeFile.getInt("items.otherItemsInventory.data"),
+                invseeCreativeFile.getInt("items.otherItemsInventory.customModelData"),
                 invseeCreativeFile.getString("items.otherItemsInventory.name"),
                 invseeCreativeFile.getStringList("items.otherItemsInventory.lore")), invseeCreativeFile.getString("items.otherItemsInventory.direct"));
         otherItemsInventoryItemSlot = invseeCreativeFile.getInt("items.otherItemsInventory.slot");
@@ -54,6 +57,7 @@ public class InventorySeeEnderChest extends InventorySee {
         infoItem = ItemUtil.getItem(invseeCreativeFile.getString("items.info.type"),
                 invseeCreativeFile.getString("items.info.value"),
                 (short) invseeCreativeFile.getInt("items.info.data"),
+                invseeCreativeFile.getInt("items.info.customModelData"),
                 invseeCreativeFile.getString("items.info.name"),
                 invseeCreativeFile.getStringList("items.info.lore"));
         infoItemSlot = invseeCreativeFile.getInt("items.info.slot");

@@ -26,6 +26,7 @@
 #      + How to use custom head:
 #          Step 1: Get into the website https://minecraft-heads.com/custom-heads/ and get whatever head you want
 #          Step 2: Scroll down to the 'For Developers:' part, copy the 'Value' section and then paste it into 'value:'
+#  * customModelData: If you are using server texture pack to make custom item display, this option is for you. Set to '0' if you don't use it.
 #  * All directs:
 #    + close: Close the inventory
 #    + otherItemsInventory: Open invsee other items inventory
@@ -39,6 +40,7 @@ items:
     type: MATERIAL
     value: BLACK_STAINED_GLASS_PANE
     data: 0
+    customModelData: 0
     name: ''
     lore:
       - ''
@@ -47,6 +49,7 @@ items:
     type: customhead
     value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmViNTg4YjIxYTZmOThhZDFmZjRlMDg1YzU1MmRjYjA1MGVmYzljYWI0MjdmNDYwNDhmMThmYzgwMzQ3NWY3In19fQ==
     data: 0
+    customModelData: 0
     name: '&#fc3103Close'
     lore:
       - '&#FFCC00Click to close.'
@@ -56,6 +59,7 @@ items:
     type: customhead
     value: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDQ2NzUxNThjMDc2N2VlNTA4YzUyZDUyNDI2Y2VmM2EyYzJiMjliN2U0ODdjOTI5NTNhMzgyM2Y1NjFkMDZhZiJ9fX0=
     data: 0
+    customModelData: 0
     name: '&fView &b%player%''s&f other items'
     slot: 39
     lore:
@@ -68,6 +72,7 @@ items:
     type: MATERIAL
     value: BOOK
     data: 0
+    customModelData: 0
     name: '&fCreative inventory of &e%player%'
     slot: 41
     lore:
