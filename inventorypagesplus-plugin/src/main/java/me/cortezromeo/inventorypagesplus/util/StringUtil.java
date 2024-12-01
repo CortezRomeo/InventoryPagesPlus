@@ -13,9 +13,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class StringUtil {
-    public static String toBase64(Inventory inventory) {
-        return toBase64(inventory.getContents());
-    }
 
     public static String toBase64(ItemStack itemstack) {
         ItemStack[] arr = new ItemStack[1];
@@ -30,8 +27,8 @@ public class StringUtil {
 
             dataOutput.writeInt(contents.length);
 
-            for (ItemStack stack : contents) {
-                dataOutput.writeObject(InventoryPagesPlus.nms.getItemStack(stack));
+            for (ItemStack itemStack : contents) {
+                dataOutput.writeObject(InventoryPagesPlus.nms.getItemStack(itemStack));
             }
             dataOutput.close();
             return Base64Coder.encodeLines(outputStream.toByteArray());

@@ -230,6 +230,7 @@ public class PlayerInventoryDataH2Storage implements PlayerInventoryStorage {
                 ArrayList<String> itemsBase64 = new ArrayList<>();
                 boolean emptyPage = true;
                 for (ItemStack itemStack : playerInventoryData.getItems().get(page)) {
+                    itemStack = InventoryPagesPlus.nms.getItemStack(itemStack);
                     if (itemStack != null)
                         emptyPage = false;
                     itemsBase64.add(StringUtil.toBase64(itemStack));
@@ -243,8 +244,10 @@ public class PlayerInventoryDataH2Storage implements PlayerInventoryStorage {
 
             if (playerInventoryData.hasUsedCreative()) {
                 ArrayList<String> creativeItemsBase64 = new ArrayList<>();
-                for (ItemStack itemStack : playerInventoryData.getCreativeItems())
+                for (ItemStack itemStack : playerInventoryData.getCreativeItems()) {
+                    itemStack = InventoryPagesPlus.nms.getItemStack(itemStack);
                     creativeItemsBase64.add(StringUtil.toBase64(itemStack));
+                }
                 preparedStatement.setString(3, gson.toJson(creativeItemsBase64));
             } else
                 preparedStatement.setString(3, null);

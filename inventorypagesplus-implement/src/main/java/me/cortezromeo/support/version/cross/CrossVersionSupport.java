@@ -39,6 +39,8 @@ public class CrossVersionSupport extends VersionSupport {
         ItemStack xItemStack = XMaterial.matchXMaterial(itemStack).parseItem();
         xItemStack.setAmount(itemStack.getAmount());
         xItemStack.setItemMeta(itemStack.getItemMeta());
+        if (getCustomData(itemStack) != null && !getCustomData(itemStack).equals(""))
+            xItemStack = addCustomData(xItemStack, getCustomData(itemStack));
         return xItemStack;
     }
 

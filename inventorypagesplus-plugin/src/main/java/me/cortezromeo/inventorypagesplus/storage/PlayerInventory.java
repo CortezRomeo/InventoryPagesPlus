@@ -193,13 +193,13 @@ public class PlayerInventory implements PlayerInventoryDatabase {
             ArrayList<ItemStack> pageItems = new ArrayList<>(25);
             for (int slotNumber = 0; slotNumber < 27; slotNumber++) {
                 if (slotNumber != prevItemPos && slotNumber != nextItemPos) {
-                    pageItems.add(this.player.getInventory().getItem(slotNumber + 9));
+                    pageItems.add(InventoryPagesPlus.nms.getItemStack(player.getInventory().getItem(slotNumber + 9)));
                 }
             }
             this.items.put(this.currentPage, pageItems);
         } else {
             for (int slotNumber = 0; slotNumber < 27; slotNumber++) {
-                creativeItems.set(slotNumber, this.player.getInventory().getItem(slotNumber + 9));
+                creativeItems.set(slotNumber, InventoryPagesPlus.nms.getItemStack(player.getInventory().getItem(slotNumber + 9)));
                 //DebugManager.debug("SAVING CURRENT PAGE", "Saved current page (creative items) of " + playerName);
             }
         }
@@ -269,7 +269,7 @@ public class PlayerInventory implements PlayerInventoryDatabase {
     public void dropPage(int page, GameMode gm) {
         if (gm != GameMode.CREATIVE) {
             for (int slot = 0; slot < 25; slot++) {
-                ItemStack item = this.getItems(page).get(slot);
+                ItemStack item = InventoryPagesPlus.nms.getItemStack(this.getItems(page).get(slot));
                 if (item != null && !InventoryPagesPlus.nms.getCustomData(item).equalsIgnoreCase(PlayerPageInventory.itemCustomData)) {
                     this.player.getWorld().dropItemNaturally(this.player.getLocation(), item);
                     this.getItems(page).set(slot, null);
@@ -282,7 +282,7 @@ public class PlayerInventory implements PlayerInventoryDatabase {
                 return;
             }
             for (int i = 0; i < 27; i++) {
-                ItemStack item = this.creativeItems.get(i);
+                ItemStack item = InventoryPagesPlus.nms.getItemStack(this.creativeItems.get(i));
                 if (item != null && InventoryPagesPlus.nms.getCustomData(item).equalsIgnoreCase(PlayerPageInventory.itemCustomData)) {
                     this.player.getWorld().dropItemNaturally(this.player.getLocation(), item);
                     this.creativeItems.set(i, null);
@@ -388,7 +388,7 @@ public class PlayerInventory implements PlayerInventoryDatabase {
                     if (Settings.SKIP_SLOTS.contains(slotNumber))
                         continue;
 
-                this.player.getInventory().setItem(slotNumber + 9, this.creativeItems.get(slotNumber));
+                this.player.getInventory().setItem(slotNumber + 9, InventoryPagesPlus.nms.getItemStack(this.creativeItems.get(slotNumber)));
                 this.player.updateInventory();
             }
         }
@@ -541,8 +541,10 @@ public class PlayerInventory implements PlayerInventoryDatabase {
         if (this.player == null)
             return true;
 
+        itemStack = InventoryPagesPlus.nms.getItemStack(itemStack);
+
         for (int hotBarSlot = 0; hotBarSlot <= 8; hotBarSlot++) {
-            ItemStack itemFromSlot = player.getInventory().getItem(hotBarSlot);
+            ItemStack itemFromSlot = InventoryPagesPlus.nms.getItemStack(player.getInventory().getItem(hotBarSlot));
             if (itemFromSlot == null) {
                 player.getInventory().setItem(hotBarSlot, itemStack);
                 return false;
@@ -578,7 +580,7 @@ public class PlayerInventory implements PlayerInventoryDatabase {
                         }
                         return false;
                     } else {
-                        ItemStack itemFromSlot = pageItems.get(slotNumber);
+                        ItemStack itemFromSlot = InventoryPagesPlus.nms.getItemStack(pageItems.get(slotNumber));
                         if (itemFromSlot.isSimilar(itemStack)) {
                             int amountCombined = itemStack.getAmount() + itemFromSlot.getAmount();
                             if (amountCombined <= itemStack.getMaxStackSize()) {

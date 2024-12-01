@@ -199,7 +199,7 @@ public class PlayerInventoryDataYAMLStorage implements PlayerInventoryStorage {
         if (InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(UUID.fromString(data.getPlayerUUID())).hasUsedCreative()) {
             for (int slotNumber = 0; slotNumber < 27; slotNumber++) {
                 if (InventoryPagesPlus.getDatabaseManager().getPlayerInventoryDatabase(UUID.fromString(data.getPlayerUUID())).getCreativeItems().get(slotNumber) != null) {
-                    playerDataCfg.set("items.creative.0." + slotNumber, StringUtil.toBase64(playerInventoryData.getCreativeItems().get(slotNumber)));
+                    playerDataCfg.set("items.creative.0." + slotNumber, StringUtil.toBase64(InventoryPagesPlus.nms.getItemStack(playerInventoryData.getCreativeItems().get(slotNumber))));
                 } else {
                     playerDataCfg.set("items.creative.0." + slotNumber, null);
                 }

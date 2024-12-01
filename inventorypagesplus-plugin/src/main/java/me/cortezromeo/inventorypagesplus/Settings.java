@@ -29,6 +29,7 @@ public class Settings {
     public static boolean INVENTORY_SETTINGS_FOCUS_USING_DEFAULT_ITEM_POS;
     public static boolean INVENTORY_SETTINGS_USE_SAVED_CURRENT_PAGE;
     public static boolean INVENTORY_SETTINGS_KEEP_INVENTORY;
+    public static boolean INVENTORY_SETTINGS_KEEP_LEVEL;
     public static boolean INVENTORY_SETTINGS_USE_CREATIVE_INVENTORY;
     public static boolean ADVANCED_PICK_UP_SETTINGS_ENABLED;
     public static boolean ADVANCED_PICK_UP_SETTINGS_ACTIONBAR_ENABLED;
@@ -65,6 +66,7 @@ public class Settings {
         INVENTORY_SETTINGS_FOCUS_USING_DEFAULT_ITEM_POS = configuration.getBoolean("inventory-settings.focus-using-default-item-position");
         INVENTORY_SETTINGS_USE_SAVED_CURRENT_PAGE = configuration.getBoolean("inventory-settings.use-saved-current-page");
         INVENTORY_SETTINGS_KEEP_INVENTORY = configuration.getBoolean("inventory-settings.keep-inventory");
+        INVENTORY_SETTINGS_KEEP_LEVEL = configuration.getBoolean("inventory-settings.keep-level");
         INVENTORY_SETTINGS_USE_CREATIVE_INVENTORY = configuration.getBoolean("inventory-settings.use-creative-inventory");
         ADVANCED_PICK_UP_SETTINGS_ENABLED = configuration.getBoolean("advanced-pick-up-settings.enabled");
         ADVANCED_PICK_UP_SETTINGS_ACTIONBAR_ENABLED = configuration.getBoolean("advanced-pick-up-settings.action-bar.enabled");

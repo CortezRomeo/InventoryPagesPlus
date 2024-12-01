@@ -83,6 +83,8 @@ inventory-settings:
   # inventorypagesplus.keep.hotbar - When the player dies, Keep all items in the hotbar.
   # inventorypagesplus.keep.all - Keep all items when player dies.
   keep-inventory: true
+  # Keep player's experience and level if they die.
+  keep-level: true
   # If this is enabled, plugin will show creative inventory database whenever player's mode changes to creative.
   # Otherwise, plugin will only use survival inventory database for all game modes.
   # PLEASE don't use reload command, please restart server after changing this option.
@@ -92,10 +94,9 @@ inventory-settings:
   # Please do not set the default previous and next page item position to any of these slots.
   # Use this feature to support the plugin that use player inventory's slot to interact with its feature.
   # For example: MMOInventory,...
-  #skip-slots:
-    #- 0
-    #- 1
-    #- 2
+  # Set only -1 to disable
+  skip-slots:
+    - -1
 
 # Automatically move items to the next page if player's current page is full.
 # However, Bukkit API does not let me execute the event when player's inventory is full.

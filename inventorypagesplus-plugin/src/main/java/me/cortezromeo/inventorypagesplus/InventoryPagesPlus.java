@@ -126,7 +126,7 @@ public final class InventoryPagesPlus extends JavaPlugin {
         saveDefaultConfig();
         File configFile = new File(getDataFolder(), "config.yml");
         try {
-            ConfigUpdater.update(this, "config.yml", configFile);
+            ConfigUpdater.update(this, "config.yml", configFile, "inventory-settings");
         } catch (IOException e) {
             e.printStackTrace();
         }

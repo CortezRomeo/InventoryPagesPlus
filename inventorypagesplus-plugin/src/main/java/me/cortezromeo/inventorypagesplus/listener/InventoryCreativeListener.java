@@ -31,5 +31,4 @@ public class InventoryCreativeListener implements Listener {
             event.setCursor(null);
         }
     }
-
 }

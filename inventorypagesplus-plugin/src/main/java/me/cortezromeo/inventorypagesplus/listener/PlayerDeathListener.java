@@ -30,6 +30,9 @@ public class PlayerDeathListener implements Listener {
             InventoryPagesPlus.getDatabaseManager().saveCurrentPage(player.getName());
             event.setKeepInventory(true);
 
+            if (Settings.INVENTORY_SETTINGS_KEEP_LEVEL)
+                event.setKeepLevel(true);
+
             if (Settings.INVENTORY_SETTINGS_KEEP_INVENTORY)
                 return;
 
